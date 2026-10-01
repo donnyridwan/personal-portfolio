@@ -92,16 +92,6 @@ body {
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.06);
 }
 
-/* Luxury card container transition */
-.luxury-card {
-  transition: transform 0.8s var(--ease-luxury), box-shadow 0.8s var(--ease-luxury);
-}
-
-.luxury-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.07);
-}
-
 /* Ambient glow pulsation for active elements */
 @keyframes luxury-pulse {
   0%, 100% {

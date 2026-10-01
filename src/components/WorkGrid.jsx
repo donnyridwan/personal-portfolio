@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { portfolioData } from '../data/portfolioData';
 
 export default function WorkGrid({ onSelectProject, onOpenChat }) {
-  const [showPreviews, setShowPreviews] = useState(false);
-
   const leftColumnProjects = [
     portfolioData.projects[0], // 365px
     portfolioData.projects[1], // 605px
@@ -18,17 +16,6 @@ export default function WorkGrid({ onSelectProject, onOpenChat }) {
 
   return (
     <div className="flex-1 relative pb-24 font-sans">
-      {/* View Toggle Bar (Minimal luxury switch) */}
-      <div className="flex items-center justify-end gap-2 mb-5 px-1">
-        <button
-          onClick={() => setShowPreviews(!showPreviews)}
-          className="text-[12px] font-sans text-[#8a857d] hover:text-black flex items-center gap-1.5 transition-colors bg-[#fbf9f6] hover:bg-[#f3f0e8] px-3.5 py-1.5 rounded-none border border-[#ede9e2]"
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-[#1e1e1e]" />
-          <span className="tracking-tight">{showPreviews ? 'Minimal View (Figma Wire)' : 'Show Rich Project Previews'}</span>
-        </button>
-      </div>
-
       {/* Masonry 2-Column Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-7 w-full">
         {/* Left Column */}
@@ -41,7 +28,6 @@ export default function WorkGrid({ onSelectProject, onOpenChat }) {
                 project={project}
                 index={idx * 2}
                 containerHeight={containerHeight}
-                showPreviews={showPreviews}
                 onSelect={() => onSelectProject(project)}
               />
             );
@@ -58,7 +44,6 @@ export default function WorkGrid({ onSelectProject, onOpenChat }) {
                 project={project}
                 index={idx * 2 + 1}
                 containerHeight={containerHeight}
-                showPreviews={showPreviews}
                 onSelect={() => onSelectProject(project)}
               />
             );
@@ -89,14 +74,10 @@ export default function WorkGrid({ onSelectProject, onOpenChat }) {
   );
 }
 
-function ProjectCard({ project, index, containerHeight, showPreviews, onSelect }) {
-  const [isHovered, setIsHovered] = useState(false);
-
+function ProjectCard({ project, index, containerHeight, onSelect }) {
   return (
     <motion.article
       onClick={onSelect}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
@@ -106,39 +87,18 @@ function ProjectCard({ project, index, containerHeight, showPreviews, onSelect }
       }}
       className="flex flex-col w-full group cursor-pointer"
     >
-      {/* Visual Canvas Container with radius 0 and luxury hover physics */}
+      {/* Visual Canvas Container with radius 0 - static without elevation */}
       <div
-        className={`w-full ${containerHeight} bg-[#e7eef0] rounded-none relative overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-          isHovered
-            ? '-translate-y-2 shadow-[0_24px_45px_-10px_rgba(0,0,0,0.08)]'
-            : 'shadow-none'
-        }`}
+        className={`w-full ${containerHeight} bg-[#e7eef0] rounded-none relative overflow-hidden`}
       >
-        {showPreviews ? (
-          <div className="w-full h-full relative overflow-hidden">
-            <img
-              src={project.image}
-              alt={project.title}
-              className={`w-full h-full object-cover transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                isHovered ? 'scale-105' : 'scale-100'
-              }`}
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-500" />
-            <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md px-3 py-1 rounded-none text-[11px] font-sans font-medium text-neutral-800 tracking-tight">
-              {project.category}
-            </div>
-          </div>
-        ) : (
-          <div className="w-full h-full flex flex-col justify-between p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] bg-black/[0.03]">
-            <span className="text-[12px] font-sans font-medium text-neutral-700 bg-white/90 px-3 py-1 rounded-none w-fit backdrop-blur-sm shadow-sm tracking-tight">
-              {project.category}
-            </span>
-            <span className="text-[12px] font-sans text-neutral-800 font-medium flex items-center gap-1.5 self-end bg-white/95 px-3.5 py-1.5 rounded-none shadow-sm transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0.5">
-              View Case Study →
-            </span>
-          </div>
-        )}
+        <div className="w-full h-full flex flex-col justify-between p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] bg-black/[0.03]">
+          <span className="text-[12px] font-sans font-medium text-neutral-700 bg-white/90 px-3 py-1 rounded-none w-fit backdrop-blur-sm shadow-sm tracking-tight">
+            {project.category}
+          </span>
+          <span className="text-[12px] font-sans text-neutral-800 font-medium flex items-center gap-1.5 self-end bg-white/95 px-3.5 py-1.5 rounded-none shadow-sm transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0.5">
+            View Case Study →
+          </span>
+        </div>
       </div>
 
       {/* Text Info Below Container */}
