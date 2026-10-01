@@ -29,7 +29,7 @@ export default function Navbar({ onBookCall, onOpenMobileMenu, isMobileMenuOpen,
           <img
             src="./assets/call-icon.png"
             alt="Call"
-            className="w-[17px] h-[14px] object-contain group-hover:scale-110 transition-transform"
+            className="w-[17px] h-[14px] object-contain"
           />
         </button>
 
