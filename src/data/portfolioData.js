@@ -1,0 +1,103 @@
+export const portfolioData = {
+  name: "Donny Ridwan S",
+  title: "UI/UX Designer | Web Designer",
+  bio: "UI/UX designer with 4+ years in e-commerce and SaaS, creating smooth, conversion-focused interfaces that drive revenue.",
+  email: "donnyr65@gmail.com",
+  socials: {
+    linkedin: "https://linkedin.com/in/donnyridwan",
+    x: "https://x.com/donnyridwan",
+    facebook: "https://facebook.com/donnyridwan",
+  },
+  projects: [
+    {
+      id: "evalnow-1",
+      title: "EvalNow: Educational UX for a multi-stakeholder platform",
+      category: "EdTech & SaaS",
+      year: "2025",
+      span: "short", // 365px
+      description: "A comprehensive digital evaluation and learning analytics platform connecting educators, students, and administrators with real-time feedback loops.",
+      role: "Lead Product Designer",
+      tools: ["Figma", "Design System", "Prototyping", "User Research"],
+      accentColor: "#d9e4e8",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+      id: "evalnow-2",
+      title: "EvalNow: Enterprise Analytics & Growth Dashboard",
+      category: "Analytics / FinTech",
+      year: "2025",
+      span: "tall", // 605px
+      description: "Designed complex data visualization hierarchies and custom filtering systems to monitor metrics across 50,000+ active enterprise accounts.",
+      role: "Senior UI/UX Designer",
+      tools: ["Figma", "Data Viz", "Design Tokens", "Design QA"],
+      accentColor: "#e2e9ec",
+      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+      id: "evalnow-3",
+      title: "EvalNow: Multi-Platform Design System & Token Architecture",
+      category: "Design System",
+      year: "2025",
+      span: "tall", // 605px
+      description: "Created an atomic, tokenized component library across Web and Mobile, increasing developer velocity by 40% and ensuring brand consistency.",
+      role: "Design System Lead",
+      tools: ["Figma Tokens", "Component Architecture", "Documentation", "Storybook"],
+      accentColor: "#e6ebee",
+      image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+      id: "evalnow-4",
+      title: "EvalNow: Mobile Onboarding & Retention Funnel",
+      category: "Mobile App (iOS/Android)",
+      year: "2025",
+      span: "short", // 369px
+      description: "Redesigned registration flow and first-week user experience, boosting Day-7 activation by 28% and reducing drop-offs significantly.",
+      role: "Mobile UX Specialist",
+      tools: ["iOS Human Interface", "Micro-interactions", "Usability Testing"],
+      accentColor: "#dbe5e8",
+      image: "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?auto=format&fit=crop&w=1200&q=80",
+    },
+    {
+      id: "evalnow-5",
+      title: "EvalNow: Workflow Automation & Team Collaboration Suite",
+      category: "SaaS Workflow",
+      year: "2025",
+      span: "short", // 369px
+      description: "Streamlined stakeholder review workflows with inline commenting, audit trails, and multi-tier approval permissions.",
+      role: "Product Designer",
+      tools: ["Information Architecture", "Figma", "Interactive Prototyping"],
+      accentColor: "#e5ecee",
+      image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1200&q=80",
+    },
+  ],
+  experience: [
+    {
+      period: "2023 - Present",
+      role: "Senior UI/UX & Web Designer",
+      company: "Independent & Selected Clients",
+      description: "Delivering conversion-focused design solutions, SaaS web apps, and design systems for international clients in US, Europe, and Southeast Asia.",
+    },
+    {
+      period: "2021 - 2023",
+      role: "Lead Product Designer",
+      company: "E-Commerce & SaaS Studios",
+      description: "Led end-to-end design for high-traffic commerce platforms, redesigning checkout funnels and mobile navigation systems.",
+    },
+    {
+      period: "2020 - 2021",
+      role: "UI/UX Designer",
+      company: "Digital Product Agency",
+      description: "Collaborated with cross-functional agile teams to create wireframes, interactive prototypes, and client presentation decks.",
+    },
+  ],
+  skills: [
+    "User Interface (UI) Design",
+    "User Experience (UX) Research",
+    "Design Systems & Tokens",
+    "Interactive Prototyping",
+    "Webflow & Frontend Integration",
+    "Conversion Rate Optimization (CRO)",
+    "Information Architecture",
+    "Mobile & Responsive Design",
+  ],
+};
