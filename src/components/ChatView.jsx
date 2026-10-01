@@ -52,7 +52,7 @@ export default function ChatView({ onClose, onBookCall }) {
 
     // Contextual bot reply
     setTimeout(() => {
-      let botReply = "Thanks for asking! I'm available for freelance projects and full design consultations. Let's set up a quick 15-minute call!";
+      let botReply = "Thanks for asking! I'm available for freelance projects and full design consultations. Let's set up a quick call!";
       const lower = userText.toLowerCase();
 
       if (lower.includes('price') || lower.includes('cost') || lower.includes('rate') || lower.includes('harga') || lower.includes('biaya')) {
@@ -60,7 +60,7 @@ export default function ChatView({ onClose, onBookCall }) {
       } else if (lower.includes('tools') || lower.includes('software') || lower.includes('aplikasi') || lower.includes('figma')) {
         botReply = "I primarily use Figma for end-to-end design, along with tokens/component systems, and Webflow or React for high-performance frontend builds.";
       } else if (lower.includes('contact') || lower.includes('email') || lower.includes('hubungi')) {
-        botReply = "You can reach Donny directly at donnyr65@gmail.com, or click the 'Book 15 Mins Call' button in the top right!";
+        botReply = "You can reach Donny directly at donnyr65@gmail.com, or click the 'Book a Call' button in the top right!";
       } else if (lower.includes('portfolio') || lower.includes('project') || lower.includes('kerjaan')) {
         botReply = "Check out the projects on the main grid (like EvalNow), showcasing SaaS workflows, educational platforms, and analytics systems.";
       }

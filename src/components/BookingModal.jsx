@@ -58,7 +58,7 @@ export default function BookingModal({ isOpen, onClose }) {
                 <img src="./assets/call-icon.png" alt="" className="w-5 h-4 object-contain" />
               </div>
               <div>
-                <h3 className="text-[18px] font-medium text-black">Book a 15-Min Intro Call</h3>
+                <h3 className="text-[18px] font-medium text-black">Book a Call</h3>
                 <p className="text-[13px] text-[#8a857d]">With Donny Ridwan S • Google Meet</p>
               </div>
             </div>
