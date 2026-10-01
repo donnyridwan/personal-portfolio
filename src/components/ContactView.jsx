@@ -56,7 +56,7 @@ export default function ContactView() {
   }, []);
 
   return (
-    <div className="flex-1 max-w-[960px] pb-24 font-sans animate-fade-in">
+    <div className="w-full flex-1 pb-16 font-sans animate-fade-in">
       <div className="flex flex-col gap-6 mb-8">
         <div className="flex flex-col gap-2">
           <span className="text-[12px] uppercase tracking-wider text-[#b7b2aa] font-medium">
@@ -78,12 +78,12 @@ export default function ContactView() {
         </div>
       </div>
 
-      {/* Cal.com Inline Embed Container */}
-      <div className="w-full bg-[#fbf9f6] border border-[#ede9e2] rounded-none p-2 sm:p-5 min-h-[700px] shadow-sm">
+      {/* Cal.com Inline Embed Container - Full Width & 100vh */}
+      <div className="w-full h-[100vh] min-h-[100vh]">
         {/* Cal inline embed code begins */}
         <div
           id="my-cal-inline-30min"
-          style={{ width: '100%', height: '100%', minHeight: '660px', overflow: 'scroll' }}
+          style={{ width: '100%', height: '100vh', minHeight: '100vh', overflow: 'scroll' }}
         />
         {/* Cal inline embed code ends */}
       </div>
