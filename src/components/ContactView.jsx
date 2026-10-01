@@ -78,12 +78,13 @@ export default function ContactView() {
         </div>
       </div>
 
-      {/* Cal.com Inline Embed Container - Full Width & 100vh */}
-      <div className="w-full h-[100vh] min-h-[100vh]">
+      {/* Kuning-kuning Container - Full Width seperti Card di Work & Full Viewport Height */}
+      <div className="w-full bg-[#fbf9f6] border border-[#ede9e2] rounded-none p-3 sm:p-6 lg:p-8 min-h-[85vh] h-auto flex flex-col justify-center items-center shadow-sm">
         {/* Cal inline embed code begins */}
         <div
           id="my-cal-inline-30min"
-          style={{ width: '100%', height: '100vh', minHeight: '100vh', overflow: 'scroll' }}
+          style={{ width: '100%', height: '100%', minHeight: '750px', overflow: 'scroll' }}
+          className="w-full"
         />
         {/* Cal inline embed code ends */}
       </div>
