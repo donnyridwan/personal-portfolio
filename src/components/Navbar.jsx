@@ -21,6 +21,9 @@ export default function Navbar({ onBookCall, onOpenMobileMenu, isMobileMenuOpen,
       <div className="flex items-center gap-3">
         <button
           onClick={onBookCall}
+          data-cal-link="donnyrs/30min"
+          data-cal-namespace="30min"
+          data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
           className="btn-dark-glow h-[36px] px-[12px] py-[8px] rounded-none flex items-center justify-center gap-2 group cursor-pointer"
         >
           <span className="font-sans font-medium text-[14px] text-white tracking-[-0.28px] whitespace-nowrap leading-none">

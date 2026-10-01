@@ -67,6 +67,9 @@ export default function AboutView({ onBookCall, onOpenContact }) {
           <div className="flex items-center gap-3 shrink-0">
             <button
               onClick={onBookCall}
+              data-cal-link="donnyrs/30min"
+              data-cal-namespace="30min"
+              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
               className="btn-dark-glow px-4 py-2.5 rounded-none text-white text-[14px] font-medium flex items-center gap-2"
             >
               <span>Schedule Call</span>

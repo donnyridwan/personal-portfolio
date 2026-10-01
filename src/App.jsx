@@ -7,7 +7,6 @@ import Sidebar from './components/Sidebar';
 import WorkGrid from './components/WorkGrid';
 import ChatView from './components/ChatView';
 import AboutView from './components/AboutView';
-import BookingModal from './components/BookingModal';
 import ContactModal from './components/ContactModal';
 import ProjectModal from './components/ProjectModal';
 
@@ -22,7 +21,6 @@ export default function App() {
   });
 
   const [previousTab, setPreviousTab] = useState('work');
-  const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -86,11 +84,41 @@ export default function App() {
     URL.revokeObjectURL(url);
   };
 
+  const handleBookCall = () => {
+    if (window.Cal && window.Cal.ns && window.Cal.ns["30min"]) {
+      window.Cal.ns["30min"]("modal", {
+        calLink: "donnyrs/30min",
+        config: { layout: "month_view", useSlotsViewOnSmallScreen: "true" },
+      });
+    } else if (window.Cal) {
+      window.Cal("modal", {
+        calLink: "donnyrs/30min",
+        config: { layout: "month_view", useSlotsViewOnSmallScreen: "true" },
+      });
+    } else {
+      window.open("https://app.cal.com/donnyrs/30min", "_blank");
+    }
+  };
+
+  useEffect(() => {
+    const bindCal = () => {
+      if (window.Cal && window.Cal.ns && window.Cal.ns["30min"]) {
+        window.Cal.ns["30min"]("ui", {
+          hideEventTypeDetails: false,
+          layout: "month_view",
+        });
+      }
+    };
+    bindCal();
+    const timer = setTimeout(bindCal, 400);
+    return () => clearTimeout(timer);
+  }, [activeTab]);
+
   return (
     <div className="min-h-screen bg-white text-[#1e1e1e] flex flex-col font-sans selection:bg-neutral-900 selection:text-white">
       {/* Navbar */}
       <Navbar
-        onBookCall={() => setIsBookingOpen(true)}
+        onBookCall={handleBookCall}
         onOpenMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         isMobileMenuOpen={isMobileMenuOpen}
         activeTab={activeTab}
@@ -141,7 +169,7 @@ export default function App() {
               >
                 <ChatView
                   onClose={() => changeTab(previousTab || 'work')}
-                  onBookCall={() => setIsBookingOpen(true)}
+                  onBookCall={handleBookCall}
                 />
               </motion.div>
             )}
@@ -156,7 +184,7 @@ export default function App() {
                 className="w-full flex-1"
               >
                 <AboutView
-                  onBookCall={() => setIsBookingOpen(true)}
+                  onBookCall={handleBookCall}
                   onOpenContact={() => setIsContactOpen(true)}
                 />
               </motion.div>
@@ -181,16 +209,6 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Interactive Modals with Framer Motion luxury transitions */}
-      <AnimatePresence>
-        {isBookingOpen && (
-          <BookingModal
-            isOpen={isBookingOpen}
-            onClose={() => setIsBookingOpen(false)}
-          />
-        )}
-      </AnimatePresence>
-
       <AnimatePresence>
         {isContactOpen && (
           <ContactModal
@@ -205,7 +223,7 @@ export default function App() {
           <ProjectModal
             project={selectedProject}
             onClose={() => setSelectedProject(null)}
-            onBookCall={() => setIsBookingOpen(true)}
+            onBookCall={handleBookCall}
           />
         )}
       </AnimatePresence>
