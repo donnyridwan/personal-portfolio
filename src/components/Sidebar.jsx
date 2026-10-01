@@ -41,13 +41,7 @@ export default function Sidebar({ activeTab, setActiveTab, onDownloadCV, onOpenC
               return (
                 <button
                   key={item.id}
-                  onClick={() => {
-                    if (item.id === 'contact') {
-                      onOpenContact();
-                    } else {
-                      setActiveTab(item.id);
-                    }
-                  }}
+                  onClick={() => setActiveTab(item.id)}
                   className="flex items-center justify-between py-[7px] w-full group text-left cursor-pointer transition-colors"
                 >
                   <span
@@ -131,9 +125,9 @@ export default function Sidebar({ activeTab, setActiveTab, onDownloadCV, onOpenC
           </button>
           
           <button
-            onClick={onOpenContact}
+            onClick={() => setActiveTab('contact')}
             className="w-[48px] h-[48px] bg-white border border-[#efefef] rounded-none flex items-center justify-center hover:bg-[#fbf9f6] transition-colors duration-300 cursor-pointer shadow-[0px_2px_4px_rgba(0,0,0,0.04)] shrink-0"
-            title="Send Email"
+            title="Contact & Schedule"
           >
             <img src="./assets/envelope.svg" alt="Email" className="w-5 h-5" />
           </button>

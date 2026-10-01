@@ -92,9 +92,6 @@ export default function ProjectModal({ project, onClose, onBookCall }) {
                 onClose();
                 onBookCall();
               }}
-              data-cal-link="donnyrs/30min"
-              data-cal-namespace="30min"
-              data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
               className="btn-dark-glow px-4 py-2 rounded-none text-white text-xs font-medium"
             >
               Discuss Similar Project

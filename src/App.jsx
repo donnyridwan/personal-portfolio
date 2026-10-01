@@ -7,21 +7,20 @@ import Sidebar from './components/Sidebar';
 import WorkGrid from './components/WorkGrid';
 import ChatView from './components/ChatView';
 import AboutView from './components/AboutView';
-import ContactModal from './components/ContactModal';
+import ContactView from './components/ContactView';
 import ProjectModal from './components/ProjectModal';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState(() => {
     const hash = window.location.hash.replace('#', '');
-    if (['work', 'about', 'chat'].includes(hash)) return hash;
+    if (['work', 'about', 'contact', 'chat'].includes(hash)) return hash;
     const params = new URLSearchParams(window.location.search);
     const tab = params.get('tab');
-    if (['work', 'about', 'chat'].includes(tab)) return tab;
+    if (['work', 'about', 'contact', 'chat'].includes(tab)) return tab;
     return 'work';
   });
 
   const [previousTab, setPreviousTab] = useState('work');
-  const [isContactOpen, setIsContactOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
@@ -85,34 +84,8 @@ export default function App() {
   };
 
   const handleBookCall = () => {
-    if (window.Cal && window.Cal.ns && window.Cal.ns["30min"]) {
-      window.Cal.ns["30min"]("modal", {
-        calLink: "donnyrs/30min",
-        config: { layout: "month_view", useSlotsViewOnSmallScreen: "true" },
-      });
-    } else if (window.Cal) {
-      window.Cal("modal", {
-        calLink: "donnyrs/30min",
-        config: { layout: "month_view", useSlotsViewOnSmallScreen: "true" },
-      });
-    } else {
-      window.open("https://app.cal.com/donnyrs/30min", "_blank");
-    }
+    changeTab('contact');
   };
-
-  useEffect(() => {
-    const bindCal = () => {
-      if (window.Cal && window.Cal.ns && window.Cal.ns["30min"]) {
-        window.Cal.ns["30min"]("ui", {
-          hideEventTypeDetails: false,
-          layout: "month_view",
-        });
-      }
-    };
-    bindCal();
-    const timer = setTimeout(bindCal, 400);
-    return () => clearTimeout(timer);
-  }, [activeTab]);
 
   return (
     <div className="min-h-screen bg-white text-[#1e1e1e] flex flex-col font-sans selection:bg-neutral-900 selection:text-white">
@@ -136,7 +109,7 @@ export default function App() {
               setIsMobileMenuOpen(false);
             }}
             onDownloadCV={handleDownloadCV}
-            onOpenContact={() => setIsContactOpen(true)}
+            onOpenContact={() => changeTab('contact')}
           />
         </div>
 
@@ -185,8 +158,21 @@ export default function App() {
               >
                 <AboutView
                   onBookCall={handleBookCall}
-                  onOpenContact={() => setIsContactOpen(true)}
+                  onOpenContact={() => changeTab('contact')}
                 />
+              </motion.div>
+            )}
+
+            {activeTab === 'contact' && (
+              <motion.div
+                key="contact"
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="w-full flex-1"
+              >
+                <ContactView />
               </motion.div>
             )}
           </AnimatePresence>
@@ -206,15 +192,6 @@ export default function App() {
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
             <span>{toastMessage}</span>
           </motion.div>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {isContactOpen && (
-          <ContactModal
-            isOpen={isContactOpen}
-            onClose={() => setIsContactOpen(false)}
-          />
         )}
       </AnimatePresence>
 
