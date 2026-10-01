@@ -6,7 +6,6 @@ export default function Sidebar({ activeTab, setActiveTab, onDownloadCV, onOpenC
     { id: 'work', label: 'Work' },
     { id: 'about', label: 'About' },
     { id: 'contact', label: 'Contact' },
-    { id: 'chat', label: 'Chat With Jhonny' },
   ];
 
   return (

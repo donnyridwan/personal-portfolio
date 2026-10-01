@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { portfolioData } from '../data/portfolioData';
 
-export default function WorkGrid({ onSelectProject, onOpenChat }) {
+export default function WorkGrid({ onSelectProject }) {
   const leftColumnProjects = [
     portfolioData.projects[0], // 365px
     portfolioData.projects[1], // 605px
@@ -50,27 +50,6 @@ export default function WorkGrid({ onSelectProject, onOpenChat }) {
           })}
         </div>
       </div>
-
-      {/* Floating Chat Trigger Button with luxury subtle float */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
-        className="fixed bottom-8 right-8 z-30"
-      >
-        <button
-          onClick={onOpenChat}
-          style={{ borderRadius: '9999px' }}
-          className="btn-dark-glow w-[50px] h-[50px] rounded-full overflow-hidden flex items-center justify-center cursor-pointer shadow-xl hover:scale-110 active:scale-95 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group"
-          title="Chat With Jhonny"
-        >
-          <img
-            src="./assets/bot-icon.svg"
-            alt="Chat Bot"
-            className="w-[42px] h-[42px] object-contain group-hover:rotate-12 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
-          />
-        </button>
-      </motion.div>
     </div>
   );
 }

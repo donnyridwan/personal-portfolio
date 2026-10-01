@@ -21,6 +21,7 @@ export default function App() {
     return 'work';
   });
 
+  const [previousTab, setPreviousTab] = useState('work');
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
@@ -125,7 +126,6 @@ export default function App() {
               >
                 <WorkGrid
                   onSelectProject={(proj) => setSelectedProject(proj)}
-                  onOpenChat={() => changeTab('chat')}
                 />
               </motion.div>
             )}
@@ -140,7 +140,7 @@ export default function App() {
                 className="w-full flex-1"
               >
                 <ChatView
-                  onClose={() => changeTab('work')}
+                  onClose={() => changeTab(previousTab || 'work')}
                   onBookCall={() => setIsBookingOpen(true)}
                 />
               </motion.div>
@@ -207,6 +207,35 @@ export default function App() {
             onClose={() => setSelectedProject(null)}
             onBookCall={() => setIsBookingOpen(true)}
           />
+        )}
+      </AnimatePresence>
+
+      {/* Global Floating Chat Trigger Button - visible across all pages */}
+      <AnimatePresence>
+        {activeTab !== 'chat' && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed bottom-8 right-8 z-30"
+          >
+            <button
+              onClick={() => {
+                setPreviousTab(activeTab);
+                changeTab('chat');
+              }}
+              style={{ borderRadius: '9999px' }}
+              className="btn-dark-glow w-[50px] h-[50px] rounded-full overflow-hidden flex items-center justify-center cursor-pointer shadow-xl hover:scale-110 active:scale-95 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group"
+              title="Chat With Jhonny"
+            >
+              <img
+                src="./assets/bot-icon.svg"
+                alt="Chat Bot"
+                className="w-[42px] h-[42px] object-contain group-hover:rotate-12 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+              />
+            </button>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
