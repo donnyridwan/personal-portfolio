@@ -60,7 +60,8 @@ export default function WorkGrid({ onSelectProject, onOpenChat }) {
       >
         <button
           onClick={onOpenChat}
-          className="btn-dark-glow w-[50px] h-[50px] rounded-full flex items-center justify-center cursor-pointer shadow-xl hover:scale-110 active:scale-95 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group"
+          style={{ borderRadius: '9999px' }}
+          className="btn-dark-glow w-[50px] h-[50px] rounded-full overflow-hidden flex items-center justify-center cursor-pointer shadow-xl hover:scale-110 active:scale-95 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group"
           title="Chat With Jhonny"
         >
           <img

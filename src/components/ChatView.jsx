@@ -206,14 +206,6 @@ export default function ChatView({ onClose, onBookCall }) {
           You can send me a message via this popup <br />
           and ask anything about my service.
         </p>
-
-        {/* Quick action: Book a call link */}
-        <button
-          onClick={onBookCall}
-          className="text-xs text-white/90 underline hover:text-white transition-colors duration-300 tracking-tight"
-        >
-          Or click here to book a 15-minute call directly →
-        </button>
       </motion.div>
     </div>
   );
