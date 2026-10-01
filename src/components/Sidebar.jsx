@@ -15,7 +15,7 @@ export default function Sidebar({ activeTab, setActiveTab, onDownloadCV, onOpenC
         {/* Profile Card Text */}
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-1">
-            <h1 className="font-serif font-normal text-[32px] leading-[1.15] tracking-[-0.64px] text-[#1e1e1e]">
+            <h1 className="font-serif font-normal text-[32px] leading-[1.15] tracking-[-0.64px] text-[#1e1e1e] transition-opacity hover:opacity-90">
               {portfolioData.name}
             </h1>
             <p className="font-sans font-light text-[12px] tracking-[-0.24px] text-[#8a857d]">
@@ -52,19 +52,23 @@ export default function Sidebar({ activeTab, setActiveTab, onDownloadCV, onOpenC
                   className="flex items-center justify-between py-[7px] w-full group text-left cursor-pointer transition-colors"
                 >
                   <span
-                    className={`text-[13px] tracking-[-0.3px] transition-all font-sans ${
+                    className={`text-[13px] tracking-[-0.3px] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] font-sans ${
                       isActive
                         ? 'text-black font-medium underline underline-offset-4 decoration-1'
-                        : 'text-[#8a857d] font-normal group-hover:text-black'
+                        : 'text-[#8a857d] font-normal group-hover:text-black group-hover:translate-x-0.5'
                     }`}
                   >
                     {item.label}
                   </span>
-                  <div className="w-4 h-4 flex items-center justify-center shrink-0">
+                  <div className="w-4 h-4 flex items-center justify-center shrink-0 overflow-hidden">
                     <img
                       src={isActive ? './assets/arrow-forward-black.svg' : './assets/arrow-forward-gray.svg'}
                       alt=""
-                      className={`w-3 h-3 transition-transform ${isActive ? 'translate-x-0.5' : 'group-hover:translate-x-0.5 opacity-60 group-hover:opacity-100'}`}
+                      className={`w-3 h-3 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                        isActive
+                          ? 'translate-x-0.5'
+                          : 'group-hover:translate-x-1 opacity-60 group-hover:opacity-100'
+                      }`}
                     />
                   </div>
                 </button>
@@ -76,13 +80,13 @@ export default function Sidebar({ activeTab, setActiveTab, onDownloadCV, onOpenC
 
       {/* Bottom Icons & Buttons */}
       <div className="flex flex-col gap-3 pt-8 pb-4">
-        {/* Social Icons */}
-        <div className="flex items-center justify-center gap-2">
+        {/* Social Icons with luxury hover */}
+        <div className="flex items-center justify-center gap-2.5">
           <a
             href={portfolioData.socials.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-1.5 rounded hover:bg-[#f5f3ef] transition-colors"
+            className="p-1.5 rounded-none hover:bg-[#f5f3ef] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1"
             title="LinkedIn"
           >
             <img src="./assets/linkedin.svg" alt="LinkedIn" className="w-5 h-5" />
@@ -91,7 +95,7 @@ export default function Sidebar({ activeTab, setActiveTab, onDownloadCV, onOpenC
             href={portfolioData.socials.x}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-1.5 rounded hover:bg-[#f5f3ef] transition-colors"
+            className="p-1.5 rounded-none hover:bg-[#f5f3ef] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1"
             title="X (Twitter)"
           >
             <img src="./assets/x.svg" alt="X" className="w-5 h-5" />
@@ -100,7 +104,7 @@ export default function Sidebar({ activeTab, setActiveTab, onDownloadCV, onOpenC
             href={portfolioData.socials.facebook}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-1.5 rounded hover:bg-[#f5f3ef] transition-colors"
+            className="p-1.5 rounded-none hover:bg-[#f5f3ef] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1"
             title="Facebook"
           >
             <img src="./assets/facebook.svg" alt="Facebook" className="w-5 h-5" />
@@ -113,7 +117,11 @@ export default function Sidebar({ activeTab, setActiveTab, onDownloadCV, onOpenC
             onClick={onDownloadCV}
             className="btn-dark-glow flex-1 h-[48px] px-3 py-2 rounded-none flex items-center justify-center gap-2 group cursor-pointer"
           >
-            <img src="./assets/download.svg" alt="" className="w-5 h-5 object-contain group-hover:-translate-y-0.5 transition-transform" />
+            <img
+              src="./assets/download.svg"
+              alt=""
+              className="w-5 h-5 object-contain group-hover:-translate-y-0.5 transition-transform duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]"
+            />
             <span className="font-geist font-medium text-[14px] text-[#fbf5ef] tracking-[-0.28px] whitespace-nowrap">
               Download CV
             </span>
@@ -121,7 +129,7 @@ export default function Sidebar({ activeTab, setActiveTab, onDownloadCV, onOpenC
           
           <button
             onClick={onOpenContact}
-            className="w-[48px] h-[48px] bg-white border border-[#efefef] rounded-none flex items-center justify-center hover:bg-[#fbf9f6] transition-colors cursor-pointer shadow-[0px_2px_2px_rgba(0,0,0,0.04),0px_1px_0px_rgba(0,0,0,0.06)] shrink-0"
+            className="w-[48px] h-[48px] bg-white border border-[#efefef] rounded-none flex items-center justify-center hover:bg-[#fbf9f6] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer shadow-[0px_2px_4px_rgba(0,0,0,0.04)] shrink-0"
             title="Send Email"
           >
             <img src="./assets/envelope.svg" alt="Email" className="w-5 h-5" />

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function ChatView({ onClose, onBookCall }) {
   const [messages, setMessages] = useState([
@@ -74,25 +75,28 @@ export default function ChatView({ onClose, onBookCall }) {
         },
       ]);
       setIsTyping(false);
-    }, 1200);
+    }, 1100);
   };
 
   return (
     <div className="flex-1 relative h-[calc(100vh-110px)] min-h-[560px] w-full flex items-center justify-center overflow-hidden rounded-[8px]">
-      {/* Background with Figma blue wave artwork */}
+      {/* Background with Figma blue wave artwork and subtle luxury float */}
       <div className="absolute inset-0 bg-[#e7eef0] overflow-hidden pointer-events-none rounded-[8px]">
-        <img
+        <motion.img
+          initial={{ scale: 1.15 }}
+          animate={{ scale: 1.08 }}
+          transition={{ duration: 15, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
           src="./assets/chat-bg.png"
           alt=""
-          className="absolute inset-0 w-full h-full object-cover scale-110 filter blur-[8px]"
+          className="absolute inset-0 w-full h-full object-cover filter blur-[8px]"
         />
         <div className="absolute inset-0 bg-white/20" />
       </div>
 
-      {/* Floating Close Button */}
+      {/* Floating Close Button with luxury hover */}
       <button
         onClick={onClose}
-        className="absolute top-4 right-4 z-20 bg-white/80 hover:bg-white text-neutral-800 p-2 rounded-[8px] shadow-md backdrop-blur-sm transition-transform hover:scale-105"
+        className="absolute top-4 right-4 z-20 bg-white/85 hover:bg-white text-neutral-800 p-2 rounded-[8px] shadow-sm hover:shadow-md backdrop-blur-md transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-105 active:scale-95"
         title="Back to Work"
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,9 +104,14 @@ export default function ChatView({ onClose, onBookCall }) {
         </svg>
       </button>
 
-      {/* Central Glassmorphic Chat Widget matching Figma 43:85720 with rounded-[8px] & vh height */}
-      <div className="relative z-10 w-full max-w-[456px] px-4 py-4 flex flex-col items-center gap-3 h-full justify-center">
-        <div className="w-full backdrop-blur-[16px] bg-white/40 p-[10px] rounded-[8px] shadow-[0px_20px_40px_rgba(0,0,0,0.12)] border border-white/60 flex flex-col h-[74vh] max-h-[620px]">
+      {/* Central Glassmorphic Chat Widget with luxury spring physics */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 16 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 w-full max-w-[456px] px-4 py-4 flex flex-col items-center gap-3 h-full justify-center"
+      >
+        <div className="w-full backdrop-blur-[20px] bg-white/45 p-[10px] rounded-[8px] shadow-[0px_24px_50px_rgba(0,0,0,0.1)] border border-white/70 flex flex-col h-[74vh] max-h-[620px] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
           <div className="chat-glass border border-white rounded-[8px] px-3.5 py-3.5 flex flex-col gap-3 h-full overflow-hidden">
             {/* Message Header */}
             <div className="flex flex-col items-center justify-center gap-1.5 pt-1 pb-2 border-b border-black/5 shrink-0">
@@ -121,45 +130,54 @@ export default function ChatView({ onClose, onBookCall }) {
               </div>
             </div>
 
-            {/* Messages Body */}
+            {/* Messages Body with smooth animated entries */}
             <div className="flex-1 overflow-y-auto pr-1 flex flex-col gap-2.5">
-              {messages.map((msg) => {
-                const isUser = msg.sender === 'user';
-                return (
-                  <div
-                    key={msg.id}
-                    className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} gap-1 w-full`}
-                  >
-                    <div
-                      className={`relative px-3.5 py-2.5 rounded-[8px] max-w-[85%] text-[14px] leading-[1.4] font-sans ${
-                        isUser
-                          ? 'bg-gradient-to-b from-[#454545] to-[#1d1d1d] text-white shadow-sm'
-                          : 'bg-white text-black border border-neutral-100 shadow-sm'
-                      }`}
+              <AnimatePresence initial={false}>
+                {messages.map((msg, index) => {
+                  const isUser = msg.sender === 'user';
+                  return (
+                    <motion.div
+                      key={msg.id}
+                      initial={{ opacity: 0, y: 12, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1], delay: index * 0.05 }}
+                      className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} gap-1 w-full`}
                     >
-                      <p>{msg.text}</p>
-                    </div>
-                    <span className="text-[11px] text-black/50 font-sans px-1">
-                      {msg.time}
-                    </span>
-                  </div>
-                );
-              })}
+                      <div
+                        className={`relative px-3.5 py-2.5 rounded-[8px] max-w-[85%] text-[14px] leading-[1.4] font-sans ${
+                          isUser
+                            ? 'bg-gradient-to-b from-[#454545] to-[#1d1d1d] text-white shadow-sm'
+                            : 'bg-white text-black border border-neutral-100 shadow-sm'
+                        }`}
+                      >
+                        <p>{msg.text}</p>
+                      </div>
+                      <span className="text-[11px] text-black/50 font-sans px-1">
+                        {msg.time}
+                      </span>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
 
               {isTyping && (
-                <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-[8px] w-fit border border-neutral-100 shadow-sm">
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-[8px] w-fit border border-neutral-100 shadow-sm"
+                >
                   <span className="w-1.5 h-1.5 rounded-full bg-neutral-400 animate-bounce" />
                   <span className="w-1.5 h-1.5 rounded-full bg-neutral-400 animate-bounce [animation-delay:0.2s]" />
                   <span className="w-1.5 h-1.5 rounded-full bg-neutral-400 animate-bounce [animation-delay:0.4s]" />
-                </div>
+                </motion.div>
               )}
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input Form with rounded-[8px] */}
+            {/* Input Form with rounded-[8px] and luxury focus */}
             <form
               onSubmit={handleSend}
-              className="bg-white border border-white rounded-[8px] h-[42px] pl-3 pr-1.5 flex items-center gap-2 shadow-[0px_2px_4px_rgba(0,0,0,0.06)] shrink-0"
+              className="bg-white border border-white rounded-[8px] h-[42px] pl-3 pr-1.5 flex items-center gap-2 shadow-[0px_2px_4px_rgba(0,0,0,0.06)] focus-within:shadow-[0px_4px_12px_rgba(0,0,0,0.08)] transition-all duration-300 shrink-0"
             >
               <input
                 type="text"
@@ -170,7 +188,7 @@ export default function ChatView({ onClose, onBookCall }) {
               />
               <button
                 type="submit"
-                className="w-[30px] h-[30px] rounded-[6px] bg-gradient-to-b from-black to-[#444] border border-[#353535] flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-transform cursor-pointer"
+                className="w-[30px] h-[30px] rounded-[6px] bg-gradient-to-b from-black to-[#444] border border-[#353535] flex items-center justify-center text-white hover:scale-105 active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer"
                 title="Send"
               >
                 <img
@@ -192,11 +210,11 @@ export default function ChatView({ onClose, onBookCall }) {
         {/* Quick action: Book a call link */}
         <button
           onClick={onBookCall}
-          className="text-xs text-white/90 underline hover:text-white transition-colors"
+          className="text-xs text-white/90 underline hover:text-white transition-colors duration-300 tracking-tight"
         >
           Or click here to book a 15-minute call directly →
         </button>
-      </div>
+      </motion.div>
     </div>
   );
 }

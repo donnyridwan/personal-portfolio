@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 
 export default function BookingModal({ isOpen, onClose }) {
@@ -27,8 +28,20 @@ export default function BookingModal({ isOpen, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in font-sans">
-      <div className="bg-white rounded-[16px] max-w-[500px] w-full p-6 shadow-2xl border border-neutral-100 relative">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-md font-sans"
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.96, y: 16 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="bg-white rounded-[12px] max-w-[500px] w-full p-6 shadow-2xl border border-neutral-100 relative"
+      >
         <button
           onClick={handleReset}
           className="absolute top-5 right-5 text-neutral-400 hover:text-black transition-colors"
@@ -58,7 +71,7 @@ export default function BookingModal({ isOpen, onClose }) {
                 <select
                   value={topic}
                   onChange={(e) => setTopic(e.target.value)}
-                  className="w-full border border-neutral-200 rounded-[8px] px-3 py-2 text-[14px] text-black focus:outline-none focus:border-black"
+                  className="w-full border border-neutral-200 rounded-none px-3 py-2 text-[14px] text-black focus:outline-none focus:border-black"
                 >
                   <option>New Product Design & Strategy</option>
                   <option>UI/UX Audit & Conversion Boost</option>
@@ -73,7 +86,7 @@ export default function BookingModal({ isOpen, onClose }) {
                   <select
                     value={selectedDate}
                     onChange={(e) => setSelectedDate(e.target.value)}
-                    className="w-full border border-neutral-200 rounded-[8px] px-3 py-2 text-[13px] text-black focus:outline-none focus:border-black"
+                    className="w-full border border-neutral-200 rounded-none px-3 py-2 text-[13px] text-black focus:outline-none focus:border-black"
                   >
                     <option>Today (Instant Intro)</option>
                     <option>Tomorrow</option>
@@ -86,7 +99,7 @@ export default function BookingModal({ isOpen, onClose }) {
                   <select
                     value={selectedSlot}
                     onChange={(e) => setSelectedSlot(e.target.value)}
-                    className="w-full border border-neutral-200 rounded-[8px] px-3 py-2 text-[13px] text-black focus:outline-none focus:border-black"
+                    className="w-full border border-neutral-200 rounded-none px-3 py-2 text-[13px] text-black focus:outline-none focus:border-black"
                   >
                     <option>02:00 PM - 02:15 PM</option>
                     <option>03:30 PM - 03:45 PM</option>
@@ -104,7 +117,7 @@ export default function BookingModal({ isOpen, onClose }) {
                   placeholder="e.g. Alex Henderson"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full border border-neutral-200 rounded-[8px] px-3 py-2 text-[14px] text-black focus:outline-none focus:border-black"
+                  className="w-full border border-neutral-200 rounded-none px-3 py-2 text-[14px] text-black focus:outline-none focus:border-black"
                 />
               </div>
 
@@ -116,7 +129,7 @@ export default function BookingModal({ isOpen, onClose }) {
                   placeholder="you@company.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full border border-neutral-200 rounded-[8px] px-3 py-2 text-[14px] text-black focus:outline-none focus:border-black"
+                  className="w-full border border-neutral-200 rounded-none px-3 py-2 text-[14px] text-black focus:outline-none focus:border-black"
                 />
               </div>
 
@@ -124,13 +137,13 @@ export default function BookingModal({ isOpen, onClose }) {
                 <button
                   type="button"
                   onClick={onClose}
-                  className="px-4 py-2 text-[14px] text-neutral-600 hover:text-black"
+                  className="px-4 py-2 text-[14px] text-neutral-600 hover:text-black transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="btn-dark-glow px-5 py-2.5 rounded-[8px] text-[14px] text-white font-medium flex items-center gap-2"
+                  className="btn-dark-glow px-5 py-2.5 rounded-none text-[14px] text-white font-medium flex items-center gap-2"
                 >
                   Confirm Booking
                 </button>
@@ -146,19 +159,19 @@ export default function BookingModal({ isOpen, onClose }) {
             <p className="text-[14px] text-neutral-600 max-w-sm">
               Thanks {name || 'there'}! A Google Meet invitation has been prepared for <b>{selectedDate}</b> at <b>{selectedSlot}</b>.
             </p>
-            <div className="mt-4 bg-neutral-50 border border-neutral-200 rounded-[8px] p-3 text-xs text-neutral-500 w-full text-left">
+            <div className="mt-4 bg-neutral-50 border border-neutral-200 rounded-none p-3 text-xs text-neutral-500 w-full text-left">
               Topic: {topic} <br />
               Organizer: Donny Ridwan S (donnyr65@gmail.com)
             </div>
             <button
               onClick={handleReset}
-              className="mt-4 btn-dark-glow px-6 py-2.5 rounded-[8px] text-[14px] text-white"
+              className="mt-4 btn-dark-glow px-6 py-2.5 rounded-none text-[14px] text-white"
             >
               Done
             </button>
           </div>
         )}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

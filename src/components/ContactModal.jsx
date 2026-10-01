@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { portfolioData } from '../data/portfolioData';
 
@@ -18,7 +19,7 @@ export default function ContactModal({ isOpen, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    confetti({ particleCount: 50, spread: 50 });
+    confetti({ particleCount: 50, spread: 50, colors: ['#000', '#555', '#ccc'] });
     setFormSent(true);
     setTimeout(() => {
       setFormSent(false);
@@ -29,8 +30,20 @@ export default function ContactModal({ isOpen, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in font-sans">
-      <div className="bg-white rounded-[16px] max-w-[480px] w-full p-6 shadow-2xl border border-neutral-100 relative">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-md font-sans"
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.96, y: 16 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="bg-white rounded-[12px] max-w-[480px] w-full p-6 shadow-2xl border border-neutral-100 relative"
+      >
         <button
           onClick={onClose}
           className="absolute top-5 right-5 text-neutral-400 hover:text-black transition-colors"
@@ -51,11 +64,11 @@ export default function ContactModal({ isOpen, onClose }) {
         </div>
 
         {/* Quick Email Copy Box */}
-        <div className="bg-[#f7f6f4] border border-[#edeae4] rounded-[8px] p-3 flex items-center justify-between mb-5">
+        <div className="bg-[#f7f6f4] border border-[#edeae4] rounded-none p-3 flex items-center justify-between mb-5">
           <span className="text-[14px] font-mono text-neutral-800">{portfolioData.email}</span>
           <button
             onClick={copyEmail}
-            className="text-xs bg-white border border-neutral-200 px-3 py-1.5 rounded hover:bg-neutral-50 transition-colors font-medium text-black cursor-pointer"
+            className="text-xs bg-white border border-neutral-200 px-3 py-1.5 rounded-none hover:bg-neutral-50 transition-all font-medium text-black cursor-pointer active:scale-95"
           >
             {copied ? '✓ Copied!' : 'Copy Email'}
           </button>
@@ -75,7 +88,7 @@ export default function ContactModal({ isOpen, onClose }) {
                 placeholder="you@company.com"
                 value={senderEmail}
                 onChange={(e) => setSenderEmail(e.target.value)}
-                className="w-full border border-neutral-200 rounded-[8px] px-3 py-2 text-[14px] focus:outline-none focus:border-black"
+                className="w-full border border-neutral-200 rounded-none px-3 py-2 text-[14px] focus:outline-none focus:border-black"
               />
             </div>
             <div>
@@ -86,27 +99,27 @@ export default function ContactModal({ isOpen, onClose }) {
                 placeholder="Tell me a bit about your project or inquiry..."
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="w-full border border-neutral-200 rounded-[8px] px-3 py-2 text-[14px] focus:outline-none focus:border-black resize-none"
+                className="w-full border border-neutral-200 rounded-none px-3 py-2 text-[14px] focus:outline-none focus:border-black resize-none"
               />
             </div>
             <div className="flex justify-end gap-2 pt-2">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 text-[14px] text-neutral-600 hover:text-black"
+                className="px-4 py-2 text-[14px] text-neutral-600 hover:text-black transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="btn-dark-glow px-5 py-2 rounded-[8px] text-[14px] text-white font-medium"
+                className="btn-dark-glow px-5 py-2 rounded-none text-[14px] text-white font-medium"
               >
                 Send Note
               </button>
             </div>
           </form>
         )}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

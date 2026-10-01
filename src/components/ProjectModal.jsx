@@ -1,11 +1,24 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 export default function ProjectModal({ project, onClose, onBookCall }) {
   if (!project) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in font-sans">
-      <div className="bg-white rounded-[16px] max-w-[650px] w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 shadow-2xl relative">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/55 backdrop-blur-md font-sans"
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95, y: 24 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95, y: 16 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="bg-white rounded-[12px] max-w-[650px] w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 shadow-2xl relative border border-neutral-100"
+      >
         <button
           onClick={onClose}
           className="absolute top-5 right-5 text-neutral-400 hover:text-black transition-colors"
@@ -20,12 +33,12 @@ export default function ProjectModal({ project, onClose, onBookCall }) {
             <span className="text-[12px] uppercase font-semibold text-[#8a857d] tracking-wider">
               {project.category} • {project.year}
             </span>
-            <h2 className="text-[24px] font-serif text-black leading-snug">
+            <h2 className="text-[26px] font-serif text-black leading-snug">
               {project.title}
             </h2>
           </div>
 
-          <div className="w-full h-[280px] rounded-[8px] overflow-hidden bg-[#e7eef0] relative">
+          <div className="w-full h-[280px] rounded-none overflow-hidden bg-[#e7eef0] relative">
             <img
               src={project.image}
               alt={project.title}
@@ -58,7 +71,7 @@ export default function ProjectModal({ project, onClose, onBookCall }) {
                 {project.tools.map((tool, i) => (
                   <span
                     key={i}
-                    className="bg-[#f5f4f0] text-neutral-700 text-xs px-2.5 py-1 rounded"
+                    className="bg-[#f5f4f0] text-neutral-700 text-xs px-2.5 py-1 rounded-none"
                   >
                     {tool}
                   </span>
@@ -70,7 +83,7 @@ export default function ProjectModal({ project, onClose, onBookCall }) {
           <div className="flex items-center justify-between pt-4 border-t border-neutral-100">
             <button
               onClick={onClose}
-              className="text-sm text-neutral-500 hover:text-black"
+              className="text-sm text-neutral-500 hover:text-black transition-colors"
             >
               Close
             </button>
@@ -79,13 +92,13 @@ export default function ProjectModal({ project, onClose, onBookCall }) {
                 onClose();
                 onBookCall();
               }}
-              className="btn-dark-glow px-4 py-2 rounded-[6px] text-white text-xs font-medium"
+              className="btn-dark-glow px-4 py-2 rounded-none text-white text-xs font-medium"
             >
               Discuss Similar Project
             </button>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

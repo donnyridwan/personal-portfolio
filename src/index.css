@@ -1,3 +1,5 @@
+@import 'lenis/dist/lenis.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,6 +8,28 @@
   --font-family-serif: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
   --font-family-sans: 'IBM Plex Sans', sans-serif;
   --font-family-inter: 'Inter Tight', sans-serif;
+  --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }
 
 body {
@@ -13,36 +37,91 @@ body {
   background-color: #ffffff;
   color: #1e1e1e;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Clean dark button styling without outer stroke */
+/* Luxury button styling with metallic radial gradient and smooth lighting */
 .btn-dark-glow {
-  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%), #000000;
-  box-shadow: 0px 4px 6px -2px rgba(0, 0, 0, 0.2);
+  position: relative;
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 70%), #000000;
+  box-shadow: 0px 4px 10px -2px rgba(0, 0, 0, 0.2);
   border-radius: 0px;
-  transition: all 0.2s ease;
+  overflow: hidden;
+  transition: transform 0.6s var(--ease-luxury), box-shadow 0.6s var(--ease-luxury), background-color 0.6s var(--ease-luxury);
+}
+
+.btn-dark-glow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  transition: left 0.8s var(--ease-luxury);
+  pointer-events: none;
+}
+
+.btn-dark-glow:hover::after {
+  left: 120%;
 }
 
 .btn-dark-glow:hover {
-  transform: translateY(-1px);
-  box-shadow: 0px 6px 12px -2px rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0px 8px 20px -3px rgba(0, 0, 0, 0.3);
 }
 
 .btn-dark-glow:active {
   transform: translateY(0);
+  box-shadow: 0px 3px 6px -1px rgba(0, 0, 0, 0.25);
+  transition-duration: 0.15s;
 }
 
-/* Chat bubble shapes */
+/* Chat glass container */
 .chat-glass {
-  background: rgba(255, 255, 255, 0.79);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.06);
 }
 
-/* Custom delicate scrollbar */
+/* Luxury card container transition */
+.luxury-card {
+  transition: transform 0.8s var(--ease-luxury), box-shadow 0.8s var(--ease-luxury);
+}
+
+.luxury-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.07);
+}
+
+/* Ambient glow pulsation for active elements */
+@keyframes luxury-pulse {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+.animate-luxury-pulse {
+  animation: luxury-pulse 3.5s var(--ease-soft) infinite;
+}
+
+/* Luxury minimal scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -50,10 +129,11 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #e2ded8;
+  background: #d8d4cc;
   border-radius: 9999px;
+  transition: background-color 0.4s var(--ease-luxury);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #c8c3bb;
+  background: #b5b0a6;
 }
