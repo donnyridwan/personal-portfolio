@@ -68,7 +68,7 @@ export default function WorkGrid({ onSelectProject, onOpenChat }) {
       <div className="fixed bottom-8 right-8 z-30 flex items-center gap-3">
         <button
           onClick={onOpenChat}
-          className="btn-dark-glow w-[48px] h-[48px] rounded-full border border-white flex items-center justify-center cursor-pointer shadow-lg hover:scale-105 transition-all group"
+          className="btn-dark-glow w-[48px] h-[48px] rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:scale-105 transition-all group"
           title="Chat With Jhonny"
         >
           <img
@@ -92,9 +92,9 @@ function ProjectCard({ project, containerHeight, showPreviews, onSelect }) {
       onMouseLeave={() => setIsHovered(false)}
       className="flex flex-col w-full group cursor-pointer"
     >
-      {/* Visual Canvas Container */}
+      {/* Visual Canvas Container with radius 0 */}
       <div
-        className={`w-full ${containerHeight} bg-[#e7eef0] rounded-[4px] relative overflow-hidden transition-all duration-300 ${
+        className={`w-full ${containerHeight} bg-[#e7eef0] rounded-none relative overflow-hidden transition-all duration-300 ${
           isHovered ? 'shadow-md -translate-y-1' : ''
         }`}
       >

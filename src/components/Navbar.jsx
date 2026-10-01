@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Navbar({ onBookCall, onOpenMobileMenu, isMobileMenuOpen, activeTab, setActiveTab }) {
   return (
-    <header className="w-full h-[72px] bg-white border-b border-[#f1eee9] flex items-center justify-between sticky top-0 z-40 px-6 max-w-[1440px] mx-auto">
+    <header className="w-full h-[72px] bg-white flex items-center justify-between sticky top-0 z-40 px-6 max-w-[1440px] mx-auto">
       {/* Left Slot: Logo aligning with sidebar */}
       <div className="w-[252px] md:w-[276px] flex items-center">
         <button
@@ -21,7 +21,7 @@ export default function Navbar({ onBookCall, onOpenMobileMenu, isMobileMenuOpen,
       <div className="flex items-center gap-3">
         <button
           onClick={onBookCall}
-          className="btn-dark-glow h-[36px] px-[12px] py-[8px] rounded-[6px] border border-white flex items-center justify-center gap-2 group cursor-pointer"
+          className="btn-dark-glow h-[36px] px-[12px] py-[8px] rounded-none flex items-center justify-center gap-2 group cursor-pointer"
         >
           <span className="font-sans font-medium text-[14px] text-white tracking-[-0.28px] whitespace-nowrap leading-none">
             Book 15 Mins Call

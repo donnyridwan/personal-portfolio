@@ -10,7 +10,7 @@ export default function Sidebar({ activeTab, setActiveTab, onDownloadCV, onOpenC
   ];
 
   return (
-    <aside className="w-full md:w-[300px] shrink-0 bg-white flex flex-col justify-between py-3 px-6 md:min-h-[calc(100vh-72px)] md:sticky md:top-[72px] border-r border-[#f1eee9]">
+    <aside className="w-full md:w-[300px] shrink-0 bg-white flex flex-col justify-between py-3 px-6 md:min-h-[calc(100vh-72px)] md:sticky md:top-[72px]">
       <div className="flex flex-col gap-6">
         {/* Profile Card Text */}
         <div className="flex flex-col gap-6">
@@ -111,7 +111,7 @@ export default function Sidebar({ activeTab, setActiveTab, onDownloadCV, onOpenC
         <div className="flex items-center gap-2 w-full">
           <button
             onClick={onDownloadCV}
-            className="btn-dark-glow flex-1 h-[48px] px-3 py-2 rounded-[6px] border border-white flex items-center justify-center gap-2 group cursor-pointer"
+            className="btn-dark-glow flex-1 h-[48px] px-3 py-2 rounded-none flex items-center justify-center gap-2 group cursor-pointer"
           >
             <img src="./assets/download.svg" alt="" className="w-5 h-5 object-contain group-hover:-translate-y-0.5 transition-transform" />
             <span className="font-geist font-medium text-[14px] text-[#fbf5ef] tracking-[-0.28px] whitespace-nowrap">
@@ -121,7 +121,7 @@ export default function Sidebar({ activeTab, setActiveTab, onDownloadCV, onOpenC
           
           <button
             onClick={onOpenContact}
-            className="w-[48px] h-[48px] bg-white border border-[#efefef] rounded-[6px] flex items-center justify-center hover:bg-[#fbf9f6] transition-colors cursor-pointer shadow-[0px_2px_2px_rgba(0,0,0,0.04),0px_1px_0px_rgba(0,0,0,0.06)] shrink-0"
+            className="w-[48px] h-[48px] bg-white border border-[#efefef] rounded-none flex items-center justify-center hover:bg-[#fbf9f6] transition-colors cursor-pointer shadow-[0px_2px_2px_rgba(0,0,0,0.04),0px_1px_0px_rgba(0,0,0,0.06)] shrink-0"
             title="Send Email"
           >
             <img src="./assets/envelope.svg" alt="Email" className="w-5 h-5" />

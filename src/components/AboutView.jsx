@@ -67,7 +67,7 @@ export default function AboutView({ onBookCall, onOpenContact }) {
           <div className="flex items-center gap-3 shrink-0">
             <button
               onClick={onBookCall}
-              className="btn-dark-glow px-4 py-2.5 rounded-[6px] text-white text-[14px] font-medium flex items-center gap-2"
+              className="btn-dark-glow px-4 py-2.5 rounded-none text-white text-[14px] font-medium flex items-center gap-2"
             >
               <span>Schedule Call</span>
               <img src="./assets/call-icon.png" alt="" className="w-4 h-3.5 object-contain" />
