@@ -1,7 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MediaUploader from './MediaUploader';
 
 export default function ProjectEditor({ project, onSave, onCancel }) {
+  // Lock background scrolling and make page background completely inactive
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onCancel();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onCancel]);
+
   const [formData, setFormData] = useState({
     id: project?.id || `project-${Date.now()}`,
     title: project?.title || '',
@@ -45,8 +63,16 @@ export default function ProjectEditor({ project, onSave, onCancel }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-white border border-[#e5e5e7] w-full max-w-[680px] my-8 p-6 sm:p-8 flex flex-col font-sans max-h-[90vh] overflow-y-auto shadow-2xl">
+    <div
+      onClick={onCancel}
+      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white border border-[#e5e5e7] w-full max-w-[680px] my-auto p-6 sm:p-8 flex flex-col font-sans max-h-[90vh] overflow-y-auto shadow-2xl relative"
+      >
         <div className="flex items-center justify-between pb-4 border-b border-[#eeeeee]">
           <div>
             <h3 className="font-serif font-normal text-[24px] text-[#171717]">

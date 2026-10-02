@@ -26,6 +26,33 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
     setTimeout(() => setToast(null), 3500);
   };
 
+  // Deactivate background scrolling whenever any popup is open
+  const isAnyModalOpen = Boolean(isAddingProject || editingProject || editingExp || editingTestimonial);
+
+  useEffect(() => {
+    if (isAnyModalOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [isAnyModalOpen]);
+
+  // Support closing modals with Escape key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        if (editingExp) setEditingExp(null);
+        if (editingTestimonial) setEditingTestimonial(null);
+        if (isAddingProject) setIsAddingProject(false);
+        if (editingProject) setEditingProject(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [editingExp, editingTestimonial, isAddingProject, editingProject]);
+
   // Sync latest from Neon on mount
   useEffect(() => {
     const loadFromDb = async () => {
@@ -209,25 +236,17 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
     <div className="min-h-screen bg-[#fafafb] text-[#171717] flex flex-col font-sans">
       {/* Top Navbar */}
       <header className="h-[64px] bg-white border-b border-[#e5e5e7] px-6 flex items-center justify-between sticky top-0 z-30">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <img src="./assets/logo.png" alt="" className="h-[24px] w-auto" />
-            <span className="font-serif font-medium text-[16px] text-black">
-              Donny Studio CMS
-            </span>
-          </div>
-          <span className="hidden sm:inline-block w-px h-4 bg-[#e5e5e7]" />
-          {/* Neon Database live badge */}
-          <div className="flex items-center gap-1.5 px-2.5 py-0.5 bg-[#f0f0f2] text-[11px] text-[#555] font-medium">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Neon: {syncStatus.msg}</span>
-          </div>
+        <div className="flex items-center gap-2">
+          <img src="./assets/logo.png" alt="" className="h-[24px] w-auto" />
+          <span className="font-serif font-medium text-[16px] text-black">
+            Donny Studio CMS
+          </span>
         </div>
 
         <div className="flex items-center gap-3">
           <button
             onClick={onExitCms}
-            className="px-3.5 py-1.5 bg-[#f5f5f7] border border-[#e5e5e7] text-[12px] font-medium text-[#444] hover:bg-black hover:text-white transition-colors"
+            className="px-3.5 py-1.5 bg-[#f5f5f7] border border-[#e5e5e7] text-[12px] font-medium text-[#444] hover:bg-black hover:text-white transition-colors cursor-pointer"
           >
             Lihat Website ↗
           </button>
@@ -237,30 +256,35 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
               window.location.hash = 'work';
               window.location.reload();
             }}
-            className="text-[12px] text-[#888] hover:text-red-600 px-2 py-1"
+            className="text-[12px] text-[#888] hover:text-red-600 px-2 py-1 cursor-pointer"
           >
             Keluar
           </button>
         </div>
       </header>
 
-      {/* Main Layout */}
-      <div className="flex-1 flex flex-col md:flex-row max-w-[1440px] w-full mx-auto">
+      {/* Main Layout - Full Width & Inactive when modal open */}
+      <div
+        className={`flex-1 flex flex-col md:flex-row w-full transition-opacity duration-300 ${
+          isAnyModalOpen ? 'pointer-events-none select-none opacity-40' : ''
+        }`}
+        aria-hidden={isAnyModalOpen}
+      >
         {/* CMS Sidebar Navigation */}
-        <aside className="w-full md:w-[220px] bg-white border-r border-[#e5e5e7] p-4 flex md:flex-col gap-1 overflow-x-auto shrink-0">
+        <aside className="w-full md:w-[230px] bg-white border-r border-[#e5e5e7] p-4 flex md:flex-col gap-1 overflow-x-auto shrink-0">
           <div className="hidden md:block text-[10.5px] uppercase tracking-[0.8px] text-[#a3a3a3] font-medium px-3 pt-2 pb-1.5">
             Manajemen Konten
           </div>
 
           <button
             onClick={() => setActiveTab('projects')}
-            className={`w-full flex items-center justify-between px-3 py-2 text-[13px] font-medium text-left transition-colors whitespace-nowrap ${
+            className={`w-full flex items-center justify-between px-3 py-2 text-[13px] font-medium text-left transition-colors whitespace-nowrap cursor-pointer ${
               activeTab === 'projects'
                 ? 'bg-black text-white'
                 : 'text-[#666] hover:bg-[#f5f5f7] hover:text-black'
             }`}
           >
-            <span>💼 Projects</span>
+            <span>Projects</span>
             <span className="text-[11px] opacity-75 font-mono">
               {data.projects?.length || 0}
             </span>
@@ -268,35 +292,35 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
 
           <button
             onClick={() => setActiveTab('profile')}
-            className={`w-full flex items-center justify-between px-3 py-2 text-[13px] font-medium text-left transition-colors whitespace-nowrap ${
+            className={`w-full flex items-center justify-between px-3 py-2 text-[13px] font-medium text-left transition-colors whitespace-nowrap cursor-pointer ${
               activeTab === 'profile'
                 ? 'bg-black text-white'
                 : 'text-[#666] hover:bg-[#f5f5f7] hover:text-black'
             }`}
           >
-            <span>👤 Profile & Bio</span>
+            <span>Profile & Bio</span>
           </button>
 
           <button
             onClick={() => setActiveTab('stats')}
-            className={`w-full flex items-center justify-between px-3 py-2 text-[13px] font-medium text-left transition-colors whitespace-nowrap ${
+            className={`w-full flex items-center justify-between px-3 py-2 text-[13px] font-medium text-left transition-colors whitespace-nowrap cursor-pointer ${
               activeTab === 'stats'
                 ? 'bg-black text-white'
                 : 'text-[#666] hover:bg-[#f5f5f7] hover:text-black'
             }`}
           >
-            <span>📊 The Proof (Stats)</span>
+            <span>The Proof (Stats)</span>
           </button>
 
           <button
             onClick={() => setActiveTab('experience')}
-            className={`w-full flex items-center justify-between px-3 py-2 text-[13px] font-medium text-left transition-colors whitespace-nowrap ${
+            className={`w-full flex items-center justify-between px-3 py-2 text-[13px] font-medium text-left transition-colors whitespace-nowrap cursor-pointer ${
               activeTab === 'experience'
                 ? 'bg-black text-white'
                 : 'text-[#666] hover:bg-[#f5f5f7] hover:text-black'
             }`}
           >
-            <span>⏳ Experience</span>
+            <span>Experience</span>
             <span className="text-[11px] opacity-75 font-mono">
               {data.experience?.length || 0}
             </span>
@@ -304,13 +328,13 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
 
           <button
             onClick={() => setActiveTab('testimonials')}
-            className={`w-full flex items-center justify-between px-3 py-2 text-[13px] font-medium text-left transition-colors whitespace-nowrap ${
+            className={`w-full flex items-center justify-between px-3 py-2 text-[13px] font-medium text-left transition-colors whitespace-nowrap cursor-pointer ${
               activeTab === 'testimonials'
                 ? 'bg-black text-white'
                 : 'text-[#666] hover:bg-[#f5f5f7] hover:text-black'
             }`}
           >
-            <span>💬 Testimonials</span>
+            <span>Testimonials</span>
             <span className="text-[11px] opacity-75 font-mono">
               {data.testimonials?.length || 0}
             </span>
@@ -324,35 +348,29 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
 
           <button
             onClick={() => setActiveTab('cloudinary')}
-            className={`w-full flex items-center justify-between px-3 py-2 text-[13px] font-medium text-left transition-colors whitespace-nowrap ${
+            className={`w-full flex items-center justify-between px-3 py-2 text-[13px] font-medium text-left transition-colors whitespace-nowrap cursor-pointer ${
               activeTab === 'cloudinary'
                 ? 'bg-black text-white'
                 : 'text-[#666] hover:bg-[#f5f5f7] hover:text-black'
             }`}
           >
-            <span>☁️ Cloudinary</span>
-            <span
-              className={`w-2 h-2 rounded-full ${
-                cloudinaryConfig.cloudName ? 'bg-emerald-500' : 'bg-amber-400'
-              }`}
-            />
+            <span>Cloudinary</span>
           </button>
 
           <button
             onClick={() => setActiveTab('neon')}
-            className={`w-full flex items-center justify-between px-3 py-2 text-[13px] font-medium text-left transition-colors whitespace-nowrap ${
+            className={`w-full flex items-center justify-between px-3 py-2 text-[13px] font-medium text-left transition-colors whitespace-nowrap cursor-pointer ${
               activeTab === 'neon'
                 ? 'bg-black text-white'
                 : 'text-[#666] hover:bg-[#f5f5f7] hover:text-black'
             }`}
           >
-            <span>⚡ Neon Database</span>
-            <span className="w-2 h-2 rounded-full bg-emerald-500" />
+            <span>Neon Database</span>
           </button>
         </aside>
 
-        {/* Content Pane */}
-        <main className="flex-1 p-6 lg:p-8 max-w-[1100px]">
+        {/* Content Pane - Full Width */}
+        <main className="flex-1 p-6 lg:p-8 w-full min-w-0">
           {/* TAB 1: PROJECTS */}
           {activeTab === 'projects' && (
             <div className="flex flex-col gap-6">
@@ -726,8 +744,16 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
 
               {/* Edit Modal */}
               {editingExp && (
-                <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-                  <div className="bg-white border border-[#e5e5e7] w-full max-w-[540px] p-6 flex flex-col gap-4 shadow-2xl">
+                <div
+                  onClick={() => setEditingExp(null)}
+                  className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
+                  role="dialog"
+                  aria-modal="true"
+                >
+                  <div
+                    onClick={(e) => e.stopPropagation()}
+                    className="bg-white border border-[#e5e5e7] w-full max-w-[540px] p-6 flex flex-col gap-4 shadow-2xl relative my-auto"
+                  >
                     <h3 className="font-serif text-[22px] text-[#171717]">
                       {editingExp.role ? 'Edit Karir' : 'Tambah Karir Baru'}
                     </h3>
@@ -860,8 +886,16 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
 
               {/* Edit Modal */}
               {editingTestimonial && (
-                <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-                  <div className="bg-white border border-[#e5e5e7] w-full max-w-[500px] p-6 flex flex-col gap-4 shadow-2xl">
+                <div
+                  onClick={() => setEditingTestimonial(null)}
+                  className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
+                  role="dialog"
+                  aria-modal="true"
+                >
+                  <div
+                    onClick={(e) => e.stopPropagation()}
+                    className="bg-white border border-[#e5e5e7] w-full max-w-[500px] p-6 flex flex-col gap-4 shadow-2xl relative my-auto"
+                  >
                     <h3 className="font-serif text-[22px] text-[#171717]">
                       {editingTestimonial.name ? 'Edit Testimonial' : 'Tambah Testimonial'}
                     </h3>

@@ -1,23 +1,44 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 export default function ProjectModal({ project, onClose, onBookCall }) {
+  // Lock body scroll and deactivate background when modal is open
+  useEffect(() => {
+    if (!project) return;
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [project, onClose]);
+
   if (!project) return null;
 
   return (
     <motion.div
+      onClick={onClose}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/55 backdrop-blur-md font-sans"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md font-sans overflow-y-auto"
+      role="dialog"
+      aria-modal="true"
     >
       <motion.div
+        onClick={(e) => e.stopPropagation()}
         initial={{ opacity: 0, scale: 0.95, y: 24 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 16 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="bg-white rounded-[12px] max-w-[650px] w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 shadow-2xl relative border border-neutral-100"
+        className="bg-white rounded-none max-w-[650px] w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 shadow-2xl relative border border-neutral-100 my-auto"
       >
         <button
           onClick={onClose}

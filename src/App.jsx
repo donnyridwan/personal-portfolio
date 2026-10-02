@@ -179,7 +179,12 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-[#1e1e1e] flex flex-col font-sans selection:bg-neutral-900 selection:text-white">
+    <div
+      className={`min-h-screen bg-white text-[#1e1e1e] flex flex-col font-sans selection:bg-neutral-900 selection:text-white transition-opacity duration-300 ${
+        selectedProject ? 'pointer-events-none select-none' : ''
+      }`}
+      aria-hidden={Boolean(selectedProject)}
+    >
       {/* Navbar */}
       <Navbar
         onBookCall={handleBookCall}
