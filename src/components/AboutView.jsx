@@ -22,7 +22,13 @@ export default function AboutView({ onBookCall, onOpenContact }) {
             className="btn-dark-glow px-6 py-2.5 rounded-full text-white text-[14px] font-medium shadow-md hover:scale-105 active:scale-95 transition-all flex items-center gap-2 cursor-pointer"
           >
             <span>Book a Call</span>
-            <img src="./assets/call-icon.png" alt="" className="w-3.5 h-3 object-contain" />
+            <svg
+              className="w-3.5 h-3.5 fill-none stroke-current text-white/90"
+              strokeWidth="2.2"
+              viewBox="0 0 24 24"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </button>
         </div>
       </section>
@@ -147,24 +153,31 @@ export default function AboutView({ onBookCall, onOpenContact }) {
               href={portfolioData.socials.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 bg-white border border-[#ebe9e4] rounded-full flex items-center justify-center hover:bg-neutral-100 transition-colors shadow-sm"
+              className="w-10 h-10 bg-white border border-[#dedede] rounded-full flex items-center justify-center hover:bg-neutral-100 hover:scale-105 active:scale-95 transition-all shadow-sm"
               title="LinkedIn Profile"
             >
-              <img src="./assets/linkedin.svg" alt="LinkedIn" className="w-4 h-4" />
+              <svg className="w-4 h-4 fill-current text-[#1e1e1e]" viewBox="0 0 24 24">
+                <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+              </svg>
             </a>
             <a
               href={`mailto:${portfolioData.email}`}
-              className="w-10 h-10 bg-white border border-[#ebe9e4] rounded-full flex items-center justify-center hover:bg-neutral-100 transition-colors shadow-sm"
+              className="w-10 h-10 bg-white border border-[#dedede] rounded-full flex items-center justify-center hover:bg-neutral-100 hover:scale-105 active:scale-95 transition-all shadow-sm"
               title="Send Email"
             >
-              <img src="./assets/envelope.svg" alt="Email" className="w-4 h-4" />
+              <svg className="w-4 h-4 fill-none stroke-current text-[#1e1e1e]" strokeWidth="1.9" viewBox="0 0 24 24">
+                <rect width="20" height="16" x="2" y="4" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+              </svg>
             </a>
             <a
               href={`tel:${portfolioData.phone.replace(/\s+/g, '')}`}
-              className="w-10 h-10 bg-white border border-[#ebe9e4] rounded-full flex items-center justify-center hover:bg-neutral-100 transition-colors shadow-sm"
+              className="w-10 h-10 bg-white border border-[#dedede] rounded-full flex items-center justify-center hover:bg-neutral-100 hover:scale-105 active:scale-95 transition-all shadow-sm"
               title="Call Phone"
             >
-              <img src="./assets/call-icon.png" alt="Phone" className="w-4 h-3.5 object-contain" />
+              <svg className="w-4 h-4 fill-none stroke-current text-[#1e1e1e]" strokeWidth="1.9" viewBox="0 0 24 24">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
             </a>
           </div>
 
@@ -173,7 +186,13 @@ export default function AboutView({ onBookCall, onOpenContact }) {
             className="mt-7 btn-dark-glow px-6 py-2.5 rounded-full text-white text-[13.5px] font-medium shadow-md hover:scale-105 active:scale-95 transition-all flex items-center gap-2 cursor-pointer"
           >
             <span>Book a Call</span>
-            <img src="./assets/call-icon.png" alt="" className="w-3.5 h-3 object-contain" />
+            <svg
+              className="w-3.5 h-3.5 fill-none stroke-current text-white/90"
+              strokeWidth="2.2"
+              viewBox="0 0 24 24"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </button>
         </div>
 
