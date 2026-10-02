@@ -26,20 +26,7 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
     setTimeout(() => setToast(null), 3500);
   };
 
-  // Deactivate background scrolling whenever any actual popup modal is open
-  const isAnyModalOpen = Boolean(editingExp || editingTestimonial);
-
-  useEffect(() => {
-    if (isAnyModalOpen) {
-      const originalOverflow = document.body.style.overflow;
-      document.body.style.overflow = 'hidden';
-      return () => {
-        document.body.style.overflow = originalOverflow;
-      };
-    }
-  }, [isAnyModalOpen]);
-
-  // Support closing modals with Escape key
+  // Support returning to list views with Escape key
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
@@ -263,13 +250,8 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
         </div>
       </header>
 
-      {/* Main Layout - Full Width & Inactive when modal open */}
-      <div
-        className={`flex-1 flex flex-col md:flex-row w-full transition-opacity duration-300 ${
-          isAnyModalOpen ? 'pointer-events-none select-none opacity-40' : ''
-        }`}
-        aria-hidden={isAnyModalOpen}
-      >
+      {/* Main Layout - Full Width */}
+      <div className="flex-1 flex flex-col md:flex-row w-full">
         {/* CMS Sidebar Navigation */}
         <aside className="w-full md:w-[230px] bg-white border-r border-[#e5e5e7] p-4 flex md:flex-col gap-1 overflow-x-auto shrink-0">
           <div className="hidden md:block text-[10.5px] uppercase tracking-[0.8px] text-[#a3a3a3] font-medium px-3 pt-2 pb-1.5">
@@ -695,286 +677,373 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
 
           {/* TAB 4: EXPERIENCE */}
           {activeTab === 'experience' && (
-            <div className="flex flex-col gap-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="font-serif font-normal text-[28px] text-[#171717]">
-                    Experience Timeline
-                  </h2>
-                  <p className="text-[13px] text-[#737373]">
-                    Riwayat karier dan peran profesional di halaman About.
-                  </p>
-                </div>
-                <button
-                  onClick={() =>
-                    setEditingExp({
-                      id: `exp-${Date.now()}`,
-                      role: '',
-                      company: '',
-                      period: '',
-                      description: '',
-                      sort: data.experience.length + 1,
-                    })
-                  }
-                  className="btn-dark-glow px-4 py-2 text-white text-[13px] font-medium"
-                >
-                  + Tambah Karir
-                </button>
-              </div>
-
-              {/* Experience List */}
-              <div className="flex flex-col gap-3">
-                {data.experience.map((exp, idx) => (
-                  <div
-                    key={exp.id || idx}
-                    className="bg-white border border-[#e5e5e7] p-5 flex flex-col md:flex-row items-start justify-between gap-4 hover:border-[#b3b3b3] transition-colors"
-                  >
-                    <div className="flex flex-col md:w-[240px] shrink-0">
-                      <h4 className="font-medium text-[15px] text-[#171717]">
-                        {exp.role}
-                      </h4>
-                      <span className="text-[13px] text-[#737373]">{exp.company}</span>
-                      <span className="text-[12px] text-[#a3a3a3] mt-1">{exp.period}</span>
-                    </div>
-
-                    <p className="text-[13px] text-[#525252] leading-relaxed flex-1">
-                      {exp.description}
+            editingExp ? (
+              <div className="w-full flex flex-col gap-6 font-sans animate-fade-in">
+                {/* Header with back button */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-[#e5e5e7]">
+                  <div className="flex flex-col gap-1">
+                    <button
+                      type="button"
+                      onClick={() => setEditingExp(null)}
+                      className="text-[12.5px] text-[#737373] hover:text-black flex items-center gap-1.5 transition-colors cursor-pointer w-fit mb-1 font-medium group"
+                    >
+                      <span className="group-hover:-translate-x-0.5 transition-transform">←</span>
+                      <span>Kembali ke Daftar Experience</span>
+                    </button>
+                    <h2 className="font-serif font-normal text-[30px] text-[#171717] tracking-tight">
+                      {editingExp.role ? `Edit: ${editingExp.role}` : 'Tambah Karir Baru'}
+                    </h2>
+                    <p className="text-[13px] text-[#737373]">
+                      Riwayat karir dan peran profesional yang tampil di halaman About.
                     </p>
-
-                    <div className="flex items-center gap-2 shrink-0">
-                      <button
-                        onClick={() => setEditingExp(exp)}
-                        className="px-3 py-1.5 bg-[#f5f5f7] border border-[#e5e5e7] text-[12px] text-[#333] hover:bg-black hover:text-white"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDeleteExperience(exp.id)}
-                        className="px-3 py-1.5 bg-white border border-[#e5e5e7] text-[12px] text-red-600 hover:bg-red-50"
-                      >
-                        Hapus
-                      </button>
-                    </div>
                   </div>
-                ))}
-              </div>
 
-              {/* Edit Modal */}
-              {editingExp && (
-                <div
-                  onClick={() => setEditingExp(null)}
-                  className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
-                  role="dialog"
-                  aria-modal="true"
-                >
-                  <div
-                    onClick={(e) => e.stopPropagation()}
-                    className="bg-white border border-[#e5e5e7] w-full max-w-[540px] p-6 flex flex-col gap-4 shadow-2xl relative my-auto"
-                  >
-                    <h3 className="font-serif text-[22px] text-[#171717]">
-                      {editingExp.role ? 'Edit Karir' : 'Tambah Karir Baru'}
-                    </h3>
-                    <div className="flex flex-col gap-3">
-                      <div>
-                        <label className="text-[11px] font-medium text-[#737373] uppercase">Role / Jabatan</label>
-                        <input
-                          type="text"
-                          value={editingExp.role}
-                          onChange={(e) => setEditingExp({ ...editingExp, role: e.target.value })}
-                          className="w-full bg-[#f8f8fa] border border-[#e5e5e7] px-3 py-1.5 text-[13px]"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[11px] font-medium text-[#737373] uppercase">Perusahaan / Studio</label>
-                        <input
-                          type="text"
-                          value={editingExp.company}
-                          onChange={(e) => setEditingExp({ ...editingExp, company: e.target.value })}
-                          className="w-full bg-[#f8f8fa] border border-[#e5e5e7] px-3 py-1.5 text-[13px]"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[11px] font-medium text-[#737373] uppercase">Periode (contoh: Jul 2023 - Present)</label>
-                        <input
-                          type="text"
-                          value={editingExp.period}
-                          onChange={(e) => setEditingExp({ ...editingExp, period: e.target.value })}
-                          className="w-full bg-[#f8f8fa] border border-[#e5e5e7] px-3 py-1.5 text-[13px]"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[11px] font-medium text-[#737373] uppercase">Deskripsi Pekerjaan</label>
-                        <textarea
-                          rows={3}
-                          value={editingExp.description}
-                          onChange={(e) => setEditingExp({ ...editingExp, description: e.target.value })}
-                          className="w-full bg-[#f8f8fa] border border-[#e5e5e7] px-3 py-2 text-[13px] resize-none"
-                        />
-                      </div>
-                    </div>
-                    <div className="flex justify-end gap-2 pt-3 border-t border-[#eee]">
-                      <button
-                        onClick={() => setEditingExp(null)}
-                        className="px-4 py-1.5 text-[12px] border border-[#e5e5e7]"
-                      >
-                        Batal
-                      </button>
-                      <button
-                        onClick={() => handleSaveExperience(editingExp)}
-                        className="btn-dark-glow px-5 py-1.5 text-[12px] text-white"
-                      >
-                        Simpan ke Neon
-                      </button>
-                    </div>
+                  <div className="flex items-center gap-2.5 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => setEditingExp(null)}
+                      className="px-4 py-2 bg-white border border-[#e5e5e7] hover:border-black text-[13px] text-[#555] hover:text-black transition-colors cursor-pointer rounded-none"
+                    >
+                      Batal
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleSaveExperience(editingExp)}
+                      className="btn-dark-glow px-6 py-2 rounded-none text-white text-[13px] font-medium cursor-pointer"
+                    >
+                      Simpan ke Neon DB
+                    </button>
                   </div>
                 </div>
-              )}
-            </div>
+
+                {/* Form Card */}
+                <div className="bg-white border border-[#e5e5e7] p-6 sm:p-8 flex flex-col gap-6 w-full shadow-sm">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div className="flex flex-col">
+                      <label className="text-[11px] font-medium uppercase tracking-[0.5px] text-[#737373] mb-1.5">
+                        Role / Jabatan *
+                      </label>
+                      <input
+                        type="text"
+                        value={editingExp.role}
+                        onChange={(e) => setEditingExp({ ...editingExp, role: e.target.value })}
+                        placeholder="Contoh: Senior Product Designer"
+                        className="bg-[#f8f8fa] border border-[#e5e5e7] px-3.5 py-2.5 text-[13.5px] text-[#171717] focus:outline-none focus:border-black rounded-none"
+                      />
+                    </div>
+
+                    <div className="flex flex-col">
+                      <label className="text-[11px] font-medium uppercase tracking-[0.5px] text-[#737373] mb-1.5">
+                        Perusahaan / Studio *
+                      </label>
+                      <input
+                        type="text"
+                        value={editingExp.company}
+                        onChange={(e) => setEditingExp({ ...editingExp, company: e.target.value })}
+                        placeholder="Contoh: Gandaria Studio, Semarang"
+                        className="bg-[#f8f8fa] border border-[#e5e5e7] px-3.5 py-2.5 text-[13.5px] text-[#171717] focus:outline-none focus:border-black rounded-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label className="text-[11px] font-medium uppercase tracking-[0.5px] text-[#737373] mb-1.5">
+                      Periode Karir (Contoh: Feb 2024 - Present)
+                    </label>
+                    <input
+                      type="text"
+                      value={editingExp.period}
+                      onChange={(e) => setEditingExp({ ...editingExp, period: e.target.value })}
+                      placeholder="Contoh: Feb 2024 - Present"
+                      className="bg-[#f8f8fa] border border-[#e5e5e7] px-3.5 py-2.5 text-[13.5px] text-[#171717] focus:outline-none focus:border-black rounded-none"
+                    />
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label className="text-[11px] font-medium uppercase tracking-[0.5px] text-[#737373] mb-1.5">
+                      Deskripsi Pekerjaan & Pencapaian
+                    </label>
+                    <textarea
+                      rows={5}
+                      value={editingExp.description}
+                      onChange={(e) => setEditingExp({ ...editingExp, description: e.target.value })}
+                      placeholder="Jelaskan tanggung jawab utama, proyek yang dipimpin, dan impact yang dihasilkan..."
+                      className="bg-[#f8f8fa] border border-[#e5e5e7] px-3.5 py-2.5 text-[13.5px] text-[#171717] focus:outline-none focus:border-black rounded-none resize-none leading-relaxed"
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between pt-6 border-t border-[#eeeeee]">
+                    <button
+                      type="button"
+                      onClick={() => setEditingExp(null)}
+                      className="px-4 py-2 text-[13px] text-[#737373] hover:text-black transition-colors cursor-pointer"
+                    >
+                      ← Batal & Kembali
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleSaveExperience(editingExp)}
+                      className="btn-dark-glow px-7 py-2.5 rounded-none text-white text-[13.5px] font-medium cursor-pointer"
+                    >
+                      Simpan Karir ke Neon DB →
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-6 animate-fade-in">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="font-serif font-normal text-[28px] text-[#171717]">
+                      Experience Timeline
+                    </h2>
+                    <p className="text-[13px] text-[#737373]">
+                      Riwayat karier dan peran profesional di halaman About.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() =>
+                      setEditingExp({
+                        id: `exp-${Date.now()}`,
+                        role: '',
+                        company: '',
+                        period: '',
+                        description: '',
+                        sort: data.experience.length + 1,
+                      })
+                    }
+                    className="btn-dark-glow px-4 py-2 text-white text-[13px] font-medium cursor-pointer"
+                  >
+                    + Tambah Karir
+                  </button>
+                </div>
+
+                {/* Experience List */}
+                <div className="flex flex-col gap-3">
+                  {data.experience.map((exp, idx) => (
+                    <div
+                      key={exp.id || idx}
+                      className="bg-white border border-[#e5e5e7] p-5 flex flex-col md:flex-row items-start justify-between gap-4 hover:border-[#b3b3b3] transition-colors"
+                    >
+                      <div className="flex flex-col md:w-[240px] shrink-0">
+                        <h4 className="font-medium text-[15px] text-[#171717]">
+                          {exp.role}
+                        </h4>
+                        <span className="text-[13px] text-[#737373]">{exp.company}</span>
+                        <span className="text-[12px] text-[#a3a3a3] mt-1">{exp.period}</span>
+                      </div>
+
+                      <p className="text-[13px] text-[#525252] leading-relaxed flex-1">
+                        {exp.description}
+                      </p>
+
+                      <div className="flex items-center gap-2 shrink-0 self-end md:self-center">
+                        <button
+                          onClick={() => setEditingExp(exp)}
+                          className="px-3.5 py-1.5 bg-[#f5f5f7] border border-[#e5e5e7] text-[12px] font-medium text-[#333] hover:bg-black hover:text-white cursor-pointer transition-colors"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDeleteExperience(exp.id)}
+                          className="px-3.5 py-1.5 bg-white border border-[#e5e5e7] text-[12px] font-medium text-red-600 hover:bg-red-50 cursor-pointer transition-colors"
+                        >
+                          Hapus
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )
           )}
 
           {/* TAB 5: TESTIMONIALS */}
           {activeTab === 'testimonials' && (
-            <div className="flex flex-col gap-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="font-serif font-normal text-[28px] text-[#171717]">
-                    Client Testimonials
-                  </h2>
-                  <p className="text-[13px] text-[#737373]">
-                    Review dan feedback dari klien di halaman About.
-                  </p>
-                </div>
-                <button
-                  onClick={() =>
-                    setEditingTestimonial({
-                      id: `test-${Date.now()}`,
-                      name: '',
-                      role: '',
-                      content: '',
-                      rating: 5,
-                      sort: data.testimonials.length + 1,
-                    })
-                  }
-                  className="btn-dark-glow px-4 py-2 text-white text-[13px] font-medium"
-                >
-                  + Tambah Review
-                </button>
-              </div>
+            editingTestimonial ? (
+              <div className="w-full flex flex-col gap-6 font-sans animate-fade-in">
+                {/* Header with back button */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-[#e5e5e7]">
+                  <div className="flex flex-col gap-1">
+                    <button
+                      type="button"
+                      onClick={() => setEditingTestimonial(null)}
+                      className="text-[12.5px] text-[#737373] hover:text-black flex items-center gap-1.5 transition-colors cursor-pointer w-fit mb-1 font-medium group"
+                    >
+                      <span className="group-hover:-translate-x-0.5 transition-transform">←</span>
+                      <span>Kembali ke Daftar Testimonials</span>
+                    </button>
+                    <h2 className="font-serif font-normal text-[30px] text-[#171717] tracking-tight">
+                      {editingTestimonial.name ? `Edit: ${editingTestimonial.name}` : 'Tambah Testimonial Baru'}
+                    </h2>
+                    <p className="text-[13px] text-[#737373]">
+                      Review dan feedback dari klien yang tampil di halaman About.
+                    </p>
+                  </div>
 
-              {/* Testimonials List */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {data.testimonials.map((test, idx) => (
-                  <div
-                    key={test.id || idx}
-                    className="bg-white border border-[#e5e5e7] p-5 flex flex-col justify-between gap-4"
+                  <div className="flex items-center gap-2.5 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => setEditingTestimonial(null)}
+                      className="px-4 py-2 bg-white border border-[#e5e5e7] hover:border-black text-[13px] text-[#555] hover:text-black transition-colors cursor-pointer rounded-none"
+                    >
+                      Batal
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleSaveTestimonial(editingTestimonial)}
+                      className="btn-dark-glow px-6 py-2 rounded-none text-white text-[13px] font-medium cursor-pointer"
+                    >
+                      Simpan ke Neon DB
+                    </button>
+                  </div>
+                </div>
+
+                {/* Form Card */}
+                <div className="bg-white border border-[#e5e5e7] p-6 sm:p-8 flex flex-col gap-6 w-full shadow-sm">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div className="flex flex-col">
+                      <label className="text-[11px] font-medium uppercase tracking-[0.5px] text-[#737373] mb-1.5">
+                        Nama Klien *
+                      </label>
+                      <input
+                        type="text"
+                        value={editingTestimonial.name}
+                        onChange={(e) => setEditingTestimonial({ ...editingTestimonial, name: e.target.value })}
+                        placeholder="Contoh: Sarah Jenkins"
+                        className="bg-[#f8f8fa] border border-[#e5e5e7] px-3.5 py-2.5 text-[13.5px] text-[#171717] focus:outline-none focus:border-black rounded-none"
+                      />
+                    </div>
+
+                    <div className="flex flex-col">
+                      <label className="text-[11px] font-medium uppercase tracking-[0.5px] text-[#737373] mb-1.5">
+                        Role / Jabatan Klien *
+                      </label>
+                      <input
+                        type="text"
+                        value={editingTestimonial.role}
+                        onChange={(e) => setEditingTestimonial({ ...editingTestimonial, role: e.target.value })}
+                        placeholder="Contoh: VP of Product, FinTech Corp"
+                        className="bg-[#f8f8fa] border border-[#e5e5e7] px-3.5 py-2.5 text-[13.5px] text-[#171717] focus:outline-none focus:border-black rounded-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label className="text-[11px] font-medium uppercase tracking-[0.5px] text-[#737373] mb-1.5">
+                      Rating Bintang
+                    </label>
+                    <select
+                      value={editingTestimonial.rating || 5}
+                      onChange={(e) => setEditingTestimonial({ ...editingTestimonial, rating: Number(e.target.value) })}
+                      className="bg-[#f8f8fa] border border-[#e5e5e7] px-3.5 py-2.5 text-[13.5px] text-[#171717] focus:outline-none focus:border-black rounded-none"
+                    >
+                      <option value={5}>★★★★★ (5 Bintang)</option>
+                      <option value={4}>★★★★☆ (4 Bintang)</option>
+                      <option value={3}>★★★☆☆ (3 Bintang)</option>
+                    </select>
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label className="text-[11px] font-medium uppercase tracking-[0.5px] text-[#737373] mb-1.5">
+                      Isi Testimonial / Review
+                    </label>
+                    <textarea
+                      rows={5}
+                      value={editingTestimonial.content}
+                      onChange={(e) => setEditingTestimonial({ ...editingTestimonial, content: e.target.value })}
+                      placeholder="Tulis ulasan klien di sini..."
+                      className="bg-[#f8f8fa] border border-[#e5e5e7] px-3.5 py-2.5 text-[13.5px] text-[#171717] focus:outline-none focus:border-black rounded-none resize-none leading-relaxed"
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between pt-6 border-t border-[#eeeeee]">
+                    <button
+                      type="button"
+                      onClick={() => setEditingTestimonial(null)}
+                      className="px-4 py-2 text-[13px] text-[#737373] hover:text-black transition-colors cursor-pointer"
+                    >
+                      ← Batal & Kembali
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleSaveTestimonial(editingTestimonial)}
+                      className="btn-dark-glow px-7 py-2.5 rounded-none text-white text-[13.5px] font-medium cursor-pointer"
+                    >
+                      Simpan Testimonial ke Neon DB →
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-6 animate-fade-in">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="font-serif font-normal text-[28px] text-[#171717]">
+                      Client Testimonials
+                    </h2>
+                    <p className="text-[13px] text-[#737373]">
+                      Review dan feedback dari klien di halaman About.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() =>
+                      setEditingTestimonial({
+                        id: `test-${Date.now()}`,
+                        name: '',
+                        role: '',
+                        content: '',
+                        rating: 5,
+                        sort: data.testimonials.length + 1,
+                      })
+                    }
+                    className="btn-dark-glow px-4 py-2 text-white text-[13px] font-medium cursor-pointer"
                   >
-                    <div>
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h4 className="font-medium text-[15px] text-[#171717]">{test.name}</h4>
-                          <p className="text-[12px] text-[#737373]">{test.role}</p>
+                    + Tambah Review
+                  </button>
+                </div>
+
+                {/* Testimonials List */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {data.testimonials.map((test, idx) => (
+                    <div
+                      key={test.id || idx}
+                      className="bg-white border border-[#e5e5e7] p-5 flex flex-col justify-between gap-4"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h4 className="font-medium text-[15px] text-[#171717]">{test.name}</h4>
+                            <p className="text-[12px] text-[#737373]">{test.role}</p>
+                          </div>
+                          <span className="text-[#171717] text-[13px] tracking-wider font-mono">
+                            {'★'.repeat(test.rating || 5)}
+                          </span>
                         </div>
-                        <span className="text-[#171717] text-[13px] tracking-wider font-mono">
-                          {'★'.repeat(test.rating || 5)}
-                        </span>
+                        <p className="text-[13px] text-[#525252] leading-relaxed mt-3 italic">
+                          "{test.content}"
+                        </p>
                       </div>
-                      <p className="text-[13px] text-[#525252] leading-relaxed mt-3 italic">
-                        "{test.content}"
-                      </p>
-                    </div>
 
-                    <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#f0f0f2]">
-                      <button
-                        onClick={() => setEditingTestimonial(test)}
-                        className="px-3 py-1 bg-[#f5f5f7] border border-[#e5e5e7] text-[12px] text-[#333] hover:bg-black hover:text-white"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDeleteTestimonial(test.id)}
-                        className="px-3 py-1 bg-white border border-[#e5e5e7] text-[12px] text-red-600 hover:bg-red-50"
-                      >
-                        Hapus
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Edit Modal */}
-              {editingTestimonial && (
-                <div
-                  onClick={() => setEditingTestimonial(null)}
-                  className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
-                  role="dialog"
-                  aria-modal="true"
-                >
-                  <div
-                    onClick={(e) => e.stopPropagation()}
-                    className="bg-white border border-[#e5e5e7] w-full max-w-[500px] p-6 flex flex-col gap-4 shadow-2xl relative my-auto"
-                  >
-                    <h3 className="font-serif text-[22px] text-[#171717]">
-                      {editingTestimonial.name ? 'Edit Testimonial' : 'Tambah Testimonial'}
-                    </h3>
-                    <div className="flex flex-col gap-3">
-                      <div>
-                        <label className="text-[11px] font-medium text-[#737373] uppercase">Nama Klien</label>
-                        <input
-                          type="text"
-                          value={editingTestimonial.name}
-                          onChange={(e) => setEditingTestimonial({ ...editingTestimonial, name: e.target.value })}
-                          className="w-full bg-[#f8f8fa] border border-[#e5e5e7] px-3 py-1.5 text-[13px]"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[11px] font-medium text-[#737373] uppercase">Role / Jabatan Klien</label>
-                        <input
-                          type="text"
-                          value={editingTestimonial.role}
-                          onChange={(e) => setEditingTestimonial({ ...editingTestimonial, role: e.target.value })}
-                          className="w-full bg-[#f8f8fa] border border-[#e5e5e7] px-3 py-1.5 text-[13px]"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[11px] font-medium text-[#737373] uppercase">Rating Bintang</label>
-                        <select
-                          value={editingTestimonial.rating || 5}
-                          onChange={(e) => setEditingTestimonial({ ...editingTestimonial, rating: Number(e.target.value) })}
-                          className="w-full bg-[#f8f8fa] border border-[#e5e5e7] px-3 py-1.5 text-[13px]"
+                      <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#f0f0f2]">
+                        <button
+                          onClick={() => setEditingTestimonial(test)}
+                          className="px-3.5 py-1.5 bg-[#f5f5f7] border border-[#e5e5e7] text-[12px] font-medium text-[#333] hover:bg-black hover:text-white cursor-pointer transition-colors"
                         >
-                          <option value={5}>★★★★★ (5 Stars)</option>
-                          <option value={4}>★★★★☆ (4 Stars)</option>
-                          <option value={3}>★★★☆☆ (3 Stars)</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="text-[11px] font-medium text-[#737373] uppercase">Isi Testimonial</label>
-                        <textarea
-                          rows={3}
-                          value={editingTestimonial.content}
-                          onChange={(e) => setEditingTestimonial({ ...editingTestimonial, content: e.target.value })}
-                          className="w-full bg-[#f8f8fa] border border-[#e5e5e7] px-3 py-2 text-[13px] resize-none"
-                        />
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDeleteTestimonial(test.id)}
+                          className="px-3.5 py-1.5 bg-white border border-[#e5e5e7] text-[12px] font-medium text-red-600 hover:bg-red-50 cursor-pointer transition-colors"
+                        >
+                          Hapus
+                        </button>
                       </div>
                     </div>
-                    <div className="flex justify-end gap-2 pt-3 border-t border-[#eee]">
-                      <button
-                        onClick={() => setEditingTestimonial(null)}
-                        className="px-4 py-1.5 text-[12px] border border-[#e5e5e7]"
-                      >
-                        Batal
-                      </button>
-                      <button
-                        onClick={() => handleSaveTestimonial(editingTestimonial)}
-                        className="btn-dark-glow px-5 py-1.5 text-[12px] text-white"
-                      >
-                        Simpan ke Neon
-                      </button>
-                    </div>
-                  </div>
+                  ))}
                 </div>
-              )}
-            </div>
+              </div>
+            )
           )}
 
           {/* TAB 6: CLOUDINARY CONFIGURATION */}
