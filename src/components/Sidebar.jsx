@@ -135,17 +135,6 @@ export default function Sidebar({ portfolio, activeTab, setActiveTab, onDownload
           </button>
         </div>
 
-        {/* CMS Admin Portal Link */}
-        <div className="flex justify-center pt-2">
-          <button
-            onClick={() => setActiveTab('cms')}
-            className="w-full py-2 px-3 border border-dashed border-[#dcdcdc] hover:border-black text-[12px] font-sans text-[#737373] hover:text-black tracking-normal transition-all flex items-center justify-center gap-1.5 cursor-pointer bg-[#fafafa] hover:bg-white rounded-none"
-            title="Buka CMS Admin Portal"
-          >
-            <span>⚙️</span>
-            <span className="font-medium">CMS Admin Portal</span>
-          </button>
-        </div>
       </div>
     </aside>
   );

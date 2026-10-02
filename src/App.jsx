@@ -169,6 +169,9 @@ export default function App() {
         onExitCms={() => {
           sessionStorage.removeItem('cms_auth_token');
           setIsCmsAuth(false);
+          if (window.location.pathname.includes('admin') || window.location.pathname.includes('cms')) {
+            window.history.pushState(null, '', window.location.pathname.replace(/\/admin\/?|\/cms\/?/i, '/') || '/');
+          }
           changeTab('work');
         }}
       />

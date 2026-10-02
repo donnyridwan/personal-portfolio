@@ -110,6 +110,9 @@ export default function CmsLogin({ onLoginSuccess, onCancel }) {
         <button
           type="button"
           onClick={() => {
+            if (window.location.pathname.includes('admin') || window.location.pathname.includes('cms')) {
+              window.history.pushState(null, '', window.location.pathname.replace(/\/admin\/?|\/cms\/?/i, '/') || '/');
+            }
             if (onCancel) onCancel();
             else window.location.hash = 'work';
           }}
