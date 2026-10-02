@@ -26,8 +26,8 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
     setTimeout(() => setToast(null), 3500);
   };
 
-  // Deactivate background scrolling whenever any popup is open
-  const isAnyModalOpen = Boolean(isAddingProject || editingProject || editingExp || editingTestimonial);
+  // Deactivate background scrolling whenever any actual popup modal is open
+  const isAnyModalOpen = Boolean(editingExp || editingTestimonial);
 
   useEffect(() => {
     if (isAnyModalOpen) {
@@ -373,92 +373,109 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
         <main className="flex-1 p-6 lg:p-8 w-full min-w-0">
           {/* TAB 1: PROJECTS */}
           {activeTab === 'projects' && (
-            <div className="flex flex-col gap-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="font-serif font-normal text-[28px] text-[#171717]">
-                    Project Portfolio
-                  </h2>
-                  <p className="text-[13px] text-[#737373]">
-                    Kelola karya desain dan case study yang tampil di halaman Work.
-                  </p>
-                </div>
-                <button
-                  onClick={() => setIsAddingProject(true)}
-                  className="btn-dark-glow px-4 py-2 text-white text-[13px] font-medium flex items-center gap-1.5"
-                >
-                  <span>+ Tambah Project</span>
-                </button>
-              </div>
-
-              {/* Projects Grid Table */}
-              <div className="grid grid-cols-1 gap-4">
-                {data.projects.map((project, idx) => (
-                  <div
-                    key={project.id || idx}
-                    className="bg-white border border-[#e5e5e7] p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all hover:border-[#b3b3b3]"
-                  >
-                    <div className="flex items-center gap-4">
-                      {/* Thumbnail */}
-                      <div className="w-20 h-16 bg-[#e7eef0] shrink-0 border border-[#e5e5e7] overflow-hidden flex items-center justify-center">
-                        {project.video ? (
-                          <span className="text-[11px] font-mono font-medium text-[#555]">
-                            ▶ Video
-                          </span>
-                        ) : project.image ? (
-                          <img
-                            src={project.image}
-                            alt=""
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <span className="text-[11px] text-[#999]">No Media</span>
-                        )}
-                      </div>
-
-                      <div className="flex flex-col">
-                        <div className="flex items-center gap-2">
-                          <h4 className="font-medium text-[15px] text-[#171717]">
-                            {project.title}
-                          </h4>
-                          <span className="text-[11px] bg-[#f0f0f2] text-[#666] px-2 py-0.5">
-                            {project.span === 'tall' ? 'Tall (605px)' : 'Short (365px)'}
-                          </span>
-                        </div>
-                        <p className="text-[12.5px] text-[#737373] mt-0.5">
-                          {project.category} • {project.year}
-                        </p>
-                        <div className="flex flex-wrap gap-1 mt-1.5">
-                          {project.tools?.slice(0, 3).map((t, ti) => (
-                            <span
-                              key={ti}
-                              className="text-[10.5px] text-[#888] bg-[#f7f7f8] px-1.5 py-0.5 border border-[#ececee]"
-                            >
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 self-end sm:self-center">
-                      <button
-                        onClick={() => setEditingProject(project)}
-                        className="px-3 py-1.5 bg-[#f5f5f7] border border-[#e5e5e7] text-[12px] font-medium text-[#333] hover:bg-black hover:text-white transition-colors"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDeleteProject(project.id)}
-                        className="px-3 py-1.5 bg-white border border-[#e5e5e7] text-[12px] font-medium text-red-600 hover:bg-red-50 transition-colors"
-                      >
-                        Hapus
-                      </button>
-                    </div>
+            isAddingProject || editingProject ? (
+              <ProjectEditor
+                project={editingProject}
+                onSave={handleSaveProject}
+                onCancel={() => {
+                  setIsAddingProject(false);
+                  setEditingProject(null);
+                }}
+              />
+            ) : (
+              <div className="flex flex-col gap-6 animate-fade-in">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="font-serif font-normal text-[28px] text-[#171717]">
+                      Project Portfolio
+                    </h2>
+                    <p className="text-[13px] text-[#737373]">
+                      Kelola karya desain dan case study yang tampil di halaman Work.
+                    </p>
                   </div>
-                ))}
+                  <button
+                    onClick={() => {
+                      setEditingProject(null);
+                      setIsAddingProject(true);
+                    }}
+                    className="btn-dark-glow px-4 py-2 text-white text-[13px] font-medium flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span>+ Tambah Project</span>
+                  </button>
+                </div>
+
+                {/* Projects Grid Table */}
+                <div className="grid grid-cols-1 gap-4">
+                  {data.projects.map((project, idx) => (
+                    <div
+                      key={project.id || idx}
+                      className="bg-white border border-[#e5e5e7] p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all hover:border-[#b3b3b3]"
+                    >
+                      <div className="flex items-center gap-4">
+                        {/* Thumbnail */}
+                        <div className="w-20 h-16 bg-[#e7eef0] shrink-0 border border-[#e5e5e7] overflow-hidden flex items-center justify-center">
+                          {project.video ? (
+                            <span className="text-[11px] font-mono font-medium text-[#555]">
+                              ▶ Video
+                            </span>
+                          ) : project.image ? (
+                            <img
+                              src={project.image}
+                              alt=""
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <span className="text-[11px] text-[#999]">No Media</span>
+                          )}
+                        </div>
+
+                        <div className="flex flex-col">
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-medium text-[15px] text-[#171717]">
+                              {project.title}
+                            </h4>
+                            <span className="text-[11px] bg-[#f0f0f2] text-[#666] px-2 py-0.5">
+                              {project.span === 'tall' ? 'Tall (605px)' : 'Short (365px)'}
+                            </span>
+                          </div>
+                          <p className="text-[12.5px] text-[#737373] mt-0.5">
+                            {project.category} • {project.year}
+                          </p>
+                          <div className="flex flex-wrap gap-1 mt-1.5">
+                            {project.tools?.slice(0, 3).map((t, ti) => (
+                              <span
+                                key={ti}
+                                className="text-[10.5px] text-[#888] bg-[#f7f7f8] px-1.5 py-0.5 border border-[#ececee]"
+                              >
+                                {t}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 self-end sm:self-center">
+                        <button
+                          onClick={() => {
+                            setIsAddingProject(false);
+                            setEditingProject(project);
+                          }}
+                          className="px-3 py-1.5 bg-[#f5f5f7] border border-[#e5e5e7] text-[12px] font-medium text-[#333] hover:bg-black hover:text-white transition-colors cursor-pointer"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDeleteProject(project.id)}
+                          className="px-3 py-1.5 bg-white border border-[#e5e5e7] text-[12px] font-medium text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                        >
+                          Hapus
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )
           )}
 
           {/* TAB 2: PROFILE & BIO */}
@@ -1124,17 +1141,6 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
         </main>
       </div>
 
-      {/* Project Editor Modal */}
-      {(isAddingProject || editingProject) && (
-        <ProjectEditor
-          project={editingProject}
-          onSave={handleSaveProject}
-          onCancel={() => {
-            setIsAddingProject(false);
-            setEditingProject(null);
-          }}
-        />
-      )}
 
       {/* Floating Toast Notification */}
       {toast && (
