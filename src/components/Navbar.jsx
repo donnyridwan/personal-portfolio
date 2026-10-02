@@ -17,8 +17,17 @@ export default function Navbar({ onBookCall, onOpenMobileMenu, isMobileMenuOpen,
         </button>
       </div>
 
-      {/* Right Slot: Book Call Button & Mobile Menu Toggle */}
-      <div className="flex items-center gap-3">
+      {/* Right Slot: Admin button, Book Call Button & Mobile Menu Toggle */}
+      <div className="flex items-center gap-2.5 sm:gap-3">
+        <button
+          onClick={() => setActiveTab('cms')}
+          className="h-[36px] px-3 border border-[#e5e5e7] hover:border-black text-[#525252] hover:text-black rounded-none flex items-center gap-1.5 transition-colors cursor-pointer text-[12.5px] font-sans font-medium"
+          title="Buka CMS Admin Portal"
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+          <span>Admin</span>
+        </button>
+
         <button
           onClick={onBookCall}
           className="btn-dark-glow h-[36px] px-[12px] py-[8px] rounded-none flex items-center justify-center gap-2 group cursor-pointer"

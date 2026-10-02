@@ -15,14 +15,27 @@ import { portfolioData } from './data/portfolioData';
 import { fetchPortfolioFromNeon } from './lib/neon';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState(() => {
-    const hash = window.location.hash.replace('#', '');
-    if (['work', 'about', 'contact', 'chat', 'cms'].includes(hash)) return hash;
+  const getInitialTab = () => {
+    if (typeof window === 'undefined') return 'work';
+    const path = window.location.pathname.toLowerCase();
+    if (path.includes('/admin') || path.includes('/cms')) return 'cms';
+
+    const hash = window.location.hash.replace('#', '').toLowerCase();
+    if (['cms', 'admin'].includes(hash)) return 'cms';
+    if (['work', 'about', 'contact', 'chat'].includes(hash)) return hash;
+
     const params = new URLSearchParams(window.location.search);
-    const tab = params.get('tab');
-    if (['work', 'about', 'contact', 'chat', 'cms'].includes(tab)) return tab;
+    const tab = (params.get('tab') || '').toLowerCase();
+    if (['cms', 'admin'].includes(tab)) return 'cms';
+    if (['work', 'about', 'contact', 'chat'].includes(tab)) return tab;
+
+    if (window.location.search.toLowerCase().includes('admin') || window.location.search.toLowerCase().includes('cms')) {
+      return 'cms';
+    }
     return 'work';
-  });
+  };
+
+  const [activeTab, setActiveTab] = useState(getInitialTab);
 
   const [previousTab, setPreviousTab] = useState('work');
   const [selectedProject, setSelectedProject] = useState(null);
@@ -78,16 +91,29 @@ export default function App() {
     };
   }, []);
 
-  // Listen to hash changes (e.g., #cms, #work, #about, #contact, #chat)
+  // Listen to hash and popstate changes (e.g., #cms, #admin, /admin, /cms, #work, #about)
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '');
-      if (['work', 'about', 'contact', 'chat', 'cms'].includes(hash)) {
+    const handleUrlChange = () => {
+      const path = window.location.pathname.toLowerCase();
+      if (path.includes('/admin') || path.includes('/cms')) {
+        setActiveTab('cms');
+        return;
+      }
+      const hash = window.location.hash.replace('#', '').toLowerCase();
+      if (hash === 'admin' || hash === 'cms') {
+        setActiveTab('cms');
+        return;
+      }
+      if (['work', 'about', 'contact', 'chat'].includes(hash)) {
         setActiveTab(hash);
       }
     };
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('hashchange', handleUrlChange);
+    window.addEventListener('popstate', handleUrlChange);
+    return () => {
+      window.removeEventListener('hashchange', handleUrlChange);
+      window.removeEventListener('popstate', handleUrlChange);
+    };
   }, []);
 
   const changeTab = (tab) => {
