@@ -28,7 +28,7 @@ export default function Sidebar({ activeTab, setActiveTab, onDownloadCV, onOpenC
         </div>
 
         {/* Divider */}
-        <div className="border-t border-[#f1eee9] w-full" />
+        <div className="border-t border-[#eeeeee] w-full" />
 
         {/* Navigation Sections */}
         <div className="flex flex-col">
@@ -83,7 +83,7 @@ export default function Sidebar({ activeTab, setActiveTab, onDownloadCV, onOpenC
             href={portfolioData.socials.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-1.5 rounded-none opacity-60 hover:opacity-100 hover:bg-[#f5f3ef] transition-all duration-300"
+            className="p-1.5 rounded-none opacity-60 hover:opacity-100 hover:bg-[#f2f2f4] transition-all duration-300"
             title="LinkedIn"
           >
             <img src="./assets/linkedin.svg" alt="LinkedIn" className="w-5 h-5" />
@@ -92,7 +92,7 @@ export default function Sidebar({ activeTab, setActiveTab, onDownloadCV, onOpenC
             href={portfolioData.socials.x}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-1.5 rounded-none opacity-60 hover:opacity-100 hover:bg-[#f5f3ef] transition-all duration-300"
+            className="p-1.5 rounded-none opacity-60 hover:opacity-100 hover:bg-[#f2f2f4] transition-all duration-300"
             title="X (Twitter)"
           >
             <img src="./assets/x.svg" alt="X" className="w-5 h-5" />
@@ -101,7 +101,7 @@ export default function Sidebar({ activeTab, setActiveTab, onDownloadCV, onOpenC
             href={portfolioData.socials.facebook}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-1.5 rounded-none opacity-60 hover:opacity-100 hover:bg-[#f5f3ef] transition-all duration-300"
+            className="p-1.5 rounded-none opacity-60 hover:opacity-100 hover:bg-[#f2f2f4] transition-all duration-300"
             title="Facebook"
           >
             <img src="./assets/facebook.svg" alt="Facebook" className="w-5 h-5" />
@@ -126,7 +126,7 @@ export default function Sidebar({ activeTab, setActiveTab, onDownloadCV, onOpenC
           
           <button
             onClick={() => setActiveTab('contact')}
-            className="w-[48px] h-[48px] bg-white border border-[#efefef] rounded-none flex items-center justify-center hover:bg-[#fbf9f6] transition-colors duration-300 cursor-pointer shadow-[0px_2px_4px_rgba(0,0,0,0.04)] shrink-0"
+            className="w-[48px] h-[48px] bg-white border border-[#efefef] rounded-none flex items-center justify-center hover:bg-[#f5f5f7] transition-colors duration-300 cursor-pointer shadow-[0px_2px_4px_rgba(0,0,0,0.04)] shrink-0"
             title="Contact & Schedule"
           >
             <img src="./assets/envelope.svg" alt="Email" className="w-5 h-5" />
