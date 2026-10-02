@@ -9,14 +9,18 @@ import ChatView from './components/ChatView';
 import AboutView from './components/AboutView';
 import ContactView from './components/ContactView';
 import ProjectModal from './components/ProjectModal';
+import CmsLogin from './components/cms/CmsLogin';
+import CmsDashboard from './components/cms/CmsDashboard';
+import { portfolioData } from './data/portfolioData';
+import { fetchPortfolioFromNeon } from './lib/neon';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState(() => {
     const hash = window.location.hash.replace('#', '');
-    if (['work', 'about', 'contact', 'chat'].includes(hash)) return hash;
+    if (['work', 'about', 'contact', 'chat', 'cms'].includes(hash)) return hash;
     const params = new URLSearchParams(window.location.search);
     const tab = params.get('tab');
-    if (['work', 'about', 'contact', 'chat'].includes(tab)) return tab;
+    if (['work', 'about', 'contact', 'chat', 'cms'].includes(tab)) return tab;
     return 'work';
   });
 
@@ -24,6 +28,10 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
+  const [livePortfolio, setLivePortfolio] = useState(portfolioData);
+  const [isCmsAuth, setIsCmsAuth] = useState(() => {
+    return typeof window !== 'undefined' && Boolean(sessionStorage.getItem('cms_auth_token'));
+  });
 
   // Initialize luxury weighted smooth scroll (Lenis)
   useEffect(() => {
@@ -49,6 +57,37 @@ export default function App() {
       cancelAnimationFrame(rafId);
       lenis.destroy();
     };
+  }, []);
+
+  // Sync live data from Neon Database on mount with graceful fallback
+  useEffect(() => {
+    let isMounted = true;
+    async function loadPortfolio() {
+      try {
+        const fresh = await fetchPortfolioFromNeon();
+        if (isMounted && fresh) {
+          setLivePortfolio(fresh);
+        }
+      } catch (err) {
+        console.warn('Neon DB sync notice: using default/cached portfolio data', err);
+      }
+    }
+    loadPortfolio();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // Listen to hash changes (e.g., #cms, #work, #about, #contact, #chat)
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (['work', 'about', 'contact', 'chat', 'cms'].includes(hash)) {
+        setActiveTab(hash);
+      }
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
   const changeTab = (tab) => {
@@ -87,6 +126,29 @@ export default function App() {
     changeTab('contact');
   };
 
+  // Dedicated full-screen CMS portal
+  if (activeTab === 'cms') {
+    if (!isCmsAuth) {
+      return (
+        <CmsLogin
+          onLoginSuccess={() => setIsCmsAuth(true)}
+          onCancel={() => changeTab('work')}
+        />
+      );
+    }
+    return (
+      <CmsDashboard
+        portfolio={livePortfolio}
+        onUpdatePortfolio={(updated) => setLivePortfolio(updated)}
+        onExitCms={() => {
+          sessionStorage.removeItem('cms_auth_token');
+          setIsCmsAuth(false);
+          changeTab('work');
+        }}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white text-[#1e1e1e] flex flex-col font-sans selection:bg-neutral-900 selection:text-white">
       {/* Navbar */}
@@ -103,6 +165,7 @@ export default function App() {
         {/* Sidebar */}
         <div className={`md:block ${isMobileMenuOpen ? 'block' : 'hidden'} z-20`}>
           <Sidebar
+            portfolio={livePortfolio}
             activeTab={activeTab}
             setActiveTab={(tab) => {
               changeTab(tab);
@@ -126,6 +189,7 @@ export default function App() {
                 className="w-full flex-1"
               >
                 <WorkGrid
+                  projects={livePortfolio.projects}
                   onSelectProject={(proj) => setSelectedProject(proj)}
                 />
               </motion.div>
@@ -157,6 +221,7 @@ export default function App() {
                 className="w-full flex-1"
               >
                 <AboutView
+                  portfolio={livePortfolio}
                   onBookCall={handleBookCall}
                   onOpenContact={() => changeTab('contact')}
                 />

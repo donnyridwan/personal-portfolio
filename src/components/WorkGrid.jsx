@@ -2,17 +2,12 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { portfolioData } from '../data/portfolioData';
 
-export default function WorkGrid({ onSelectProject }) {
-  const leftColumnProjects = [
-    portfolioData.projects[0], // 365px
-    portfolioData.projects[1], // 605px
-    portfolioData.projects[2], // 369px
-  ];
+export default function WorkGrid({ projects, onSelectProject }) {
+  const projectList = projects && projects.length > 0 ? projects : portfolioData.projects;
 
-  const rightColumnProjects = [
-    portfolioData.projects[3], // 605px
-    portfolioData.projects[4], // 369px
-  ];
+  // Split into 2 columns
+  const leftColumnProjects = projectList.filter((_, idx) => idx % 2 === 0);
+  const rightColumnProjects = projectList.filter((_, idx) => idx % 2 === 1);
 
   return (
     <div className="flex-1 relative pb-24 font-sans">
@@ -21,7 +16,16 @@ export default function WorkGrid({ onSelectProject }) {
         {/* Left Column */}
         <div className="flex flex-col gap-7">
           {leftColumnProjects.map((project, idx) => {
-            const containerHeight = idx === 0 ? 'h-[365px]' : idx === 1 ? 'h-[605px]' : 'h-[369px]';
+            const containerHeight =
+              project.span === 'tall'
+                ? 'h-[605px]'
+                : project.span === 'medium'
+                ? 'h-[460px]'
+                : idx === 0
+                ? 'h-[365px]'
+                : idx === 1
+                ? 'h-[605px]'
+                : 'h-[369px]';
             return (
               <ProjectCard
                 key={project.id}
@@ -37,7 +41,14 @@ export default function WorkGrid({ onSelectProject }) {
         {/* Right Column */}
         <div className="flex flex-col gap-7">
           {rightColumnProjects.map((project, idx) => {
-            const containerHeight = idx === 0 ? 'h-[605px]' : 'h-[369px]';
+            const containerHeight =
+              project.span === 'tall'
+                ? 'h-[605px]'
+                : project.span === 'short'
+                ? 'h-[369px]'
+                : idx === 0
+                ? 'h-[605px]'
+                : 'h-[369px]';
             return (
               <ProjectCard
                 key={project.id}
@@ -55,6 +66,9 @@ export default function WorkGrid({ onSelectProject }) {
 }
 
 function ProjectCard({ project, index, containerHeight, onSelect }) {
+  const videoSrc = project.video || project.video_url;
+  const isVideo = project.mediaType === 'video' || Boolean(videoSrc);
+
   return (
     <motion.article
       onClick={onSelect}
@@ -67,12 +81,32 @@ function ProjectCard({ project, index, containerHeight, onSelect }) {
       }}
       className="flex flex-col w-full group cursor-pointer"
     >
-      {/* Visual Canvas Container with radius 0 - static without elevation */}
+      {/* Visual Canvas Container with radius 0 */}
       <div
-        className={`w-full ${containerHeight} bg-[#e7eef0] rounded-none relative overflow-hidden`}
+        style={{ backgroundColor: project.accentColor || '#e7eef0' }}
+        className={`w-full ${containerHeight} rounded-none relative overflow-hidden`}
       >
-        <div className="w-full h-full flex flex-col justify-between p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] bg-black/[0.03]">
-          <span className="text-[12px] font-sans font-medium text-neutral-700 bg-white/90 px-3 py-1 rounded-none w-fit backdrop-blur-sm shadow-sm tracking-tight">
+        {/* Image or Video from Cloudinary / Database */}
+        {isVideo && videoSrc ? (
+          <video
+            src={videoSrc}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover absolute inset-0"
+          />
+        ) : project.image ? (
+          <img
+            src={project.image}
+            alt={project.title}
+            className="w-full h-full object-cover absolute inset-0"
+          />
+        ) : null}
+
+        {/* Hover Overlay */}
+        <div className="w-full h-full relative z-10 flex flex-col justify-between p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] bg-black/15">
+          <span className="text-[12px] font-sans font-medium text-neutral-800 bg-white/95 px-3 py-1 rounded-none w-fit backdrop-blur-sm shadow-sm tracking-tight">
             {project.category}
           </span>
           <span className="text-[12px] font-sans text-neutral-800 font-medium flex items-center gap-1.5 self-end bg-white/95 px-3.5 py-1.5 rounded-none shadow-sm transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0.5">
@@ -88,7 +122,7 @@ function ProjectCard({ project, index, containerHeight, onSelect }) {
             {project.title}
           </span>
         </h3>
-        <span className="text-[14px] font-normal leading-[21.7px] text-[#6b665e] shrink-0 font-light">
+        <span className="text-[14px] font-normal leading-[21.7px] text-[#737373] shrink-0 font-light">
           {project.year}
         </span>
       </div>

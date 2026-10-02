@@ -1,7 +1,8 @@
 import React from 'react';
 import { portfolioData } from '../data/portfolioData';
 
-export default function AboutView({ onBookCall, onOpenContact }) {
+export default function AboutView({ portfolio, onBookCall, onOpenContact }) {
+  const current = portfolio || portfolioData;
   return (
     <div className="flex-1 w-full pb-24 font-sans animate-fade-in">
       {/* 1. Hero Header */}
@@ -13,7 +14,7 @@ export default function AboutView({ onBookCall, onOpenContact }) {
           I design products people <br className="hidden sm:inline" /> can actually finish using.
         </h1>
         <p className="font-sans font-light text-[14px] sm:text-[15px] leading-[22px] tracking-[-0.3px] text-[#737373] max-w-xl mx-auto mt-4">
-          {portfolioData.bio}
+          {current.bio}
         </p>
         <div className="flex justify-center mt-7">
           <button
@@ -34,7 +35,7 @@ export default function AboutView({ onBookCall, onOpenContact }) {
 
       {/* 2. Testimonials (3 Cards) */}
       <section className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-4">
-        {portfolioData.testimonials.map((t, idx) => (
+        {current.testimonials.map((t, idx) => (
           <div
             key={idx}
             className="bg-[#f5f5f7] border border-[#e5e5e7] rounded-none p-6 sm:p-7 flex flex-col justify-between transition-colors duration-300 hover:border-[#b3b3b3]"
@@ -70,7 +71,7 @@ export default function AboutView({ onBookCall, onOpenContact }) {
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full mt-8">
-          {portfolioData.stats.map((stat, idx) => (
+          {current.stats.map((stat, idx) => (
             <div
               key={idx}
               className="bg-[#f5f5f7] border border-[#e5e5e7] rounded-none p-8 sm:p-12 text-center flex flex-col items-center justify-center transition-colors duration-300 hover:border-[#b3b3b3]"
@@ -102,7 +103,7 @@ export default function AboutView({ onBookCall, onOpenContact }) {
         </p>
 
         <div className="flex flex-col gap-4 w-full mt-8">
-          {portfolioData.experience.map((exp, idx) => (
+          {current.experience.map((exp, idx) => (
             <div
               key={idx}
               className="bg-[#f5f5f7] border border-[#e5e5e7] rounded-none p-6 sm:p-7 flex flex-col md:flex-row md:items-start justify-between gap-6 transition-colors duration-300 hover:border-[#b3b3b3]"
@@ -144,23 +145,23 @@ export default function AboutView({ onBookCall, onOpenContact }) {
               DIRECT CONTACT
             </span>
             <a
-              href={`tel:${portfolioData.phone.replace(/\s+/g, '')}`}
+              href={`tel:${current.phone.replace(/\s+/g, '')}`}
               className="font-sans font-normal text-[18px] sm:text-[20px] text-[#171717] hover:opacity-75 transition-opacity mt-1 tracking-tight"
             >
-              {portfolioData.phone}
+              {current.phone}
             </a>
             <a
-              href={`mailto:${portfolioData.email}`}
+              href={`mailto:${current.email}`}
               className="font-serif font-normal text-[26px] sm:text-[32px] text-[#171717] hover:underline underline-offset-4 decoration-1 transition-all mt-0.5 tracking-tight"
             >
-              {portfolioData.email}
+              {current.email}
             </a>
           </div>
 
           {/* Social and Contact Icons */}
           <div className="flex items-center justify-center gap-3 mt-7">
             <a
-              href={portfolioData.socials.linkedin}
+              href={current.socials.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               className="w-11 h-11 bg-white border border-[#e5e5e7] rounded-none flex items-center justify-center hover:bg-[#ededf0] transition-colors"
@@ -171,7 +172,7 @@ export default function AboutView({ onBookCall, onOpenContact }) {
               </svg>
             </a>
             <a
-              href={`mailto:${portfolioData.email}`}
+              href={`mailto:${current.email}`}
               className="w-11 h-11 bg-white border border-[#e5e5e7] rounded-none flex items-center justify-center hover:bg-[#ededf0] transition-colors"
               title="Send Email"
             >
@@ -181,7 +182,7 @@ export default function AboutView({ onBookCall, onOpenContact }) {
               </svg>
             </a>
             <a
-              href={`tel:${portfolioData.phone.replace(/\s+/g, '')}`}
+              href={`tel:${current.phone.replace(/\s+/g, '')}`}
               className="w-11 h-11 bg-white border border-[#e5e5e7] rounded-none flex items-center justify-center hover:bg-[#ededf0] transition-colors"
               title="Call Phone"
             >

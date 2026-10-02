@@ -38,12 +38,24 @@ export default function ProjectModal({ project, onClose, onBookCall }) {
             </h2>
           </div>
 
-          <div className="w-full h-[280px] rounded-none overflow-hidden bg-[#e7eef0] relative">
-            <img
-              src={project.image}
-              alt={project.title}
-              className="w-full h-full object-cover"
-            />
+          <div className="w-full h-[320px] rounded-none overflow-hidden bg-[#e7eef0] relative">
+            {project.mediaType === 'video' || project.video || project.video_url ? (
+              <video
+                src={project.video || project.video_url || project.image}
+                autoPlay
+                loop
+                muted
+                playsInline
+                controls
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full h-full object-cover"
+              />
+            )}
           </div>
 
           <div className="flex flex-col gap-4">
