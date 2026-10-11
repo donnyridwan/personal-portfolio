@@ -33,3 +33,19 @@ describe('projectPath', () => {
     expect(projectPath('harvasta')).toBe('/work/harvasta');
   });
 });
+
+describe('parseRoute edge cases', () => {
+  it('opens project slugs that start with admin or cms', () => {
+    expect(parseRoute('/work/admin-dashboard', '', '')).toEqual({ view: 'project', slug: 'admin-dashboard' });
+    expect(parseRoute('/work/cms-redesign', '', '')).toEqual({ view: 'project', slug: 'cms-redesign' });
+  });
+
+  it('still routes /cms/ and nested admin paths to the cms', () => {
+    expect(parseRoute('/cms/', '', '')).toEqual({ view: 'cms' });
+    expect(parseRoute('/admin/projects', '', '')).toEqual({ view: 'cms' });
+  });
+
+  it('does not throw on a malformed percent-encoded slug', () => {
+    expect(parseRoute('/work/%E0%A4%A', '', '')).toEqual({ view: 'project', slug: '%e0%a4%a' });
+  });
+});

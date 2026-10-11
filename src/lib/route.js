@@ -3,12 +3,21 @@
 const TABS = ['work', 'about', 'contact', 'chat'];
 const CMS_KEYS = ['cms', 'admin'];
 
-export function parseRoute(pathname, hash, search) {
-  const path = (pathname || '').toLowerCase();
-  if (path.includes('/admin') || path.includes('/cms')) return { view: 'cms' };
+function safeDecode(segment) {
+  try {
+    return decodeURIComponent(segment);
+  } catch {
+    return segment;
+  }
+}
 
+export function parseRoute(pathname, hash, search) {
+  // Project paths first, so slugs like "admin-dashboard" never fall through to the CMS rule
   const projectMatch = (pathname || '').match(/^\/work\/([^/]+)\/?$/);
-  if (projectMatch) return { view: 'project', slug: decodeURIComponent(projectMatch[1]).toLowerCase() };
+  if (projectMatch) return { view: 'project', slug: safeDecode(projectMatch[1]).toLowerCase() };
+
+  const path = (pathname || '').toLowerCase();
+  if (/(^|\/)(admin|cms)(\/|$)/.test(path)) return { view: 'cms' };
 
   const hashTab = (hash || '').replace('#', '').toLowerCase();
   if (CMS_KEYS.includes(hashTab)) return { view: 'cms' };
