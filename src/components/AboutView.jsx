@@ -33,29 +33,17 @@ export default function AboutView({ portfolio, onBookCall, onOpenContact }) {
         </div>
       </section>
 
-      {/* 2. Testimonials (3 Cards) */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 w-full mt-4">
-        {current.testimonials.map((t, idx) => (
-          <div
-            key={idx}
-            className="bg-[#f5f5f7] border border-[#e5e5e7] rounded-none p-6 sm:p-7 flex flex-col justify-between transition-colors duration-300 hover:border-[#b3b3b3]"
-          >
-            <div>
-              <h4 className="font-sans font-medium text-[15px] tracking-[-0.3px] text-[#171717]">
-                {t.name}
-              </h4>
-              <p className="font-sans font-light text-[12px] tracking-[-0.24px] text-[#737373] mt-0.5">
-                {t.role}
-              </p>
-              <div className="flex text-[#171717] text-[11px] gap-1 mt-3 tracking-widest">
-                {'★'.repeat(t.rating)}
-              </div>
-            </div>
-            <p className="font-sans font-light text-[13px] leading-[21px] tracking-[-0.2px] text-[#525252] mt-6">
-              "{t.content}"
-            </p>
+      {/* 2. Testimonials marquee */}
+      <section className="w-full mt-4" aria-label="Testimonials">
+        <div className="t-marquee" style={{ '--marquee-dur': `${Math.max(current.testimonials.length, 3) * 10}s` }}>
+          <div className="t-marquee-track">
+            {[0, 1].map((copy) =>
+              current.testimonials.map((t, idx) => (
+                <TestimonialCard key={`${copy}-${idx}`} t={t} isDuplicate={copy === 1} />
+              ))
+            )}
           </div>
-        ))}
+        </div>
       </section>
 
       {/* 3. The Proof ("Numbers that hold up.") */}
@@ -213,5 +201,24 @@ export default function AboutView({ portfolio, onBookCall, onOpenContact }) {
         </p>
       </section>
     </div>
+  );
+}
+
+function TestimonialCard({ t, isDuplicate }) {
+  return (
+    <article
+      // The second copy only exists for the seamless loop, so screen readers skip it
+      aria-hidden={isDuplicate || undefined}
+      className={`${isDuplicate ? 't-marquee-dup ' : ''}w-[280px] sm:w-[340px] shrink-0 mr-4 sm:mr-6 bg-[#f5f5f7] border border-[#e5e5e7] rounded-none p-6 sm:p-7 flex flex-col transition-colors duration-300 hover:border-[#b3b3b3]`}
+    >
+      <h4 className="font-sans font-medium text-[15px] tracking-[-0.3px] text-[#171717]">{t.name}</h4>
+      <p className="font-sans font-light text-[12px] tracking-[-0.24px] text-[#737373] mt-0.5">{t.role}</p>
+      <div role="img" className="flex text-[#171717] text-[11px] gap-1 mt-3 tracking-widest" aria-label={`${t.rating} dari 5 bintang`}>
+        {'★'.repeat(t.rating)}
+      </div>
+      <p className="font-sans font-light text-[13px] leading-[21px] tracking-[-0.2px] text-[#525252] mt-5">
+        "{t.content}"
+      </p>
+    </article>
   );
 }
