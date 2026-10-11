@@ -1,5 +1,7 @@
 import { neon } from '@neondatabase/serverless';
 import { portfolioData as defaultData } from '../data/portfolioData';
+import { slugify } from './slug';
+import { normalizeCaseStudy } from './blocks';
 
 const NEON_URL =
   import.meta.env.VITE_NEON_DATABASE_URL ||
@@ -48,7 +50,7 @@ export async function fetchPortfolioFromNeon() {
 
     // Fetch projects
     const pRows = await sql`
-      SELECT id, name, tagline, description, image_url, category, year, span, role, tools, accent_color, video_url, media_type, sort, published
+      SELECT id, name, tagline, description, image_url, category, year, span, role, tools, accent_color, video_url, media_type, sort, published, slug, case_study
       FROM projects
       ORDER BY sort ASC, created_at ASC;
     `;
@@ -66,6 +68,8 @@ export async function fetchPortfolioFromNeon() {
       video: p.video_url || '',
       mediaType: p.media_type || (p.video_url ? 'video' : 'image'),
       published: p.published !== false,
+      slug: p.slug || slugify(p.name),
+      caseStudy: normalizeCaseStudy(p.case_study),
     }));
 
     // Fetch experience
@@ -188,7 +192,7 @@ export async function saveToNeon(type, data) {
     const p = data;
     await sql`
       INSERT INTO projects (
-        id, name, tagline, description, image_url, category, year, span, role, tools, accent_color, video_url, media_type, sort, published
+        id, name, tagline, description, image_url, category, year, span, role, tools, accent_color, video_url, media_type, sort, published, slug, case_study
       )
       VALUES (
         ${p.id},
@@ -205,7 +209,9 @@ export async function saveToNeon(type, data) {
         ${p.video || ''},
         ${p.mediaType || 'image'},
         ${p.sort || 1},
-        ${p.published !== false}
+        ${p.published !== false},
+        ${p.slug || slugify(p.title)},
+        ${JSON.stringify(normalizeCaseStudy(p.caseStudy))}
       )
       ON CONFLICT (id) DO UPDATE SET
         name = EXCLUDED.name,
@@ -221,7 +227,9 @@ export async function saveToNeon(type, data) {
         video_url = EXCLUDED.video_url,
         media_type = EXCLUDED.media_type,
         sort = EXCLUDED.sort,
-        published = EXCLUDED.published
+        published = EXCLUDED.published,
+        slug = EXCLUDED.slug,
+        case_study = EXCLUDED.case_study
     `;
     return { success: true };
   }

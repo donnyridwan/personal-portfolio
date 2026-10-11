@@ -1,4 +1,6 @@
 import { neon } from '@neondatabase/serverless';
+import { slugify } from '../src/lib/slug.js';
+import { normalizeCaseStudy } from '../src/lib/blocks.js';
 
 function getDb() {
   const connectionString =
@@ -35,7 +37,7 @@ export default async function handler(req, res) {
 
       // 2. Fetch Projects
       const projectRows = await sql`
-        SELECT id, name, tagline, description, image_url, category, year, span, role, tools, accent_color, video_url, media_type, sort, published
+        SELECT id, name, tagline, description, image_url, category, year, span, role, tools, accent_color, video_url, media_type, sort, published, slug, case_study
         FROM projects
         ORDER BY sort ASC, created_at ASC;
       `;
@@ -54,6 +56,8 @@ export default async function handler(req, res) {
         video: p.video_url || '',
         mediaType: p.media_type || (p.video_url ? 'video' : 'image'),
         published: p.published !== false,
+        slug: p.slug || slugify(p.name),
+        caseStudy: normalizeCaseStudy(p.case_study),
       }));
 
       // 3. Fetch Experience
@@ -178,7 +182,7 @@ export default async function handler(req, res) {
         const p = data;
         await sql`
           INSERT INTO projects (
-            id, name, tagline, description, image_url, category, year, span, role, tools, accent_color, video_url, media_type, sort, published
+            id, name, tagline, description, image_url, category, year, span, role, tools, accent_color, video_url, media_type, sort, published, slug, case_study
           )
           VALUES (
             ${p.id},
@@ -195,7 +199,9 @@ export default async function handler(req, res) {
             ${p.video || ''},
             ${p.mediaType || 'image'},
             ${p.sort || 1},
-            ${p.published !== false}
+            ${p.published !== false},
+            ${p.slug || slugify(p.title)},
+            ${JSON.stringify(normalizeCaseStudy(p.caseStudy))}
           )
           ON CONFLICT (id) DO UPDATE SET
             name = EXCLUDED.name,
@@ -211,7 +217,9 @@ export default async function handler(req, res) {
             video_url = EXCLUDED.video_url,
             media_type = EXCLUDED.media_type,
             sort = EXCLUDED.sort,
-            published = EXCLUDED.published
+            published = EXCLUDED.published,
+            slug = EXCLUDED.slug,
+            case_study = EXCLUDED.case_study
         `;
         return res.status(200).json({ success: true, message: 'Project saved in Neon' });
       }

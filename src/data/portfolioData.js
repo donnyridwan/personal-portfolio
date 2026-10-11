@@ -38,6 +38,7 @@ export const portfolioData = {
   projects: [
     {
       id: "evalnow-1",
+      slug: "evalnow-education",
       title: "EvalNow: Educational UX for a multi-stakeholder platform",
       category: "EdTech & SaaS",
       year: "2025",
@@ -47,9 +48,68 @@ export const portfolioData = {
       tools: ["Figma", "Design System", "Prototyping", "User Research"],
       accentColor: "#d9e4e8",
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
+      caseStudy: {
+        client: "EvalNow",
+        summary: "One evaluation workspace for teachers, students and school admins.",
+        liveUrl: "",
+        blocks: [
+          {
+            id: "evalnow-1-challenge",
+            type: "text",
+            label: "01 — Challenge",
+            heading: "Three audiences, one cluttered tool",
+            body: "Teachers graded in spreadsheets, students waited days for feedback, and admins pieced reports together by hand. Each group needed something different from the same data.",
+          },
+          {
+            id: "evalnow-1-cover-detail",
+            type: "image",
+            url: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1600&q=80",
+            caption: "Teacher dashboard: grading queue and class progress at a glance.",
+          },
+          {
+            id: "evalnow-1-solution",
+            type: "text",
+            label: "02 — Solution",
+            heading: "Role-based views on a shared design system",
+            body: "We mapped every task per role, then built focused views on top of one component library: a grading queue for teachers, a feedback timeline for students and an overview for admins.",
+          },
+          {
+            id: "evalnow-1-gallery",
+            type: "gallery",
+            columns: 2,
+            images: [
+              { url: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80", caption: "Component library" },
+              { url: "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?auto=format&fit=crop&w=1200&q=80", caption: "Student feedback on mobile" },
+            ],
+          },
+          {
+            id: "evalnow-1-outcome",
+            type: "text",
+            label: "03 — Outcome",
+            heading: "Feedback in hours, not days",
+            body: "After launch, teachers cleared their grading queue faster and students opened feedback the same day it was posted.",
+          },
+          {
+            id: "evalnow-1-metrics",
+            type: "metrics",
+            items: [
+              { value: "48%", label: "Faster grading" },
+              { value: "3×", label: "More weekly active teachers" },
+            ],
+          },
+          {
+            id: "evalnow-1-quote",
+            type: "quote",
+            text: "Donny turned a messy, three-sided workflow into something our teachers actually enjoy using.",
+            name: "Selena Ramos",
+            role: "Product Lead, EdTech",
+          },
+        ],
+      },
     },
     {
       id: "evalnow-2",
+      slug: "evalnow-analytics",
       title: "EvalNow: Enterprise Analytics & Growth Dashboard",
       category: "Analytics / FinTech",
       year: "2025",
@@ -62,6 +122,7 @@ export const portfolioData = {
     },
     {
       id: "evalnow-3",
+      slug: "evalnow-design-system",
       title: "EvalNow: Multi-Platform Design System & Token Architecture",
       category: "Design System",
       year: "2025",
@@ -74,6 +135,7 @@ export const portfolioData = {
     },
     {
       id: "evalnow-4",
+      slug: "evalnow-mobile-onboarding",
       title: "EvalNow: Mobile Onboarding & Retention Funnel",
       category: "Mobile App (iOS/Android)",
       year: "2025",
@@ -86,6 +148,7 @@ export const portfolioData = {
     },
     {
       id: "evalnow-5",
+      slug: "evalnow-workflow",
       title: "EvalNow: Workflow Automation & Team Collaboration Suite",
       category: "SaaS Workflow",
       year: "2025",
