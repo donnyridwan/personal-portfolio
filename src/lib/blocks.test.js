@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { BLOCK_TYPES, createBlock, duplicateBlock, normalizeBlock, isRenderable, normalizeCaseStudy } from './blocks';
+import { BLOCK_TYPES, createBlock, duplicateBlock, normalizeBlock, isRenderable, normalizeCaseStudy, patchBlock } from './blocks';
 
 describe('BLOCK_TYPES', () => {
   it('lists the six block types in order', () => {
@@ -106,5 +106,30 @@ describe('duplicateBlock', () => {
     const copy = duplicateBlock(original);
     copy.images[0].caption = 'changed';
     expect(original.images[0].caption).toBe('');
+  });
+});
+
+describe('patchBlock', () => {
+  const blocks = [
+    { id: 'a', type: 'text', label: '', heading: 'A', body: '' },
+    { id: 'g', type: 'gallery', columns: 2, images: [{ url: 'one', caption: '' }, { url: '', caption: '' }] },
+  ];
+
+  it('merges an object patch into the matching block only', () => {
+    const next = patchBlock(blocks, 'a', { heading: 'Changed' });
+    expect(next[0].heading).toBe('Changed');
+    expect(next[1]).toBe(blocks[1]);
+  });
+
+  it('computes a function patch from the current block, so late uploads keep earlier edits', () => {
+    // An upload that started before image 0 was set must not wipe it when it lands on image 1
+    const latest = patchBlock(blocks, 'g', (cur) => ({
+      images: cur.images.map((img, i) => (i === 1 ? { ...img, url: 'two' } : img)),
+    }));
+    expect(latest[1].images.map((i) => i.url)).toEqual(['one', 'two']);
+  });
+
+  it('returns the list unchanged when the block was deleted meanwhile', () => {
+    expect(patchBlock(blocks, 'missing', { heading: 'x' })).toEqual(blocks);
   });
 });

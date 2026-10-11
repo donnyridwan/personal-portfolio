@@ -14,7 +14,7 @@ import {
   Type,
   Video,
 } from 'lucide-react';
-import { BLOCK_TYPES, createBlock, duplicateBlock } from '../../lib/blocks';
+import { BLOCK_TYPES, createBlock, duplicateBlock, patchBlock } from '../../lib/blocks';
 import TextBlockEditor from './blocks/TextBlockEditor';
 import ImageBlockEditor from './blocks/ImageBlockEditor';
 import GalleryBlockEditor from './blocks/GalleryBlockEditor';
@@ -36,6 +36,8 @@ const EDITORS = {
 
 const LABELS = Object.fromEntries(BLOCK_TYPES.map((b) => [b.type, b.label]));
 
+// onChange receives an updater (blocks) => blocks so every change applies to the latest state;
+// uploads finish asynchronously and must not overwrite edits made in the meantime.
 export default function BlockEditor({ blocks, onChange }) {
   // 'closed' | 'open' | 'closing' — drives the transitions.dev menu-dropdown classes
   const [menuState, setMenuState] = useState('closed');
@@ -53,25 +55,37 @@ export default function BlockEditor({ blocks, onChange }) {
     closeTimer.current = setTimeout(() => setMenuState('closed'), 150);
   };
 
-  const updateBlock = (id, patch) => onChange(blocks.map((b) => (b.id === id ? { ...b, ...patch } : b)));
+  const updateBlock = (id, patch) => onChange((current) => patchBlock(current, id, patch));
 
-  const moveBlock = (idx, delta) => {
-    const target = idx + delta;
-    if (target < 0 || target >= blocks.length) return;
-    const next = [...blocks];
-    [next[idx], next[target]] = [next[target], next[idx]];
-    onChange(next);
-  };
+  const moveBlock = (id, delta) =>
+    onChange((current) => {
+      const idx = current.findIndex((b) => b.id === id);
+      const target = idx + delta;
+      if (idx === -1 || target < 0 || target >= current.length) return current;
+      const next = [...current];
+      [next[idx], next[target]] = [next[target], next[idx]];
+      return next;
+    });
 
-  const duplicateAt = (idx) => onChange([...blocks.slice(0, idx + 1), duplicateBlock(blocks[idx]), ...blocks.slice(idx + 1)]);
+  const duplicateBlockById = (id) =>
+    onChange((current) => {
+      const idx = current.findIndex((b) => b.id === id);
+      if (idx === -1) return current;
+      return [...current.slice(0, idx + 1), duplicateBlock(current[idx]), ...current.slice(idx + 1)];
+    });
 
-  const removeAt = (idx) => {
+  const removeBlock = (id) => {
     if (!confirm('Hapus block ini?')) return;
-    onChange(blocks.filter((_, i) => i !== idx));
+    onChange((current) => current.filter((b) => b.id !== id));
   };
+
+  // Reorder hands back the rendered objects; map them to the latest versions by id
+  const reorder = (order) =>
+    onChange((current) => order.map((o) => current.find((b) => b.id === o.id)).filter(Boolean));
 
   const addBlock = (type) => {
-    onChange([...blocks, createBlock(type)]);
+    const block = createBlock(type);
+    onChange((current) => [...current, block]);
     closeMenu();
   };
 
@@ -83,7 +97,7 @@ export default function BlockEditor({ blocks, onChange }) {
         </p>
       )}
 
-      <Reorder.Group axis="y" values={blocks} onReorder={onChange} className="flex flex-col gap-4">
+      <Reorder.Group axis="y" values={blocks} onReorder={reorder} className="flex flex-col gap-4">
         {blocks.map((block, idx) => (
           <BlockCard
             key={block.id}
@@ -91,10 +105,10 @@ export default function BlockEditor({ blocks, onChange }) {
             isFirst={idx === 0}
             isLast={idx === blocks.length - 1}
             onChange={(patch) => updateBlock(block.id, patch)}
-            onMoveUp={() => moveBlock(idx, -1)}
-            onMoveDown={() => moveBlock(idx, 1)}
-            onDuplicate={() => duplicateAt(idx)}
-            onRemove={() => removeAt(idx)}
+            onMoveUp={() => moveBlock(block.id, -1)}
+            onMoveDown={() => moveBlock(block.id, 1)}
+            onDuplicate={() => duplicateBlockById(block.id)}
+            onRemove={() => removeBlock(block.id)}
           />
         ))}
       </Reorder.Group>

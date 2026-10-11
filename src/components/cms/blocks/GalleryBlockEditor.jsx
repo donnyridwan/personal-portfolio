@@ -4,8 +4,9 @@ import MediaUploader from '../MediaUploader';
 import { TextInput, labelClass } from './fields';
 
 export default function GalleryBlockEditor({ block, onChange }) {
+  // Function patches read the block's latest images, so an upload landing late keeps other edits
   const updateImage = (idx, patch) =>
-    onChange({ images: block.images.map((img, i) => (i === idx ? { ...img, ...patch } : img)) });
+    onChange((cur) => ({ images: cur.images.map((img, i) => (i === idx ? { ...img, ...patch } : img)) }));
 
   return (
     <div className="flex flex-col gap-4">
@@ -31,7 +32,7 @@ export default function GalleryBlockEditor({ block, onChange }) {
             <span className="text-[12px] font-medium text-[#171717]">Gambar {idx + 1}</span>
             <button
               type="button"
-              onClick={() => onChange({ images: block.images.filter((_, i) => i !== idx) })}
+              onClick={() => onChange((cur) => ({ images: cur.images.filter((_, i) => i !== idx) }))}
               className="p-1.5 text-[#999] hover:text-red-600 cursor-pointer"
               title="Hapus gambar"
             >
@@ -45,7 +46,7 @@ export default function GalleryBlockEditor({ block, onChange }) {
 
       <button
         type="button"
-        onClick={() => onChange({ images: [...block.images, { url: '', caption: '' }] })}
+        onClick={() => onChange((cur) => ({ images: [...cur.images, { url: '', caption: '' }] }))}
         className="self-start px-4 py-2 border border-dashed border-[#c9c9cc] text-[12.5px] text-[#555] hover:border-black hover:text-black cursor-pointer"
       >
         + Tambah gambar

@@ -6,7 +6,7 @@ const MAX_ITEMS = 4;
 
 export default function MetricsBlockEditor({ block, onChange }) {
   const updateItem = (idx, patch) =>
-    onChange({ items: block.items.map((item, i) => (i === idx ? { ...item, ...patch } : item)) });
+    onChange((cur) => ({ items: cur.items.map((item, i) => (i === idx ? { ...item, ...patch } : item)) }));
 
   return (
     <div className="flex flex-col gap-3">
@@ -17,7 +17,7 @@ export default function MetricsBlockEditor({ block, onChange }) {
           <button
             type="button"
             disabled={block.items.length <= 1}
-            onClick={() => onChange({ items: block.items.filter((_, i) => i !== idx) })}
+            onClick={() => onChange((cur) => ({ items: cur.items.filter((_, i) => i !== idx) }))}
             className="h-[38px] px-2 text-[#999] hover:text-red-600 disabled:opacity-30 disabled:hover:text-[#999] cursor-pointer disabled:cursor-not-allowed"
             title="Hapus angka"
           >
@@ -28,7 +28,7 @@ export default function MetricsBlockEditor({ block, onChange }) {
       {block.items.length < MAX_ITEMS && (
         <button
           type="button"
-          onClick={() => onChange({ items: [...block.items, { value: '', label: '' }] })}
+          onClick={() => onChange((cur) => ({ items: [...cur.items, { value: '', label: '' }] }))}
           className="self-start px-4 py-2 border border-dashed border-[#c9c9cc] text-[12.5px] text-[#555] hover:border-black hover:text-black cursor-pointer"
         >
           + Tambah angka

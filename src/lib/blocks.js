@@ -34,6 +34,16 @@ export function duplicateBlock(block) {
   return normalizeBlock({ ...block, id: newId() });
 }
 
+// Applies a patch to one block by id. A function patch is computed from the block's current
+// value, so async callers (e.g. uploads finishing later) never overwrite newer edits.
+export function patchBlock(blocks, id, patch) {
+  return blocks.map((b) => {
+    if (b.id !== id) return b;
+    const changes = typeof patch === 'function' ? patch(b) : patch;
+    return { ...b, ...changes };
+  });
+}
+
 export function normalizeBlock(raw) {
   if (!raw || typeof raw !== 'object' || !KNOWN_TYPES.has(raw.type)) return null;
   const base = { id: str(raw.id) || newId(), type: raw.type };

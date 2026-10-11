@@ -217,14 +217,11 @@ export default function ProjectEditor({ project, existingSlugs = [], onSave, onC
             <MediaUploader
               value={formData.mediaType === 'video' ? formData.video : formData.image}
               mediaType={formData.mediaType}
-              onMediaTypeChange={(type) => setFormData({ ...formData, mediaType: type })}
-              onChange={(url) => {
-                if (formData.mediaType === 'video') {
-                  setFormData({ ...formData, video: url });
-                } else {
-                  setFormData({ ...formData, image: url });
-                }
-              }}
+              // Functional updates: the upload resolves later and must not roll back newer edits
+              onMediaTypeChange={(type) => setFormData((prev) => ({ ...prev, mediaType: type }))}
+              onChange={(url) =>
+                setFormData((prev) => (prev.mediaType === 'video' ? { ...prev, video: url } : { ...prev, image: url }))
+              }
             />
           </div>
         </div>
@@ -327,7 +324,9 @@ export default function ProjectEditor({ project, existingSlugs = [], onSave, onC
           </div>
           <BlockEditor
             blocks={formData.caseStudy.blocks}
-            onChange={(blocks) => setFormData((prev) => ({ ...prev, caseStudy: { ...prev.caseStudy, blocks } }))}
+            onChange={(update) =>
+              setFormData((prev) => ({ ...prev, caseStudy: { ...prev.caseStudy, blocks: update(prev.caseStudy.blocks) } }))
+            }
           />
         </div>
 
