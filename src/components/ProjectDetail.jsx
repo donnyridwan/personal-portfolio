@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { normalizeCaseStudy, isRenderable } from '../lib/blocks';
 import BlockRenderer from './blocks/BlockRenderer';
+import MediaWithSkeleton from './MediaWithSkeleton';
 import StaggerOnMount from './motion/StaggerOnMount';
 import LearnChevron from './motion/LearnChevron';
 import { getAdjacentProjects, getDetailCover, getProjectSlug } from '../lib/projects';
@@ -121,19 +122,14 @@ function ProjectCover({ project }) {
   const cover = getDetailCover(project);
   if (!cover.url) return null;
   return (
-    <div className="w-full aspect-[4/3] overflow-hidden relative" style={{ backgroundColor: project.accentColor || '#e7eef0' }}>
+    <div className="w-full aspect-[4/3] overflow-hidden relative">
       <CoverMedia cover={cover} alt={project.title} />
     </div>
   );
 }
 
 function CoverMedia({ cover, alt, className = '' }) {
-  const mediaClass = `absolute inset-0 w-full h-full object-cover ${className}`;
-  return cover.mediaType === 'video' ? (
-    <video src={cover.url} autoPlay loop muted playsInline className={mediaClass} />
-  ) : (
-    <img src={cover.url} alt={alt} className={mediaClass} />
-  );
+  return <MediaWithSkeleton url={cover.url} mediaType={cover.mediaType} alt={alt} mode="fill" mediaClassName={className} />;
 }
 
 // Authored blocks, or the legacy description as an "Overview" text block when none are renderable yet
@@ -159,10 +155,7 @@ function AdjacentCard({ project, direction, onOpenProject }) {
       }}
       className={`t-learn ${isNext ? '' : 't-learn--back'} group flex flex-col gap-3 ${isNext ? 'sm:text-right' : ''}`}
     >
-      <div
-        className="w-full aspect-[4/3] overflow-hidden relative"
-        style={{ backgroundColor: project.accentColor || '#e7eef0' }}
-      >
+      <div className="w-full aspect-[4/3] overflow-hidden relative">
         {thumb.url && (
           <CoverMedia
             cover={thumb}

@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
+import MediaWithSkeleton from './MediaWithSkeleton';
 import { motion } from 'framer-motion';
 import { portfolioData } from '../data/portfolioData';
 import { getPublishedProjects, getProjectSlug } from '../lib/projects';
@@ -8,6 +9,14 @@ export default function WorkGrid({ projects, isLoading, onOpenProject }) {
   if (isLoading) return <WorkGridSkeleton />;
 
   const projectList = getPublishedProjects(projects && projects.length > 0 ? projects : portfolioData.projects);
+  if (projectList.length === 0) {
+    return (
+      <div className="flex-1 pb-24 pt-16 flex flex-col items-center text-center gap-2 font-sans">
+        <span className="font-serif text-[26px] text-[#171717]">Belum ada project</span>
+        <p className="text-[13px] text-[#737373]">Project akan tampil di sini setelah dipublikasikan.</p>
+      </div>
+    );
+  }
 
   // Two columns, alternating; cards take the cover's natural height (fixed width, free height)
   const columns = [projectList.filter((_, idx) => idx % 2 === 0), projectList.filter((_, idx) => idx % 2 === 1)];
@@ -74,10 +83,7 @@ function ProjectCard({ project, index, onOpen }) {
       }}
       className="flex flex-col w-full group cursor-pointer"
     >
-      <div
-        style={{ backgroundColor: project.accentColor || '#e7eef0' }}
-        className="w-full rounded-none relative overflow-hidden"
-      >
+      <div className="w-full rounded-none relative overflow-hidden">
         <CardMedia project={project} />
 
         {/* Hover Overlay */}
@@ -106,35 +112,11 @@ function ProjectCard({ project, index, onOpen }) {
   );
 }
 
-// Cover at its natural aspect ratio; holds a 4:3 placeholder until the media knows its size
+// Grid cover at its natural ratio (fixed width, free height) with a skeleton until it loads
 function CardMedia({ project }) {
   const videoSrc = project.video || project.video_url;
   const isVideo = (project.mediaType === 'video' || Boolean(videoSrc)) && Boolean(videoSrc);
-  const [ready, setReady] = useState(false);
-  const imgRef = useRef(null);
-
-  // Cached images can finish loading before React attaches onLoad
-  useEffect(() => {
-    const img = imgRef.current;
-    if (img && img.complete && img.naturalWidth > 0) setReady(true);
-  }, []);
-
-  const mediaClass = 'w-full h-auto block';
-  return (
-    <div className={ready ? '' : 'aspect-[4/3]'}>
-      {isVideo ? (
-        <video
-          src={videoSrc}
-          autoPlay
-          loop
-          muted
-          playsInline
-          onLoadedMetadata={() => setReady(true)}
-          className={mediaClass}
-        />
-      ) : project.image ? (
-        <img ref={imgRef} src={project.image} alt={project.title} onLoad={() => setReady(true)} className={mediaClass} />
-      ) : null}
-    </div>
-  );
+  const url = isVideo ? videoSrc : project.image;
+  if (!url) return <div className="aspect-[4/3] bg-[#efefef]" />;
+  return <MediaWithSkeleton url={url} mediaType={isVideo ? 'video' : 'image'} alt={project.title} mode="natural" />;
 }
