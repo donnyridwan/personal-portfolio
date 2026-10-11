@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { slugify, uniqueSlug } from './slug';
+import { slugify, uniqueSlug, validateSlug } from './slug';
 
 describe('slugify', () => {
   it('lowercases a single word', () => {
@@ -33,5 +33,23 @@ describe('uniqueSlug', () => {
   it('falls back to "project" for an empty base', () => {
     expect(uniqueSlug('', [])).toBe('project');
     expect(uniqueSlug('', ['project'])).toBe('project-2');
+  });
+});
+
+describe('validateSlug', () => {
+  it('requires a value', () => {
+    expect(validateSlug('', ['a'], '')).toBe('Slug wajib diisi');
+  });
+
+  it('rejects uppercase and spaces', () => {
+    expect(validateSlug('Bad Slug', [], '')).toBe('Hanya huruf kecil, angka, dan tanda -');
+  });
+
+  it('rejects a slug used by another project', () => {
+    expect(validateSlug('harvasta', ['harvasta', 'rebound'], 'rebound')).toBe('Slug sudah dipakai project lain');
+  });
+
+  it('accepts the project keeping its own slug', () => {
+    expect(validateSlug('harvasta', ['harvasta', 'rebound'], 'harvasta')).toBeNull();
   });
 });

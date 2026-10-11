@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ProjectEditor from './ProjectEditor';
+import { getProjectSlug } from '../../lib/projects';
 import { saveToNeon, fetchPortfolioFromNeon } from '../../lib/neon';
 import { getCloudinaryConfig, saveCloudinaryConfig } from '../../lib/cloudinary';
 
@@ -358,6 +359,7 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
             isAddingProject || editingProject ? (
               <ProjectEditor
                 project={editingProject}
+                existingSlugs={data.projects.map(getProjectSlug)}
                 onSave={handleSaveProject}
                 onCancel={() => {
                   setIsAddingProject(false);
