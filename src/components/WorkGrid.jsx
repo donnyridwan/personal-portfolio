@@ -1,9 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { portfolioData } from '../data/portfolioData';
+import { getPublishedProjects, getProjectSlug } from '../lib/projects';
+import { projectPath } from '../lib/route';
 
-export default function WorkGrid({ projects, onSelectProject }) {
-  const projectList = projects && projects.length > 0 ? projects : portfolioData.projects;
+export default function WorkGrid({ projects, onOpenProject }) {
+  const projectList = getPublishedProjects(projects && projects.length > 0 ? projects : portfolioData.projects);
 
   // Split into 2 columns
   const leftColumnProjects = projectList.filter((_, idx) => idx % 2 === 0);
@@ -32,7 +34,7 @@ export default function WorkGrid({ projects, onSelectProject }) {
                 project={project}
                 index={idx * 2}
                 containerHeight={containerHeight}
-                onSelect={() => onSelectProject(project)}
+                onOpen={onOpenProject}
               />
             );
           })}
@@ -55,7 +57,7 @@ export default function WorkGrid({ projects, onSelectProject }) {
                 project={project}
                 index={idx * 2 + 1}
                 containerHeight={containerHeight}
-                onSelect={() => onSelectProject(project)}
+                onOpen={onOpenProject}
               />
             );
           })}
@@ -65,13 +67,20 @@ export default function WorkGrid({ projects, onSelectProject }) {
   );
 }
 
-function ProjectCard({ project, index, containerHeight, onSelect }) {
+function ProjectCard({ project, index, containerHeight, onOpen }) {
+  const slug = getProjectSlug(project);
   const videoSrc = project.video || project.video_url;
   const isVideo = project.mediaType === 'video' || Boolean(videoSrc);
 
   return (
-    <motion.article
-      onClick={onSelect}
+    <motion.a
+      href={projectPath(slug)}
+      onClick={(e) => {
+        // Let cmd/ctrl/shift-click open a new tab; plain clicks navigate in-app
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+        e.preventDefault();
+        onOpen(slug);
+      }}
       style={{ order: index }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -127,6 +136,6 @@ function ProjectCard({ project, index, containerHeight, onSelect }) {
           {project.year}
         </span>
       </div>
-    </motion.article>
+    </motion.a>
   );
 }
