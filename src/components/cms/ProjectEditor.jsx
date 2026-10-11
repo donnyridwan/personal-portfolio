@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import MediaUploader from './MediaUploader';
 import CaseStudyFields from './CaseStudyFields';
+import BlockEditor from './BlockEditor';
 import { slugify, validateSlug } from '../../lib/slug';
 import { normalizeCaseStudy } from '../../lib/blocks';
 import { projectPath } from '../../lib/route';
@@ -313,6 +314,20 @@ export default function ProjectEditor({ project, existingSlugs = [], onSave, onC
             onChange={handleCaseStudyChange}
             slugError={slugError}
             liveUrlError={liveUrlError}
+          />
+        </div>
+
+        {/* Content Blocks */}
+        <div className="flex flex-col gap-5 pt-6 border-t border-[#eeeeee]">
+          <div className="flex flex-col gap-1">
+            <h3 className="font-serif text-[22px] text-[#171717] tracking-tight">Content Blocks</h3>
+            <p className="text-[12.5px] text-[#737373]">
+              Susun isi case study. Geser ⋮⋮ atau pakai ↑/↓ untuk mengubah urutan. Block kosong tidak ditampilkan.
+            </p>
+          </div>
+          <BlockEditor
+            blocks={formData.caseStudy.blocks}
+            onChange={(blocks) => setFormData((prev) => ({ ...prev, caseStudy: { ...prev.caseStudy, blocks } }))}
           />
         </div>
 

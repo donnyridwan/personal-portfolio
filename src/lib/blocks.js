@@ -29,6 +29,11 @@ export function createBlock(type) {
   return block;
 }
 
+// normalizeBlock rebuilds every nested array/object, so the copy shares nothing with the original
+export function duplicateBlock(block) {
+  return normalizeBlock({ ...block, id: newId() });
+}
+
 export function normalizeBlock(raw) {
   if (!raw || typeof raw !== 'object' || !KNOWN_TYPES.has(raw.type)) return null;
   const base = { id: str(raw.id) || newId(), type: raw.type };

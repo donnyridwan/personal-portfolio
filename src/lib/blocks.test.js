@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { BLOCK_TYPES, createBlock, normalizeBlock, isRenderable, normalizeCaseStudy } from './blocks';
+import { BLOCK_TYPES, createBlock, duplicateBlock, normalizeBlock, isRenderable, normalizeCaseStudy } from './blocks';
 
 describe('BLOCK_TYPES', () => {
   it('lists the six block types in order', () => {
@@ -90,5 +90,21 @@ describe('normalizeCaseStudy', () => {
 
   it('survives invalid JSON strings', () => {
     expect(normalizeCaseStudy('{not json').blocks).toEqual([]);
+  });
+});
+
+describe('duplicateBlock', () => {
+  it('copies fields under a new id', () => {
+    const original = { id: 'q1', type: 'quote', text: 'Great', name: 'Ana', role: 'CEO' };
+    const copy = duplicateBlock(original);
+    expect(copy).toMatchObject({ type: 'quote', text: 'Great', name: 'Ana', role: 'CEO' });
+    expect(copy.id).not.toBe('q1');
+  });
+
+  it('does not share nested arrays with the original', () => {
+    const original = { id: 'g1', type: 'gallery', columns: 3, images: [{ url: 'https://x/a.jpg', caption: '' }] };
+    const copy = duplicateBlock(original);
+    copy.images[0].caption = 'changed';
+    expect(original.images[0].caption).toBe('');
   });
 });
