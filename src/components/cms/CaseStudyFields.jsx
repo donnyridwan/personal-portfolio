@@ -29,7 +29,7 @@ export default function CaseStudyFields({ value, onChange, slugError, liveUrlErr
         <FieldError>{slugError}</FieldError>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      <div className="flex flex-col gap-5">
         <div className="flex flex-col">
           <label className={labelClass}>Client</label>
           <input
