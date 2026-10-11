@@ -120,8 +120,12 @@ export default function App() {
     window.scrollTo({ top: 0 });
   };
 
+  // Until live data arrives the fallback demo projects must not resolve, or a quick visitor
+  // would see a demo case study that flips to "not found" a moment later
   const currentProject =
-    activeTab === 'project' ? findPublishedProject(livePortfolio.projects, projectSlug) : null;
+    activeTab === 'project' && !isPortfolioLoading
+      ? findPublishedProject(livePortfolio.projects, projectSlug)
+      : null;
 
   useEffect(() => {
     document.title = currentProject ? `${currentProject.title.trim()} — Donny Ridwan S` : originalTitle.current;
@@ -239,6 +243,7 @@ export default function App() {
               >
                 <WorkGrid
                   projects={livePortfolio.projects}
+                  isLoading={isPortfolioLoading}
                   onOpenProject={openProject}
                 />
               </motion.div>
