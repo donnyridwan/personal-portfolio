@@ -55,7 +55,7 @@ export default function BookingModal({ isOpen, onClose }) {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center">
-                <img src="./assets/call-icon.png" alt="" className="w-5 h-4 object-contain" />
+                <img src="/assets/call-icon.png" alt="" className="w-5 h-4 object-contain" />
               </div>
               <div>
                 <h3 className="text-[18px] font-medium text-black">Book a Call</h3>

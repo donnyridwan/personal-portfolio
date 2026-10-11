@@ -337,7 +337,7 @@ export default function App() {
               title="Chat With Jhonny"
             >
               <img
-                src="./assets/bot-icon.svg"
+                src="/assets/bot-icon.svg"
                 alt="Chat Bot"
                 className="w-[42px] h-[42px] object-contain group-hover:rotate-12 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
               />

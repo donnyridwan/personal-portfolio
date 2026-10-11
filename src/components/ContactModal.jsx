@@ -55,7 +55,7 @@ export default function ContactModal({ isOpen, onClose }) {
 
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center">
-            <img src="./assets/envelope.svg" alt="" className="w-5 h-5" />
+            <img src="/assets/envelope.svg" alt="" className="w-5 h-5" />
           </div>
           <div>
             <h3 className="text-[18px] font-medium text-black">Get in Touch</h3>

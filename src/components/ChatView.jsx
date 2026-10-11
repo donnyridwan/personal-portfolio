@@ -86,7 +86,7 @@ export default function ChatView({ onClose, onBookCall }) {
           initial={{ scale: 1.15 }}
           animate={{ scale: 1.08 }}
           transition={{ duration: 15, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
-          src="./assets/chat-bg.png"
+          src="/assets/chat-bg.png"
           alt=""
           className="absolute inset-0 w-full h-full object-cover filter blur-[8px]"
         />
@@ -117,7 +117,7 @@ export default function ChatView({ onClose, onBookCall }) {
             <div className="flex flex-col items-center justify-center gap-1.5 pt-1 pb-2 border-b border-black/5 shrink-0">
               <div className="w-[46px] h-[46px] rounded-full overflow-hidden bg-neutral-200 border-2 border-white shadow-sm relative">
                 <img
-                  src="./assets/jhonny-avatar.png"
+                  src="/assets/jhonny-avatar.png"
                   alt="Jhonny Helper"
                   className="w-full h-full object-cover"
                 />
@@ -192,7 +192,7 @@ export default function ChatView({ onClose, onBookCall }) {
                 title="Send"
               >
                 <img
-                  src="./assets/arrow-send.svg"
+                  src="/assets/arrow-send.svg"
                   alt="Send"
                   className="w-[15px] h-[15px] object-contain"
                 />
