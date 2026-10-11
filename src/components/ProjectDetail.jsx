@@ -1,7 +1,9 @@
 import React from 'react';
-import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { normalizeCaseStudy, isRenderable } from '../lib/blocks';
 import BlockRenderer from './blocks/BlockRenderer';
+import StaggerOnMount from './motion/StaggerOnMount';
+import LearnChevron from './motion/LearnChevron';
 import { getAdjacentProjects, getProjectSlug } from '../lib/projects';
 import { projectPath } from '../lib/route';
 
@@ -27,21 +29,21 @@ export default function ProjectDetail({ project, projects, isLoading, onOpenProj
       <BackLink onBack={onBack} />
 
       {/* Hero */}
-      <header className="pt-8 md:pt-10 pb-8 md:pb-10">
-        <span className="text-[11px] font-medium tracking-[0.66px] uppercase text-[#a3a3a3]">
+      <StaggerOnMount as="header" className="pt-8 md:pt-10 pb-8 md:pb-10">
+        <span className="t-stagger-line t-stagger-line--1 text-[11px] font-medium tracking-[0.66px] uppercase text-[#a3a3a3]">
           {[project.category, project.year].filter(Boolean).join(' · ')}
         </span>
-        <h1 className="font-serif font-normal text-[36px] md:text-[52px] leading-[1.1] tracking-[-0.64px] text-[#171717] mt-3">
+        <h1 className="t-stagger-line t-stagger-line--2 font-serif font-normal text-[36px] md:text-[52px] leading-[1.1] tracking-[-0.64px] text-[#171717] mt-3">
           {project.title.trim()}
         </h1>
         {caseStudy.summary && (
-          <p className="font-light text-[15px] leading-[24px] tracking-[-0.3px] text-[#737373] mt-4 max-w-[640px]">
+          <p className="t-stagger-line t-stagger-line--3 font-light text-[15px] leading-[24px] tracking-[-0.3px] text-[#737373] mt-4 max-w-[640px]">
             {caseStudy.summary}
           </p>
         )}
 
         {meta.length > 0 && (
-          <dl className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-5 mt-8 pt-6 border-t border-[#eeeeee]">
+          <dl className="t-stagger-line t-stagger-line--4 !grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-5 mt-8 pt-6 border-t border-[#eeeeee]">
             {meta.map((item) => (
               <div key={item.label} className="flex flex-col gap-1 min-w-0">
                 <dt className="text-[11px] font-medium tracking-[0.66px] uppercase text-[#a3a3a3]">{item.label}</dt>
@@ -56,13 +58,13 @@ export default function ProjectDetail({ project, projects, isLoading, onOpenProj
             href={caseStudy.liveUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-8 inline-flex items-center gap-1.5 h-[38px] px-4 border border-[#171717] text-[13.5px] font-medium text-[#171717] hover:bg-[#171717] hover:text-white transition-colors duration-300"
+            className="t-stagger-line t-stagger-line--4 !inline-flex mt-8 items-center gap-1.5 h-[38px] px-4 border border-[#171717] text-[13.5px] font-medium text-[#171717] hover:bg-[#171717] hover:text-white transition-colors duration-300"
           >
             Visit live site
             <ArrowUpRight className="w-4 h-4" />
           </a>
         )}
-      </header>
+      </StaggerOnMount>
 
       <ProjectCover project={project} />
 
@@ -106,9 +108,9 @@ function BackLink({ onBack }) {
         e.preventDefault();
         onBack();
       }}
-      className="inline-flex items-center gap-1.5 text-[13px] text-[#737373] hover:text-black transition-colors group"
+      className="t-learn t-learn--back inline-flex items-center gap-1 text-[13px] text-[#737373] hover:text-black transition-colors"
     >
-      <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
+      <LearnChevron direction="left" />
       All work
     </a>
   );
@@ -153,7 +155,7 @@ function AdjacentCard({ project, direction, onOpenProject }) {
         e.preventDefault();
         onOpenProject(slug);
       }}
-      className={`group flex flex-col gap-3 ${isNext ? 'sm:text-right' : ''}`}
+      className={`t-learn ${isNext ? '' : 't-learn--back'} group flex flex-col gap-3 ${isNext ? 'sm:text-right' : ''}`}
     >
       <div
         className="w-full aspect-[4/3] overflow-hidden relative"
@@ -172,9 +174,9 @@ function AdjacentCard({ project, direction, onOpenProject }) {
           isNext ? 'sm:justify-end' : ''
         }`}
       >
-        {!isNext && <ArrowLeft className="w-3.5 h-3.5" />}
+        {!isNext && <LearnChevron direction="left" />}
         {isNext ? 'Next' : 'Previous'}
-        {isNext && <ArrowRight className="w-3.5 h-3.5" />}
+        {isNext && <LearnChevron />}
       </span>
       <span className="text-[15px] text-[#1a1815] tracking-[-0.3px] -mt-1">{project.title.trim()}</span>
     </a>

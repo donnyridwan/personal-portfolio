@@ -1,4 +1,5 @@
 @import 'lenis/dist/lenis.css';
+@import './styles/motion.css';
 
 @tailwind base;
 @tailwind components;

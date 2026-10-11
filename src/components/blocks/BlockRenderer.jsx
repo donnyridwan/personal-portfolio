@@ -1,5 +1,6 @@
 import React from 'react';
 import { isRenderable } from '../../lib/blocks';
+import Reveal from '../motion/Reveal';
 import TextBlock from './TextBlock';
 import ImageBlock from './ImageBlock';
 import GalleryBlock from './GalleryBlock';
@@ -24,7 +25,11 @@ export default function BlockRenderer({ blocks }) {
     <div className="flex flex-col gap-10 md:gap-16">
       {visible.map((block) => {
         const Component = COMPONENTS[block.type];
-        return <Component key={block.id} {...block} />;
+        return (
+          <Reveal key={block.id}>
+            <Component {...block} />
+          </Reveal>
+        );
       })}
     </div>
   );

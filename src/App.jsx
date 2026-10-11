@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, MotionConfig } from 'framer-motion';
 import Lenis from 'lenis';
 import confetti from 'canvas-confetti';
 import Navbar from './components/Navbar';
@@ -184,6 +184,7 @@ export default function App() {
   }
 
   return (
+    <MotionConfig reducedMotion="user">
     <div
       className="min-h-screen bg-white text-[#1e1e1e] flex flex-col font-sans selection:bg-neutral-900 selection:text-white"
     >
@@ -246,10 +247,11 @@ export default function App() {
             {activeTab === 'project' && (
               <motion.div
                 key={`project-${projectSlug}`}
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                // transitions.dev "Page side-by-side": 8px slide + 3px blur over 250ms
+                initial={{ opacity: 0, x: 8, filter: 'blur(3px)' }}
+                animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, x: -8, filter: 'blur(3px)' }}
+                transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
                 className="w-full flex-1"
               >
                 <ProjectDetail
@@ -363,5 +365,6 @@ export default function App() {
         )}
       </AnimatePresence>
     </div>
+    </MotionConfig>
   );
 }

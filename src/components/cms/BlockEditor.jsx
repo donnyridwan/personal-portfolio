@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Reorder, useDragControls } from 'framer-motion';
 import {
   ArrowDown,
@@ -37,7 +37,21 @@ const EDITORS = {
 const LABELS = Object.fromEntries(BLOCK_TYPES.map((b) => [b.type, b.label]));
 
 export default function BlockEditor({ blocks, onChange }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // 'closed' | 'open' | 'closing' — drives the transitions.dev menu-dropdown classes
+  const [menuState, setMenuState] = useState('closed');
+  const closeTimer = useRef(null);
+  const isMenuOpen = menuState === 'open';
+
+  const openMenu = () => {
+    clearTimeout(closeTimer.current);
+    setMenuState('open');
+  };
+  const closeMenu = () => {
+    setMenuState('closing');
+    clearTimeout(closeTimer.current);
+    // Matches --dropdown-close-dur
+    closeTimer.current = setTimeout(() => setMenuState('closed'), 150);
+  };
 
   const updateBlock = (id, patch) => onChange(blocks.map((b) => (b.id === id ? { ...b, ...patch } : b)));
 
@@ -58,7 +72,7 @@ export default function BlockEditor({ blocks, onChange }) {
 
   const addBlock = (type) => {
     onChange([...blocks, createBlock(type)]);
-    setIsMenuOpen(false);
+    closeMenu();
   };
 
   return (
@@ -88,15 +102,18 @@ export default function BlockEditor({ blocks, onChange }) {
       <div className="relative self-start">
         <button
           type="button"
-          onClick={() => setIsMenuOpen((open) => !open)}
+          onClick={() => (isMenuOpen ? closeMenu() : openMenu())}
           aria-expanded={isMenuOpen}
           className="flex items-center gap-1.5 px-4 py-2.5 bg-[#171717] text-white text-[12.5px] font-medium hover:bg-black cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           Tambah block
         </button>
-        {isMenuOpen && (
-          <div className="absolute left-0 top-full mt-1.5 z-20 w-[220px] bg-white border border-[#e5e5e7] shadow-lg py-1">
+        <div
+          inert={!isMenuOpen}
+          data-origin="top-left"
+          className={`t-dropdown ${menuState === 'open' ? 'is-open' : ''} ${menuState === 'closing' ? 'is-closing' : ''} absolute left-0 top-full mt-1.5 z-20 w-[220px] bg-white border border-[#e5e5e7] shadow-lg py-1`}
+        >
             {BLOCK_TYPES.map(({ type, label }) => {
               const Icon = ICONS[type];
               return (
@@ -111,8 +128,7 @@ export default function BlockEditor({ blocks, onChange }) {
                 </button>
               );
             })}
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );
