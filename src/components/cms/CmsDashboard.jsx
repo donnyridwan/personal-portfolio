@@ -1202,7 +1202,7 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
                 </div>
 
                 <div className="p-3 bg-[#f5f5f7] border border-[#e5e5e7] text-[11.5px] font-mono text-[#555] break-all">
-                  Connection: postgresql://neondb_owner:***@ep-autumn-snow-b5xiqct7-pooler.c-7.us-east-2.aws.neon.tech/neondb
+                  Connection: server-side via /api/portfolio (DATABASE_URL)
                 </div>
               </div>
             </div>
