@@ -10,7 +10,7 @@ export default function Navbar({ onBookCall, onOpenMobileMenu, isMobileMenuOpen,
           className="flex items-center gap-2 group transition-opacity hover:opacity-80 text-left focus:outline-none"
         >
           <img
-            src="./assets/logo.png"
+            src="/assets/logo.png"
             alt="Donny Ridwan Logo"
             className="h-[31.3px] w-auto object-contain"
           />
@@ -28,7 +28,7 @@ export default function Navbar({ onBookCall, onOpenMobileMenu, isMobileMenuOpen,
             Book a Call
           </span>
           <img
-            src="./assets/call-icon.png"
+            src="/assets/call-icon.png"
             alt="Call"
             className="w-[17px] h-[14px] object-contain"
           />

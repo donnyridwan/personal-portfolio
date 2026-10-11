@@ -25,7 +25,7 @@ export default function AboutView({ portfolio, onBookCall, onOpenContact }) {
               Book a Call
             </span>
             <img
-              src="./assets/call-icon.png"
+              src="/assets/call-icon.png"
               alt="Call"
               className="w-[17px] h-[14px] object-contain"
             />
@@ -200,7 +200,7 @@ export default function AboutView({ portfolio, onBookCall, onOpenContact }) {
               Book a Call
             </span>
             <img
-              src="./assets/call-icon.png"
+              src="/assets/call-icon.png"
               alt="Call"
               className="w-[17px] h-[14px] object-contain"
             />

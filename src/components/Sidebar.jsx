@@ -113,9 +113,9 @@ function ProfileText({ current }) {
 // Social Icons - color and opacity transition only
 function SocialLinks({ current, className = '' }) {
   const links = [
-    { href: current.socials?.linkedin || portfolioData.socials.linkedin, title: 'LinkedIn', icon: './assets/linkedin.svg', alt: 'LinkedIn' },
-    { href: current.socials?.x || portfolioData.socials.x, title: 'X (Twitter)', icon: './assets/x.svg', alt: 'X' },
-    { href: current.socials?.facebook || portfolioData.socials.facebook, title: 'Facebook', icon: './assets/facebook.svg', alt: 'Facebook' },
+    { href: current.socials?.linkedin || portfolioData.socials.linkedin, title: 'LinkedIn', icon: '/assets/linkedin.svg', alt: 'LinkedIn' },
+    { href: current.socials?.x || portfolioData.socials.x, title: 'X (Twitter)', icon: '/assets/x.svg', alt: 'X' },
+    { href: current.socials?.facebook || portfolioData.socials.facebook, title: 'Facebook', icon: '/assets/facebook.svg', alt: 'Facebook' },
   ];
 
   return (
@@ -144,7 +144,7 @@ function CvActions({ onDownloadCV, onContact }) {
         className="btn-dark-glow flex-1 h-[48px] px-3 py-2 rounded-none flex items-center justify-center gap-2 group cursor-pointer"
       >
         <img
-          src="./assets/download.svg"
+          src="/assets/download.svg"
           alt=""
           className="w-5 h-5 object-contain"
         />
@@ -158,7 +158,7 @@ function CvActions({ onDownloadCV, onContact }) {
         className="w-[48px] h-[48px] bg-white border border-[#efefef] rounded-none flex items-center justify-center hover:bg-[#f5f5f7] transition-colors duration-300 cursor-pointer shadow-[0px_2px_4px_rgba(0,0,0,0.04)] shrink-0"
         title="Contact & Schedule"
       >
-        <img src="./assets/envelope.svg" alt="Email" className="w-5 h-5" />
+        <img src="/assets/envelope.svg" alt="Email" className="w-5 h-5" />
       </button>
     </div>
   );

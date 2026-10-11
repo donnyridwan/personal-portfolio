@@ -42,7 +42,7 @@ export default function CmsLogin({ onLoginSuccess, onCancel }) {
         {/* Logo / Badge */}
         <div className="flex items-center gap-2 mb-2">
           <img
-            src="./assets/logo.png"
+            src="/assets/logo.png"
             alt="Donny Ridwan Logo"
             className="h-[28px] w-auto object-contain"
           />

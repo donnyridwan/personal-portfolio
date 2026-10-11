@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import MediaUploader from './MediaUploader';
+import CaseStudyFields from './CaseStudyFields';
+import BlockEditor from './BlockEditor';
+import { slugify, validateSlug } from '../../lib/slug';
+import { normalizeCaseStudy } from '../../lib/blocks';
+import { projectPath } from '../../lib/route';
+import { getProjectSlug } from '../../lib/projects';
 
-export default function ProjectEditor({ project, onSave, onCancel }) {
+export default function ProjectEditor({ project, existingSlugs = [], onSave, onCancel }) {
   const [formData, setFormData] = useState({
     id: project?.id || `project-${Date.now()}`,
     title: project?.title || '',
@@ -16,7 +22,30 @@ export default function ProjectEditor({ project, onSave, onCancel }) {
     video: project?.video || '',
     mediaType: project?.mediaType || (project?.video ? 'video' : 'image'),
     published: project?.published !== false,
+    slug: project?.slug || slugify(project?.title || ''),
+    caseStudy: normalizeCaseStudy(project?.caseStudy),
   });
+  // New projects follow the title until the slug is edited by hand; saved projects keep their URL
+  const [slugTouched, setSlugTouched] = useState(Boolean(project?.slug));
+
+  const slugError = validateSlug(formData.slug, existingSlugs, project ? getProjectSlug(project) : '');
+  const liveUrlError =
+    formData.caseStudy.liveUrl && !/^https?:\/\//.test(formData.caseStudy.liveUrl)
+      ? 'URL harus diawali http:// atau https://'
+      : null;
+
+  const handleTitleChange = (title) => {
+    setFormData((prev) => ({ ...prev, title, slug: slugTouched ? prev.slug : slugify(title) }));
+  };
+
+  const handleCaseStudyChange = (patch) => {
+    if ('slug' in patch) {
+      setSlugTouched(true);
+      setFormData((prev) => ({ ...prev, slug: patch.slug }));
+      return;
+    }
+    setFormData((prev) => ({ ...prev, caseStudy: { ...prev.caseStudy, ...patch } }));
+  };
 
   const [toolInput, setToolInput] = useState('');
 
@@ -41,6 +70,10 @@ export default function ProjectEditor({ project, onSave, onCancel }) {
       alert('Judul project wajib diisi');
       return;
     }
+    if (slugError || liveUrlError) {
+      alert(`Periksa lagi: ${slugError || liveUrlError}`);
+      return;
+    }
     onSave(formData);
   };
 
@@ -63,6 +96,16 @@ export default function ProjectEditor({ project, onSave, onCancel }) {
           <p className="text-[13px] text-[#737373]">
             Data dan media akan tersimpan langsung ke Neon PostgreSQL Database.
           </p>
+          {project?.slug && (
+            <a
+              href={projectPath(project.slug)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[12.5px] text-[#171717] underline underline-offset-4 decoration-1 w-fit mt-1 hover:opacity-70"
+            >
+              Lihat halaman ↗
+            </a>
+          )}
         </div>
 
         <div className="flex items-center gap-2.5 shrink-0">
@@ -95,7 +138,7 @@ export default function ProjectEditor({ project, onSave, onCancel }) {
               type="text"
               required
               value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              onChange={(e) => handleTitleChange(e.target.value)}
               placeholder="Contoh: EvalNow: Educational UX"
               className="bg-[#f8f8fa] border border-[#e5e5e7] px-3.5 py-2.5 text-[13.5px] text-[#171717] focus:outline-none focus:border-black rounded-none"
             />
@@ -174,14 +217,11 @@ export default function ProjectEditor({ project, onSave, onCancel }) {
             <MediaUploader
               value={formData.mediaType === 'video' ? formData.video : formData.image}
               mediaType={formData.mediaType}
-              onMediaTypeChange={(type) => setFormData({ ...formData, mediaType: type })}
-              onChange={(url) => {
-                if (formData.mediaType === 'video') {
-                  setFormData({ ...formData, video: url });
-                } else {
-                  setFormData({ ...formData, image: url });
-                }
-              }}
+              // Functional updates: the upload resolves later and must not roll back newer edits
+              onMediaTypeChange={(type) => setFormData((prev) => ({ ...prev, mediaType: type }))}
+              onChange={(url) =>
+                setFormData((prev) => (prev.mediaType === 'video' ? { ...prev, video: url } : { ...prev, image: url }))
+              }
             />
           </div>
         </div>
@@ -258,6 +298,36 @@ export default function ProjectEditor({ project, onSave, onCancel }) {
               </span>
             ))}
           </div>
+        </div>
+
+        {/* Case Study Info */}
+        <div className="flex flex-col gap-5 pt-6 border-t border-[#eeeeee]">
+          <div className="flex flex-col gap-1">
+            <h3 className="font-serif text-[22px] text-[#171717] tracking-tight">Case Study Info</h3>
+            <p className="text-[12.5px] text-[#737373]">Ditampilkan di bagian atas halaman detail project.</p>
+          </div>
+          <CaseStudyFields
+            value={{ slug: formData.slug, ...formData.caseStudy }}
+            onChange={handleCaseStudyChange}
+            slugError={slugError}
+            liveUrlError={liveUrlError}
+          />
+        </div>
+
+        {/* Content Blocks */}
+        <div className="flex flex-col gap-5 pt-6 border-t border-[#eeeeee]">
+          <div className="flex flex-col gap-1">
+            <h3 className="font-serif text-[22px] text-[#171717] tracking-tight">Content Blocks</h3>
+            <p className="text-[12.5px] text-[#737373]">
+              Susun isi case study. Geser ⋮⋮ atau pakai ↑/↓ untuk mengubah urutan. Block kosong tidak ditampilkan.
+            </p>
+          </div>
+          <BlockEditor
+            blocks={formData.caseStudy.blocks}
+            onChange={(update) =>
+              setFormData((prev) => ({ ...prev, caseStudy: { ...prev.caseStudy, blocks: update(prev.caseStudy.blocks) } }))
+            }
+          />
         </div>
 
         {/* Footer Actions */}

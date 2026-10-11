@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ProjectEditor from './ProjectEditor';
+import { getProjectSlug } from '../../lib/projects';
 import { saveToNeon, fetchPortfolioFromNeon } from '../../lib/neon';
 import { getCloudinaryConfig, saveCloudinaryConfig } from '../../lib/cloudinary';
 
@@ -224,7 +225,7 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
       {/* Top Navbar */}
       <header className="h-[64px] bg-white border-b border-[#e5e5e7] px-6 flex items-center justify-between sticky top-0 z-30">
         <div className="flex items-center gap-2">
-          <img src="./assets/logo.png" alt="" className="h-[24px] w-auto" />
+          <img src="/assets/logo.png" alt="" className="h-[24px] w-auto" />
           <span className="font-serif font-medium text-[16px] text-black">
             Donny Studio CMS
           </span>
@@ -358,6 +359,7 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
             isAddingProject || editingProject ? (
               <ProjectEditor
                 project={editingProject}
+                existingSlugs={data.projects.map(getProjectSlug)}
                 onSave={handleSaveProject}
                 onCancel={() => {
                   setIsAddingProject(false);

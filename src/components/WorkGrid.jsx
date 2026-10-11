@@ -1,9 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { portfolioData } from '../data/portfolioData';
+import { getPublishedProjects, getProjectSlug } from '../lib/projects';
+import { projectPath } from '../lib/route';
 
-export default function WorkGrid({ projects, onSelectProject }) {
-  const projectList = projects && projects.length > 0 ? projects : portfolioData.projects;
+export default function WorkGrid({ projects, isLoading, onOpenProject }) {
+  if (isLoading) return <WorkGridSkeleton />;
+
+  const projectList = getPublishedProjects(projects && projects.length > 0 ? projects : portfolioData.projects);
 
   // Split into 2 columns
   const leftColumnProjects = projectList.filter((_, idx) => idx % 2 === 0);
@@ -32,7 +36,7 @@ export default function WorkGrid({ projects, onSelectProject }) {
                 project={project}
                 index={idx * 2}
                 containerHeight={containerHeight}
-                onSelect={() => onSelectProject(project)}
+                onOpen={onOpenProject}
               />
             );
           })}
@@ -55,7 +59,7 @@ export default function WorkGrid({ projects, onSelectProject }) {
                 project={project}
                 index={idx * 2 + 1}
                 containerHeight={containerHeight}
-                onSelect={() => onSelectProject(project)}
+                onOpen={onOpenProject}
               />
             );
           })}
@@ -65,13 +69,44 @@ export default function WorkGrid({ projects, onSelectProject }) {
   );
 }
 
-function ProjectCard({ project, index, containerHeight, onSelect }) {
+// Placeholder grid shown until live projects load, so no demo card is ever clickable
+function WorkGridSkeleton() {
+  const columns = [
+    ['aspect-[4/3] md:aspect-auto md:h-[365px]', 'aspect-[4/5] md:aspect-auto md:h-[605px]'],
+    ['aspect-[4/5] md:aspect-auto md:h-[605px]', 'aspect-[4/3] md:aspect-auto md:h-[369px]'],
+  ];
+  return (
+    <div className="flex-1 pb-24" aria-busy="true" aria-label="Loading projects">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-7 w-full">
+        {columns.map((heights, col) => (
+          <div key={col} className="flex flex-col gap-8 md:gap-7">
+            {heights.map((h, idx) => (
+              <div key={idx} data-skeleton className="flex flex-col gap-3.5">
+                <div className={`w-full ${h} bg-[#f5f5f7] motion-safe:animate-pulse`} />
+                <div className="h-[14px] w-2/3 bg-[#f5f5f7] motion-safe:animate-pulse" />
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ProjectCard({ project, index, containerHeight, onOpen }) {
+  const slug = getProjectSlug(project);
   const videoSrc = project.video || project.video_url;
   const isVideo = project.mediaType === 'video' || Boolean(videoSrc);
 
   return (
-    <motion.article
-      onClick={onSelect}
+    <motion.a
+      href={projectPath(slug)}
+      onClick={(e) => {
+        // Let cmd/ctrl/shift-click open a new tab; plain clicks navigate in-app
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+        e.preventDefault();
+        onOpen(slug);
+      }}
       style={{ order: index }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -127,6 +162,6 @@ function ProjectCard({ project, index, containerHeight, onSelect }) {
           {project.year}
         </span>
       </div>
-    </motion.article>
+    </motion.a>
   );
 }

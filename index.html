@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Favicon: adaptive for Light Mode and Dark Mode -->
-    <link id="favicon-light" rel="icon" type="image/png" href="./assets/favicon-light.png" media="(prefers-color-scheme: light)" />
-    <link id="favicon-dark" rel="icon" type="image/png" href="./assets/favicon-dark.png" media="(prefers-color-scheme: dark)" />
-    <link id="favicon-default" rel="icon" type="image/png" href="./assets/favicon-light.png" />
-    <link rel="apple-touch-icon" href="./assets/favicon-light.png" />
+    <link id="favicon-light" rel="icon" type="image/png" href="/assets/favicon-light.png" media="(prefers-color-scheme: light)" />
+    <link id="favicon-dark" rel="icon" type="image/png" href="/assets/favicon-dark.png" media="(prefers-color-scheme: dark)" />
+    <link id="favicon-default" rel="icon" type="image/png" href="/assets/favicon-light.png" />
+    <link rel="apple-touch-icon" href="/assets/favicon-light.png" />
     <script>
       (function() {
-        var darkIcon = './assets/favicon-dark.png';
-        var lightIcon = './assets/favicon-light.png';
+        var darkIcon = '/assets/favicon-dark.png';
+        var lightIcon = '/assets/favicon-light.png';
         var matcher = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
         function updateFavicon() {
           if (!matcher) return;

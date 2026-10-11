@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, MotionConfig } from 'framer-motion';
 import Lenis from 'lenis';
 import confetti from 'canvas-confetti';
 import Navbar from './components/Navbar';
@@ -8,37 +8,27 @@ import WorkGrid from './components/WorkGrid';
 import ChatView from './components/ChatView';
 import AboutView from './components/AboutView';
 import ContactView from './components/ContactView';
-import ProjectModal from './components/ProjectModal';
+import ProjectDetail from './components/ProjectDetail';
 import CmsLogin from './components/cms/CmsLogin';
 import CmsDashboard from './components/cms/CmsDashboard';
 import { portfolioData } from './data/portfolioData';
 import { fetchPortfolioFromNeon } from './lib/neon';
+import { parseRoute, projectPath } from './lib/route';
+import { findPublishedProject } from './lib/projects';
 
 export default function App() {
-  const getInitialTab = () => {
-    if (typeof window === 'undefined') return 'work';
-    const path = window.location.pathname.toLowerCase();
-    if (path.includes('/admin') || path.includes('/cms')) return 'cms';
+  const readRoute = () =>
+    typeof window === 'undefined'
+      ? { view: 'work' }
+      : parseRoute(window.location.pathname, window.location.hash, window.location.search);
 
-    const hash = window.location.hash.replace('#', '').toLowerCase();
-    if (['cms', 'admin'].includes(hash)) return 'cms';
-    if (['work', 'about', 'contact', 'chat'].includes(hash)) return hash;
-
-    const params = new URLSearchParams(window.location.search);
-    const tab = (params.get('tab') || '').toLowerCase();
-    if (['cms', 'admin'].includes(tab)) return 'cms';
-    if (['work', 'about', 'contact', 'chat'].includes(tab)) return tab;
-
-    if (window.location.search.toLowerCase().includes('admin') || window.location.search.toLowerCase().includes('cms')) {
-      return 'cms';
-    }
-    return 'work';
-  };
-
-  const [activeTab, setActiveTab] = useState(getInitialTab);
+  const [activeTab, setActiveTab] = useState(() => readRoute().view);
+  const [projectSlug, setProjectSlug] = useState(() => readRoute().slug || null);
+  const [isPortfolioLoading, setIsPortfolioLoading] = useState(true);
+  const originalTitle = useRef(typeof document !== 'undefined' ? document.title : '');
 
   const [previousTab, setPreviousTab] = useState('work');
-  const [selectedProject, setSelectedProject] = useState(null);
+  const previousSlug = useRef(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
   const [livePortfolio, setLivePortfolio] = useState(portfolioData);
@@ -83,6 +73,8 @@ export default function App() {
         }
       } catch (err) {
         console.warn('Neon DB sync notice: using default/cached portfolio data', err);
+      } finally {
+        if (isMounted) setIsPortfolioLoading(false);
       }
     }
     loadPortfolio();
@@ -94,19 +86,9 @@ export default function App() {
   // Listen to hash and popstate changes (e.g., #cms, #admin, /admin, /cms, #work, #about)
   useEffect(() => {
     const handleUrlChange = () => {
-      const path = window.location.pathname.toLowerCase();
-      if (path.includes('/admin') || path.includes('/cms')) {
-        setActiveTab('cms');
-        return;
-      }
-      const hash = window.location.hash.replace('#', '').toLowerCase();
-      if (hash === 'admin' || hash === 'cms') {
-        setActiveTab('cms');
-        return;
-      }
-      if (['work', 'about', 'contact', 'chat'].includes(hash)) {
-        setActiveTab(hash);
-      }
+      const route = readRoute();
+      setActiveTab(route.view);
+      setProjectSlug(route.slug || null);
     };
     window.addEventListener('hashchange', handleUrlChange);
     window.addEventListener('popstate', handleUrlChange);
@@ -118,10 +100,36 @@ export default function App() {
 
   const changeTab = (tab) => {
     setActiveTab(tab);
+    setProjectSlug(null);
     setIsMobileMenuOpen(false);
-    window.location.hash = tab;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (window.location.pathname.startsWith('/work/')) {
+      // Leaving a project page: pushState does not fire hashchange, so state is set above
+      window.history.pushState(null, '', `/#${tab}`);
+      window.scrollTo({ top: 0 });
+    } else {
+      window.location.hash = tab;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
+
+  const openProject = (slug) => {
+    window.history.pushState(null, '', projectPath(slug));
+    setProjectSlug(slug);
+    setActiveTab('project');
+    setIsMobileMenuOpen(false);
+    window.scrollTo({ top: 0 });
+  };
+
+  // Until live data arrives the fallback demo projects must not resolve, or a quick visitor
+  // would see a demo case study that flips to "not found" a moment later
+  const currentProject =
+    activeTab === 'project' && !isPortfolioLoading
+      ? findPublishedProject(livePortfolio.projects, projectSlug)
+      : null;
+
+  useEffect(() => {
+    document.title = currentProject ? `${currentProject.title.trim()} — Donny Ridwan S` : originalTitle.current;
+  }, [currentProject]);
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -180,18 +188,16 @@ export default function App() {
   }
 
   return (
+    <MotionConfig reducedMotion="user">
     <div
-      className={`min-h-screen bg-white text-[#1e1e1e] flex flex-col font-sans selection:bg-neutral-900 selection:text-white transition-opacity duration-300 ${
-        selectedProject ? 'pointer-events-none select-none' : ''
-      }`}
-      aria-hidden={Boolean(selectedProject)}
+      className="min-h-screen bg-white text-[#1e1e1e] flex flex-col font-sans selection:bg-neutral-900 selection:text-white"
     >
       {/* Navbar */}
       <Navbar
         onBookCall={handleBookCall}
         onOpenMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         isMobileMenuOpen={isMobileMenuOpen}
-        activeTab={activeTab}
+        activeTab={activeTab === 'project' ? 'work' : activeTab}
         setActiveTab={changeTab}
       />
 
@@ -204,7 +210,7 @@ export default function App() {
         >
           <Sidebar
             portfolio={livePortfolio}
-            activeTab={activeTab}
+            activeTab={activeTab === 'project' ? 'work' : activeTab}
             setActiveTab={(tab) => {
               changeTab(tab);
               setIsMobileMenuOpen(false);
@@ -215,7 +221,7 @@ export default function App() {
         </div>
 
         {/* Profile intro on mobile & tablet (desktop shows it in the sidebar) */}
-        {activeTab !== 'chat' && (
+        {activeTab !== 'chat' && activeTab !== 'project' && (
           <ProfileIntro
             portfolio={livePortfolio}
             onDownloadCV={handleDownloadCV}
@@ -237,7 +243,29 @@ export default function App() {
               >
                 <WorkGrid
                   projects={livePortfolio.projects}
-                  onSelectProject={(proj) => setSelectedProject(proj)}
+                  isLoading={isPortfolioLoading}
+                  onOpenProject={openProject}
+                />
+              </motion.div>
+            )}
+
+            {activeTab === 'project' && (
+              <motion.div
+                key={`project-${projectSlug}`}
+                // transitions.dev "Page side-by-side": 8px slide + 3px blur over 250ms
+                initial={{ opacity: 0, x: 8, filter: 'blur(3px)' }}
+                animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, x: -8, filter: 'blur(3px)' }}
+                transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                className="w-full flex-1"
+              >
+                <ProjectDetail
+                  project={currentProject}
+                  projects={livePortfolio.projects}
+                  isLoading={isPortfolioLoading}
+                  onOpenProject={openProject}
+                  onBack={() => changeTab('work')}
+                  onBookCall={handleBookCall}
                 />
               </motion.div>
             )}
@@ -252,7 +280,11 @@ export default function App() {
                 className="w-full flex-1"
               >
                 <ChatView
-                  onClose={() => changeTab(previousTab || 'work')}
+                  onClose={() =>
+                    previousTab === 'project' && previousSlug.current
+                      ? openProject(previousSlug.current)
+                      : changeTab(previousTab || 'work')
+                  }
                   onBookCall={handleBookCall}
                 />
               </motion.div>
@@ -307,15 +339,6 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <AnimatePresence>
-        {selectedProject && (
-          <ProjectModal
-            project={selectedProject}
-            onClose={() => setSelectedProject(null)}
-            onBookCall={handleBookCall}
-          />
-        )}
-      </AnimatePresence>
 
       {/* Global Floating Chat Trigger Button - visible across all pages */}
       <AnimatePresence>
@@ -330,6 +353,7 @@ export default function App() {
             <button
               onClick={() => {
                 setPreviousTab(activeTab);
+                previousSlug.current = projectSlug;
                 changeTab('chat');
               }}
               style={{ borderRadius: '9999px' }}
@@ -337,7 +361,7 @@ export default function App() {
               title="Chat With Jhonny"
             >
               <img
-                src="./assets/bot-icon.svg"
+                src="/assets/bot-icon.svg"
                 alt="Chat Bot"
                 className="w-[42px] h-[42px] object-contain group-hover:rotate-12 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
               />
@@ -346,5 +370,6 @@ export default function App() {
         )}
       </AnimatePresence>
     </div>
+    </MotionConfig>
   );
 }
