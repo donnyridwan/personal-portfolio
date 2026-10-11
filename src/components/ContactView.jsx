@@ -55,7 +55,7 @@ export default function ContactView() {
   }, []);
 
   return (
-    <div className="w-full flex-1 h-[calc(100vh-120px)] min-h-[560px] font-sans animate-fade-in flex flex-col">
+    <div className="w-full flex-1 h-[calc(100dvh-120px)] min-h-[560px] font-sans animate-fade-in flex flex-col">
       {/* Soft Monochrome Container - Sesuai layar penuh tanpa scroll */}
       <div className="w-full h-full bg-[#f5f5f7] border border-[#e5e5e7] rounded-none p-2 sm:p-4 lg:p-6 flex flex-col justify-center items-center shadow-sm overflow-hidden">
         {/* Cal inline embed code begins */}

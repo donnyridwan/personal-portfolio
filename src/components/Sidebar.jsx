@@ -11,23 +11,10 @@ export default function Sidebar({ portfolio, activeTab, setActiveTab, onDownload
   ];
 
   return (
-    <aside className="w-full md:w-[300px] shrink-0 bg-white flex flex-col justify-between py-3 px-6 md:min-h-[calc(100vh-72px)] md:sticky md:top-[72px]">
+    <aside className="w-full lg:w-[300px] shrink-0 bg-white flex flex-col justify-between py-3 px-4 sm:px-6 min-h-[calc(100dvh-72px)] lg:min-h-[calc(100vh-72px)] lg:sticky lg:top-[72px]">
       <div className="flex flex-col gap-6">
         {/* Profile Card Text */}
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-1">
-            <h1 className="font-serif font-normal text-[32px] leading-[1.15] tracking-[-0.64px] text-[#1e1e1e] transition-opacity hover:opacity-90">
-              {current.name}
-            </h1>
-            <p className="font-sans font-light text-[12px] tracking-[-0.24px] text-[#737373]">
-              {current.title}
-            </p>
-          </div>
-
-          <p className="font-sans font-light text-[13px] leading-[20.15px] tracking-[-0.3px] text-[#737373]">
-            {current.bio}
-          </p>
-        </div>
+        <ProfileText current={current} />
 
         {/* Divider */}
         <div className="border-t border-[#eeeeee] w-full" />
@@ -79,63 +66,100 @@ export default function Sidebar({ portfolio, activeTab, setActiveTab, onDownload
 
       {/* Bottom Icons & Buttons */}
       <div className="flex flex-col gap-3 pt-8 pb-4">
-        {/* Social Icons - color and opacity transition only */}
-        <div className="flex items-center justify-center gap-2.5">
-          <a
-            href={current.socials?.linkedin || portfolioData.socials.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-1.5 rounded-none opacity-60 hover:opacity-100 hover:bg-[#f2f2f4] transition-all duration-300"
-            title="LinkedIn"
-          >
-            <img src="./assets/linkedin.svg" alt="LinkedIn" className="w-5 h-5" />
-          </a>
-          <a
-            href={current.socials?.x || portfolioData.socials.x}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-1.5 rounded-none opacity-60 hover:opacity-100 hover:bg-[#f2f2f4] transition-all duration-300"
-            title="X (Twitter)"
-          >
-            <img src="./assets/x.svg" alt="X" className="w-5 h-5" />
-          </a>
-          <a
-            href={current.socials?.facebook || portfolioData.socials.facebook}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-1.5 rounded-none opacity-60 hover:opacity-100 hover:bg-[#f2f2f4] transition-all duration-300"
-            title="Facebook"
-          >
-            <img src="./assets/facebook.svg" alt="Facebook" className="w-5 h-5" />
-          </a>
-        </div>
-
-        {/* Buttons Row */}
-        <div className="flex items-center gap-2 w-full">
-          <button
-            onClick={onDownloadCV}
-            className="btn-dark-glow flex-1 h-[48px] px-3 py-2 rounded-none flex items-center justify-center gap-2 group cursor-pointer"
-          >
-            <img
-              src="./assets/download.svg"
-              alt=""
-              className="w-5 h-5 object-contain"
-            />
-            <span className="font-geist font-medium text-[14px] text-[#fbf5ef] tracking-[-0.28px] whitespace-nowrap">
-              Download CV
-            </span>
-          </button>
-          
-          <button
-            onClick={() => setActiveTab('contact')}
-            className="w-[48px] h-[48px] bg-white border border-[#efefef] rounded-none flex items-center justify-center hover:bg-[#f5f5f7] transition-colors duration-300 cursor-pointer shadow-[0px_2px_4px_rgba(0,0,0,0.04)] shrink-0"
-            title="Contact & Schedule"
-          >
-            <img src="./assets/envelope.svg" alt="Email" className="w-5 h-5" />
-          </button>
-        </div>
-
+        <SocialLinks current={current} />
+        <CvActions onDownloadCV={onDownloadCV} onContact={() => setActiveTab('contact')} />
       </div>
     </aside>
+  );
+}
+
+// Profile block shown at the top of the page on mobile & tablet, where the sidebar is collapsed into the menu
+export function ProfileIntro({ portfolio, onDownloadCV, onOpenContact }) {
+  const current = portfolio || portfolioData;
+
+  return (
+    <section className="lg:hidden w-full px-4 sm:px-6 pt-3 pb-6 md:pb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-6 md:gap-10 border-b border-[#eeeeee]">
+      <div className="md:max-w-[440px]">
+        <ProfileText current={current} />
+      </div>
+
+      <div className="flex flex-col gap-3 w-full md:w-[280px] shrink-0">
+        <SocialLinks current={current} className="md:justify-end" />
+        <CvActions onDownloadCV={onDownloadCV} onContact={onOpenContact} />
+      </div>
+    </section>
+  );
+}
+
+function ProfileText({ current }) {
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-1">
+        <h1 className="font-serif font-normal text-[32px] leading-[1.15] tracking-[-0.64px] text-[#1e1e1e] transition-opacity hover:opacity-90">
+          {current.name}
+        </h1>
+        <p className="font-sans font-light text-[12px] tracking-[-0.24px] text-[#737373]">
+          {current.title}
+        </p>
+      </div>
+
+      <p className="font-sans font-light text-[13px] leading-[20.15px] tracking-[-0.3px] text-[#737373]">
+        {current.bio}
+      </p>
+    </div>
+  );
+}
+
+// Social Icons - color and opacity transition only
+function SocialLinks({ current, className = '' }) {
+  const links = [
+    { href: current.socials?.linkedin || portfolioData.socials.linkedin, title: 'LinkedIn', icon: './assets/linkedin.svg', alt: 'LinkedIn' },
+    { href: current.socials?.x || portfolioData.socials.x, title: 'X (Twitter)', icon: './assets/x.svg', alt: 'X' },
+    { href: current.socials?.facebook || portfolioData.socials.facebook, title: 'Facebook', icon: './assets/facebook.svg', alt: 'Facebook' },
+  ];
+
+  return (
+    <div className={`flex items-center justify-center gap-2.5 ${className}`}>
+      {links.map((link) => (
+        <a
+          key={link.title}
+          href={link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-1.5 rounded-none opacity-60 hover:opacity-100 hover:bg-[#f2f2f4] transition-all duration-300"
+          title={link.title}
+        >
+          <img src={link.icon} alt={link.alt} className="w-5 h-5" />
+        </a>
+      ))}
+    </div>
+  );
+}
+
+function CvActions({ onDownloadCV, onContact }) {
+  return (
+    <div className="flex items-center gap-2 w-full">
+      <button
+        onClick={onDownloadCV}
+        className="btn-dark-glow flex-1 h-[48px] px-3 py-2 rounded-none flex items-center justify-center gap-2 group cursor-pointer"
+      >
+        <img
+          src="./assets/download.svg"
+          alt=""
+          className="w-5 h-5 object-contain"
+        />
+        <span className="font-geist font-medium text-[14px] text-[#fbf5ef] tracking-[-0.28px] whitespace-nowrap">
+          Download CV
+        </span>
+      </button>
+
+      <button
+        onClick={onContact}
+        className="w-[48px] h-[48px] bg-white border border-[#efefef] rounded-none flex items-center justify-center hover:bg-[#f5f5f7] transition-colors duration-300 cursor-pointer shadow-[0px_2px_4px_rgba(0,0,0,0.04)] shrink-0"
+        title="Contact & Schedule"
+      >
+        <img src="./assets/envelope.svg" alt="Email" className="w-5 h-5" />
+      </button>
+    </div>
   );
 }

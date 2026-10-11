@@ -38,7 +38,7 @@ export default function ProjectModal({ project, onClose, onBookCall }) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 16 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="bg-white rounded-none max-w-[650px] w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 shadow-2xl relative border border-neutral-100 my-auto"
+        className="bg-white rounded-none max-w-[650px] w-full max-h-[90dvh] overflow-y-auto p-5 sm:p-6 md:p-8 shadow-2xl relative border border-neutral-100 my-auto"
       >
         <button
           onClick={onClose}
@@ -50,16 +50,16 @@ export default function ProjectModal({ project, onClose, onBookCall }) {
         </button>
 
         <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 pr-8">
             <span className="text-[12px] uppercase font-semibold text-[#8a857d] tracking-wider">
               {project.category} • {project.year}
             </span>
-            <h2 className="text-[26px] font-serif text-black leading-snug">
+            <h2 className="text-[22px] sm:text-[26px] font-serif text-black leading-snug">
               {project.title}
             </h2>
           </div>
 
-          <div className="w-full h-[320px] rounded-none overflow-hidden bg-[#e7eef0] relative">
+          <div className="w-full h-[220px] sm:h-[320px] rounded-none overflow-hidden bg-[#e7eef0] relative">
             {project.mediaType === 'video' || project.video || project.video_url ? (
               <video
                 src={project.video || project.video_url || project.image}
@@ -113,7 +113,7 @@ export default function ProjectModal({ project, onClose, onBookCall }) {
             </div>
           </div>
 
-          <div className="flex items-center justify-between pt-4 border-t border-neutral-100">
+          <div className="flex items-center justify-between gap-4 pt-4 border-t border-neutral-100">
             <button
               onClick={onClose}
               className="text-sm text-neutral-500 hover:text-black transition-colors"

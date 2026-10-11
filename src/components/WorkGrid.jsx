@@ -11,21 +11,21 @@ export default function WorkGrid({ projects, onSelectProject }) {
 
   return (
     <div className="flex-1 relative pb-24 font-sans">
-      {/* Masonry 2-Column Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-7 w-full">
+      {/* Masonry 2-Column Grid — on mobile the columns flatten (display: contents) and cards keep their original order */}
+      <div className="flex flex-col gap-8 md:grid md:grid-cols-2 md:gap-7 w-full">
         {/* Left Column */}
-        <div className="flex flex-col gap-7">
+        <div className="contents md:flex md:flex-col md:gap-7">
           {leftColumnProjects.map((project, idx) => {
             const containerHeight =
               project.span === 'tall'
-                ? 'h-[605px]'
+                ? 'aspect-[4/5] md:aspect-auto md:h-[605px]'
                 : project.span === 'medium'
-                ? 'h-[460px]'
+                ? 'aspect-[1/1] md:aspect-auto md:h-[460px]'
                 : idx === 0
-                ? 'h-[365px]'
+                ? 'aspect-[4/3] md:aspect-auto md:h-[365px]'
                 : idx === 1
-                ? 'h-[605px]'
-                : 'h-[369px]';
+                ? 'aspect-[4/5] md:aspect-auto md:h-[605px]'
+                : 'aspect-[4/3] md:aspect-auto md:h-[369px]';
             return (
               <ProjectCard
                 key={project.id}
@@ -39,16 +39,16 @@ export default function WorkGrid({ projects, onSelectProject }) {
         </div>
 
         {/* Right Column */}
-        <div className="flex flex-col gap-7">
+        <div className="contents md:flex md:flex-col md:gap-7">
           {rightColumnProjects.map((project, idx) => {
             const containerHeight =
               project.span === 'tall'
-                ? 'h-[605px]'
+                ? 'aspect-[4/5] md:aspect-auto md:h-[605px]'
                 : project.span === 'short'
-                ? 'h-[369px]'
+                ? 'aspect-[4/3] md:aspect-auto md:h-[369px]'
                 : idx === 0
-                ? 'h-[605px]'
-                : 'h-[369px]';
+                ? 'aspect-[4/5] md:aspect-auto md:h-[605px]'
+                : 'aspect-[4/3] md:aspect-auto md:h-[369px]';
             return (
               <ProjectCard
                 key={project.id}
@@ -72,6 +72,7 @@ function ProjectCard({ project, index, containerHeight, onSelect }) {
   return (
     <motion.article
       onClick={onSelect}
+      style={{ order: index }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Lenis from 'lenis';
 import confetti from 'canvas-confetti';
 import Navbar from './components/Navbar';
-import Sidebar from './components/Sidebar';
+import Sidebar, { ProfileIntro } from './components/Sidebar';
 import WorkGrid from './components/WorkGrid';
 import ChatView from './components/ChatView';
 import AboutView from './components/AboutView';
@@ -118,6 +118,7 @@ export default function App() {
 
   const changeTab = (tab) => {
     setActiveTab(tab);
+    setIsMobileMenuOpen(false);
     window.location.hash = tab;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -195,9 +196,12 @@ export default function App() {
       />
 
       {/* Main Body Layout matching 1440px desktop frame */}
-      <div className="flex-1 max-w-[1440px] w-full mx-auto flex flex-col md:flex-row relative">
+      <div className="flex-1 max-w-[1440px] w-full mx-auto flex flex-col lg:flex-row relative">
         {/* Sidebar */}
-        <div className={`md:block ${isMobileMenuOpen ? 'block' : 'hidden'} z-20`}>
+        <div
+          data-lenis-prevent
+          className={`${isMobileMenuOpen ? 'block' : 'hidden'} lg:block fixed inset-x-0 top-[72px] bottom-0 overflow-y-auto bg-white z-30 lg:static lg:overflow-visible lg:z-20`}
+        >
           <Sidebar
             portfolio={livePortfolio}
             activeTab={activeTab}
@@ -209,6 +213,15 @@ export default function App() {
             onOpenContact={() => changeTab('contact')}
           />
         </div>
+
+        {/* Profile intro on mobile & tablet (desktop shows it in the sidebar) */}
+        {activeTab !== 'chat' && (
+          <ProfileIntro
+            portfolio={livePortfolio}
+            onDownloadCV={handleDownloadCV}
+            onOpenContact={() => changeTab('contact')}
+          />
+        )}
 
         {/* Content Pane with Framer Motion luxury transitions */}
         <main className="flex-1 px-4 sm:px-6 lg:px-8 py-6 flex flex-col min-w-0">
@@ -286,7 +299,7 @@ export default function App() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.95 }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-[#141414] text-white px-5 py-3 rounded-none text-[13.5px] font-sans shadow-2xl flex items-center gap-2.5 border border-white/10 backdrop-blur-md"
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-max max-w-[calc(100vw-32px)] bg-[#141414] text-white px-5 py-3 rounded-none text-[13.5px] font-sans shadow-2xl flex items-center gap-2.5 border border-white/10 backdrop-blur-md"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
             <span>{toastMessage}</span>
@@ -306,13 +319,13 @@ export default function App() {
 
       {/* Global Floating Chat Trigger Button - visible across all pages */}
       <AnimatePresence>
-        {activeTab !== 'chat' && (
+        {activeTab !== 'chat' && !isMobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed bottom-8 right-8 z-30"
+            className="fixed bottom-5 right-5 sm:bottom-8 sm:right-8 z-30"
           >
             <button
               onClick={() => {

@@ -79,7 +79,7 @@ export default function ChatView({ onClose, onBookCall }) {
   };
 
   return (
-    <div className="flex-1 relative h-[calc(100vh-110px)] min-h-[560px] w-full flex items-center justify-center overflow-hidden rounded-[8px]">
+    <div className="flex-1 relative h-[calc(100dvh-110px)] min-h-[520px] w-full flex items-center justify-center overflow-hidden rounded-[8px]">
       {/* Background with Figma blue wave artwork and subtle luxury float */}
       <div className="absolute inset-0 bg-[#e7eef0] overflow-hidden pointer-events-none rounded-[8px]">
         <motion.img
@@ -111,7 +111,7 @@ export default function ChatView({ onClose, onBookCall }) {
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 w-full max-w-[456px] px-4 py-4 flex flex-col items-center gap-3 h-full justify-center"
       >
-        <div className="w-full backdrop-blur-[20px] bg-white/45 p-[10px] rounded-[8px] shadow-[0px_24px_50px_rgba(0,0,0,0.1)] border border-white/70 flex flex-col h-[74vh] max-h-[620px] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+        <div className="w-full backdrop-blur-[20px] bg-white/45 p-[10px] rounded-[8px] shadow-[0px_24px_50px_rgba(0,0,0,0.1)] border border-white/70 flex flex-col h-[68dvh] sm:h-[74vh] max-h-[620px] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
           <div className="chat-glass border border-white rounded-[8px] px-3.5 py-3.5 flex flex-col gap-3 h-full overflow-hidden">
             {/* Message Header */}
             <div className="flex flex-col items-center justify-center gap-1.5 pt-1 pb-2 border-b border-black/5 shrink-0">

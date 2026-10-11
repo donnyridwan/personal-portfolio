@@ -34,7 +34,7 @@ export default function AboutView({ portfolio, onBookCall, onOpenContact }) {
       </section>
 
       {/* 2. Testimonials (3 Cards) */}
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-4">
+      <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 w-full mt-4">
         {current.testimonials.map((t, idx) => (
           <div
             key={idx}
@@ -129,7 +129,7 @@ export default function AboutView({ portfolio, onBookCall, onOpenContact }) {
 
       {/* 5. Get in Touch Section */}
       <section className="mt-20 pt-16 border-t border-[#eeeeee] w-full flex flex-col items-center">
-        <div className="w-full bg-[#f5f5f7] border border-[#e5e5e7] rounded-none p-10 sm:p-14 text-center flex flex-col items-center justify-center">
+        <div className="w-full bg-[#f5f5f7] border border-[#e5e5e7] rounded-none px-5 py-10 sm:p-14 text-center flex flex-col items-center justify-center">
           <span className="text-[11px] font-medium tracking-[0.66px] uppercase text-[#a3a3a3] font-sans">
             Contact
           </span>
@@ -152,7 +152,7 @@ export default function AboutView({ portfolio, onBookCall, onOpenContact }) {
             </a>
             <a
               href={`mailto:${current.email}`}
-              className="font-serif font-normal text-[26px] sm:text-[32px] text-[#171717] hover:underline underline-offset-4 decoration-1 transition-all mt-0.5 tracking-tight"
+              className="font-serif font-normal text-[22px] sm:text-[32px] break-all sm:break-normal text-[#171717] hover:underline underline-offset-4 decoration-1 transition-all mt-0.5 tracking-tight"
             >
               {current.email}
             </a>
