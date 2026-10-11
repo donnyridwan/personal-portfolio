@@ -182,27 +182,6 @@ export default function MediaUploader({ value, onChange, mediaType = 'image', on
         onChange={(e) => e.target.files && handleFile(e.target.files[0])}
       />
 
-      {/* Manual URL input fallback */}
-      <div className="flex items-center gap-2">
-        <input
-          type="text"
-          value={value || ''}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder="Atau masukkan URL gambar / video langsung..."
-          className="flex-1 bg-white border border-[#e5e5e7] px-3 py-1.5 text-[12.5px] text-[#171717] focus:outline-none focus:border-black rounded-none"
-        />
-        {value && (
-          <a
-            href={value}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-2.5 py-1.5 bg-[#f0f0f2] text-[11px] text-[#555] hover:text-black whitespace-nowrap"
-          >
-            Buka ↗
-          </a>
-        )}
-      </div>
-
       {error && (
         <p className="text-[12px] text-red-600 bg-red-50 border border-red-200 px-3 py-1.5">
           {error}
