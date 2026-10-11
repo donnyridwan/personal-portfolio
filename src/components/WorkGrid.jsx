@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { portfolioData } from '../data/portfolioData';
 import { getPublishedProjects, getProjectSlug } from '../lib/projects';
@@ -9,61 +9,20 @@ export default function WorkGrid({ projects, isLoading, onOpenProject }) {
 
   const projectList = getPublishedProjects(projects && projects.length > 0 ? projects : portfolioData.projects);
 
-  // Split into 2 columns
-  const leftColumnProjects = projectList.filter((_, idx) => idx % 2 === 0);
-  const rightColumnProjects = projectList.filter((_, idx) => idx % 2 === 1);
+  // Two columns, alternating; cards take the cover's natural height (fixed width, free height)
+  const columns = [projectList.filter((_, idx) => idx % 2 === 0), projectList.filter((_, idx) => idx % 2 === 1)];
 
   return (
     <div className="flex-1 relative pb-24 font-sans">
-      {/* Masonry 2-Column Grid — on mobile the columns flatten (display: contents) and cards keep their original order */}
-      <div className="flex flex-col gap-8 md:grid md:grid-cols-2 md:gap-7 w-full">
-        {/* Left Column */}
-        <div className="contents md:flex md:flex-col md:gap-7">
-          {leftColumnProjects.map((project, idx) => {
-            const containerHeight =
-              project.span === 'tall'
-                ? 'aspect-[4/5] md:aspect-auto md:h-[605px]'
-                : project.span === 'medium'
-                ? 'aspect-[1/1] md:aspect-auto md:h-[460px]'
-                : idx === 0
-                ? 'aspect-[4/3] md:aspect-auto md:h-[365px]'
-                : idx === 1
-                ? 'aspect-[4/5] md:aspect-auto md:h-[605px]'
-                : 'aspect-[4/3] md:aspect-auto md:h-[369px]';
-            return (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                index={idx * 2}
-                containerHeight={containerHeight}
-                onOpen={onOpenProject}
-              />
-            );
-          })}
-        </div>
-
-        {/* Right Column */}
-        <div className="contents md:flex md:flex-col md:gap-7">
-          {rightColumnProjects.map((project, idx) => {
-            const containerHeight =
-              project.span === 'tall'
-                ? 'aspect-[4/5] md:aspect-auto md:h-[605px]'
-                : project.span === 'short'
-                ? 'aspect-[4/3] md:aspect-auto md:h-[369px]'
-                : idx === 0
-                ? 'aspect-[4/5] md:aspect-auto md:h-[605px]'
-                : 'aspect-[4/3] md:aspect-auto md:h-[369px]';
-            return (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                index={idx * 2 + 1}
-                containerHeight={containerHeight}
-                onOpen={onOpenProject}
-              />
-            );
-          })}
-        </div>
+      {/* On mobile the columns flatten (display: contents) and cards keep their original order */}
+      <div className="flex flex-col gap-8 md:grid md:grid-cols-2 md:gap-7 md:items-start w-full">
+        {columns.map((column, col) => (
+          <div key={col} className="contents md:flex md:flex-col md:gap-7">
+            {column.map((project, idx) => (
+              <ProjectCard key={project.id} project={project} index={idx * 2 + col} onOpen={onOpenProject} />
+            ))}
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -93,10 +52,8 @@ function WorkGridSkeleton() {
   );
 }
 
-function ProjectCard({ project, index, containerHeight, onOpen }) {
+function ProjectCard({ project, index, onOpen }) {
   const slug = getProjectSlug(project);
-  const videoSrc = project.video || project.video_url;
-  const isVideo = project.mediaType === 'video' || Boolean(videoSrc);
 
   return (
     <motion.a
@@ -117,31 +74,14 @@ function ProjectCard({ project, index, containerHeight, onOpen }) {
       }}
       className="flex flex-col w-full group cursor-pointer"
     >
-      {/* Visual Canvas Container with radius 0 */}
       <div
         style={{ backgroundColor: project.accentColor || '#e7eef0' }}
-        className={`w-full ${containerHeight} rounded-none relative overflow-hidden`}
+        className="w-full rounded-none relative overflow-hidden"
       >
-        {/* Image or Video from Cloudinary / Database */}
-        {isVideo && videoSrc ? (
-          <video
-            src={videoSrc}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover absolute inset-0"
-          />
-        ) : project.image ? (
-          <img
-            src={project.image}
-            alt={project.title}
-            className="w-full h-full object-cover absolute inset-0"
-          />
-        ) : null}
+        <CardMedia project={project} />
 
         {/* Hover Overlay */}
-        <div className="w-full h-full relative z-10 flex flex-col justify-between p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] bg-black/15">
+        <div className="absolute inset-0 z-10 flex flex-col justify-between p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] bg-black/15">
           <span className="text-[12px] font-sans font-medium text-neutral-800 bg-white/95 px-3 py-1 rounded-none w-fit backdrop-blur-sm shadow-sm tracking-tight">
             {project.category}
           </span>
@@ -163,5 +103,38 @@ function ProjectCard({ project, index, containerHeight, onOpen }) {
         </span>
       </div>
     </motion.a>
+  );
+}
+
+// Cover at its natural aspect ratio; holds a 4:3 placeholder until the media knows its size
+function CardMedia({ project }) {
+  const videoSrc = project.video || project.video_url;
+  const isVideo = (project.mediaType === 'video' || Boolean(videoSrc)) && Boolean(videoSrc);
+  const [ready, setReady] = useState(false);
+  const imgRef = useRef(null);
+
+  // Cached images can finish loading before React attaches onLoad
+  useEffect(() => {
+    const img = imgRef.current;
+    if (img && img.complete && img.naturalWidth > 0) setReady(true);
+  }, []);
+
+  const mediaClass = 'w-full h-auto block';
+  return (
+    <div className={ready ? '' : 'aspect-[4/3]'}>
+      {isVideo ? (
+        <video
+          src={videoSrc}
+          autoPlay
+          loop
+          muted
+          playsInline
+          onLoadedMetadata={() => setReady(true)}
+          className={mediaClass}
+        />
+      ) : project.image ? (
+        <img ref={imgRef} src={project.image} alt={project.title} onLoad={() => setReady(true)} className={mediaClass} />
+      ) : null}
+    </div>
   );
 }

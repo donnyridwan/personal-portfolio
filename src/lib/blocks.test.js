@@ -75,7 +75,13 @@ describe('isRenderable', () => {
 
 describe('normalizeCaseStudy', () => {
   it('returns empty defaults for null', () => {
-    expect(normalizeCaseStudy(null)).toEqual({ client: '', summary: '', liveUrl: '', blocks: [] });
+    expect(normalizeCaseStudy(null)).toEqual({
+      client: '',
+      summary: '',
+      liveUrl: '',
+      cover: { url: '', mediaType: 'image' },
+      blocks: [],
+    });
   });
 
   it('parses a JSON string', () => {
@@ -131,5 +137,20 @@ describe('patchBlock', () => {
 
   it('returns the list unchanged when the block was deleted meanwhile', () => {
     expect(patchBlock(blocks, 'missing', { heading: 'x' })).toEqual(blocks);
+  });
+});
+
+describe('normalizeCaseStudy cover', () => {
+  it('keeps a dedicated detail-page cover', () => {
+    const cs = normalizeCaseStudy({ cover: { url: 'https://x/hero.mp4', mediaType: 'video' } });
+    expect(cs.cover).toEqual({ url: 'https://x/hero.mp4', mediaType: 'video' });
+  });
+
+  it('falls back to an image cover for unknown media types', () => {
+    expect(normalizeCaseStudy({ cover: { url: 'https://x/a.png', mediaType: 'gif' } }).cover.mediaType).toBe('image');
+  });
+
+  it('survives a malformed cover value', () => {
+    expect(normalizeCaseStudy({ cover: 'nope' }).cover).toEqual({ url: '', mediaType: 'image' });
   });
 });

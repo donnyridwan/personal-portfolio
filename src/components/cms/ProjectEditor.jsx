@@ -195,43 +195,9 @@ export default function ProjectEditor({ project, existingSlugs = [], onSave, onC
                   className="bg-[#f8f8fa] border border-[#e5e5e7] px-3.5 py-2.5 text-[13.5px] text-[#171717] focus:outline-none focus:border-black rounded-none"
                 />
               </div>
-
-              <div className="flex flex-col">
-                <label className="text-[11px] font-medium uppercase tracking-[0.5px] text-[#737373] mb-1.5">
-                  Ukuran Grid (Span)
-                </label>
-                <select
-                  value={formData.span}
-                  onChange={(e) => setFormData({ ...formData, span: e.target.value })}
-                  className="bg-[#f8f8fa] border border-[#e5e5e7] px-3.5 py-2.5 text-[13.5px] text-[#171717] focus:outline-none focus:border-black rounded-none"
-                >
-                  <option value="short">Short Card (365px)</option>
-                  <option value="tall">Tall Card (605px)</option>
-                </select>
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-[11px] font-medium uppercase tracking-[0.5px] text-[#737373] mb-1.5">
-                  Warna Aksen Card
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="color"
-                    value={formData.accentColor}
-                    onChange={(e) => setFormData({ ...formData, accentColor: e.target.value })}
-                    className="w-10 h-10 border border-[#e5e5e7] p-0.5 rounded-none cursor-pointer shrink-0"
-                  />
-                  <input
-                    type="text"
-                    value={formData.accentColor}
-                    onChange={(e) => setFormData({ ...formData, accentColor: e.target.value })}
-                    className="flex-1 bg-[#f8f8fa] border border-[#e5e5e7] px-3 py-2 text-[13px] text-[#171717] focus:outline-none focus:border-black rounded-none font-mono"
-                  />
-                </div>
-              </div>
           </Panel>
 
-          <Panel title="Cover">
+          <Panel title="Cover Grid" description="Untuk daftar All Work. Rasio bebas: tinggi card mengikuti gambar (lebar tetap).">
               <MediaUploader
                 value={formData.mediaType === 'video' ? formData.video : formData.image}
                 mediaType={formData.mediaType}
@@ -241,6 +207,25 @@ export default function ProjectEditor({ project, existingSlugs = [], onSave, onC
                   setFormData((prev) => (prev.mediaType === 'video' ? { ...prev, video: url } : { ...prev, image: url }))
                 }
               />
+          </Panel>
+
+          <Panel title="Cover Halaman Detail" description="Rasio wajib 4:3 seperti frame Dribbble (ideal 1600×1200), dipakai di halaman detail dan kartu Prev/Next. Gambar dipotong pas 4:3. Kosongkan untuk memakai Cover Grid.">
+            <MediaUploader
+              value={formData.caseStudy.cover.url}
+              mediaType={formData.caseStudy.cover.mediaType}
+              onMediaTypeChange={(type) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  caseStudy: { ...prev.caseStudy, cover: { ...prev.caseStudy.cover, mediaType: type } },
+                }))
+              }
+              onChange={(url) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  caseStudy: { ...prev.caseStudy, cover: { ...prev.caseStudy.cover, url } },
+                }))
+              }
+            />
           </Panel>
 
           <Panel title="Case Study Info" description="Ditampilkan di bagian atas halaman detail project.">
@@ -266,18 +251,6 @@ export default function ProjectEditor({ project, existingSlugs = [], onSave, onC
             />
           </div>
 
-          <div className="flex flex-col">
-            <label className="text-[11px] font-medium uppercase tracking-[0.5px] text-[#737373] mb-1.5">
-              Deskripsi Proyek & Tantangan UX
-            </label>
-            <textarea
-              rows={5}
-              value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              placeholder="Ceritakan overview, tantangan desain, dan solusi yang diimplementasikan..."
-              className="bg-[#f8f8fa] border border-[#e5e5e7] px-3.5 py-2.5 text-[13.5px] text-[#171717] focus:outline-none focus:border-black rounded-none resize-none leading-relaxed"
-            />
-          </div>
           <div className="flex flex-col">
             <label className="text-[11px] font-medium uppercase tracking-[0.5px] text-[#737373] mb-1.5">
               Tools & Spesialisasi

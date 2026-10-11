@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getPublishedProjects, findPublishedProject, getAdjacentProjects, getProjectSlug } from './projects';
+import { getPublishedProjects, findPublishedProject, getAdjacentProjects, getProjectSlug, getDetailCover } from './projects';
 
 const ps = [
   { id: '1', slug: 'a', published: true },
@@ -53,5 +53,27 @@ describe('getProjectSlug', () => {
 
   it('falls back to the id when the title has no slug-safe characters', () => {
     expect(getProjectSlug({ id: 'p1', title: '🚀' })).toBe('p1');
+  });
+});
+
+describe('getDetailCover', () => {
+  it('prefers the dedicated detail-page cover', () => {
+    const project = { image: 'grid.png', caseStudy: { cover: { url: 'detail.mp4', mediaType: 'video' } } };
+    expect(getDetailCover(project)).toEqual({ url: 'detail.mp4', mediaType: 'video' });
+  });
+
+  it('falls back to the grid image', () => {
+    expect(getDetailCover({ image: 'grid.png', mediaType: 'image', caseStudy: { cover: { url: '', mediaType: 'image' } } })).toEqual({
+      url: 'grid.png',
+      mediaType: 'image',
+    });
+  });
+
+  it('falls back to the grid video', () => {
+    expect(getDetailCover({ image: '', video: 'grid.mp4', mediaType: 'video' })).toEqual({ url: 'grid.mp4', mediaType: 'video' });
+  });
+
+  it('returns an empty url when the project has no media at all', () => {
+    expect(getDetailCover({ image: '', video: '' })).toEqual({ url: '', mediaType: 'image' });
   });
 });

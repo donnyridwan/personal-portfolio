@@ -96,6 +96,12 @@ export function isRenderable(block) {
   }
 }
 
+// Detail-page cover, separate from the grid thumbnail; empty url means "use the grid cover"
+function normalizeCover(raw) {
+  const cover = raw && typeof raw === 'object' ? raw : {};
+  return { url: str(cover.url), mediaType: cover.mediaType === 'video' ? 'video' : 'image' };
+}
+
 export function normalizeCaseStudy(raw) {
   let data = raw;
   if (typeof data === 'string') {
@@ -111,6 +117,7 @@ export function normalizeCaseStudy(raw) {
     client: str(data.client),
     summary: str(data.summary),
     liveUrl: str(data.liveUrl),
+    cover: normalizeCover(data.cover),
     blocks: arr(data.blocks).map(normalizeBlock).filter(Boolean),
   };
 }

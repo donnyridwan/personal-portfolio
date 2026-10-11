@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const labelClass = 'text-[11px] font-medium uppercase tracking-[0.5px] text-[#737373] mb-1.5';
 const inputClass =
@@ -12,22 +12,7 @@ function FieldError({ children }) {
 export default function CaseStudyFields({ value, onChange, slugError, liveUrlError }) {
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex flex-col">
-        <label className={labelClass}>Slug (URL halaman) *</label>
-        <div className="flex items-stretch">
-          <span className="bg-[#efeeec] border border-r-0 border-[#e5e5e7] px-3 flex items-center text-[13px] text-[#737373] font-mono">
-            /work/
-          </span>
-          <input
-            type="text"
-            value={value.slug}
-            onChange={(e) => onChange({ slug: e.target.value })}
-            placeholder="harvasta"
-            className={`${inputClass} flex-1 min-w-0 font-mono ${slugError ? 'border-red-400' : ''}`}
-          />
-        </div>
-        <FieldError>{slugError}</FieldError>
-      </div>
+      <SlugSetting slug={value.slug} onChange={(slug) => onChange({ slug })} error={slugError} />
 
       <div className="flex flex-col gap-5">
         <div className="flex flex-col">
@@ -63,6 +48,52 @@ export default function CaseStudyFields({ value, onChange, slugError, liveUrlErr
           className={inputClass}
         />
       </div>
+    </div>
+  );
+}
+
+// Slug is usually auto-derived from the title, so it stays folded unless the author opens it
+// or it has an error that needs fixing
+function SlugSetting({ slug, onChange, error }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const open = isOpen || Boolean(error);
+
+  return (
+    <div className={`border ${error ? 'border-red-300 bg-red-50/40' : 'border-[#e5e5e7] bg-[#fafafa]'} px-3.5 py-2.5 flex flex-col gap-2`}>
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-col min-w-0">
+          <span className="text-[10.5px] font-medium uppercase tracking-[0.5px] text-[#737373]">Pengaturan URL</span>
+          <span className="text-[12.5px] text-[#171717] font-mono truncate">/work/{slug || '…'}</span>
+        </div>
+        {!error && (
+          <button
+            type="button"
+            onClick={() => setIsOpen((v) => !v)}
+            aria-expanded={open}
+            className="text-[12px] text-[#171717] underline underline-offset-4 decoration-1 hover:opacity-70 shrink-0 cursor-pointer"
+          >
+            {open ? 'Tutup' : 'Ubah'}
+          </button>
+        )}
+      </div>
+      {open && (
+        <div className="flex flex-col">
+          <div className="flex items-stretch">
+            <span className="bg-[#efeeec] border border-r-0 border-[#e5e5e7] px-3 flex items-center text-[13px] text-[#737373] font-mono">
+              /work/
+            </span>
+            <input
+              type="text"
+              value={slug}
+              onChange={(e) => onChange(e.target.value)}
+              placeholder="harvasta"
+              aria-label="Slug URL halaman"
+              className={`${inputClass} flex-1 min-w-0 font-mono ${error ? 'border-red-400' : ''}`}
+            />
+          </div>
+          <FieldError>{error}</FieldError>
+        </div>
+      )}
     </div>
   );
 }
