@@ -22,7 +22,7 @@ export default function Navbar({ onBookCall, onOpenMobileMenu, isMobileMenuOpen,
 
         <button
           onClick={onBookCall}
-          className="btn-dark-glow h-[36px] px-[12px] py-[8px] rounded-none flex items-center justify-center gap-2 group cursor-pointer"
+          className="btn-dark-glow h-[36px] px-[12px] py-[8px] rounded-none hidden md:flex items-center justify-center gap-2 group cursor-pointer"
         >
           <span className="font-sans font-medium text-[14px] text-white tracking-[-0.28px] whitespace-nowrap leading-none">
             Book a Call
