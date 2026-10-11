@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
-import { normalizeCaseStudy } from '../lib/blocks';
+import { normalizeCaseStudy, isRenderable } from '../lib/blocks';
+import BlockRenderer from './blocks/BlockRenderer';
 import { getAdjacentProjects, getProjectSlug } from '../lib/projects';
 import { projectPath } from '../lib/route';
 
@@ -132,16 +133,12 @@ function ProjectCover({ project }) {
   );
 }
 
-function ProjectBody({ project }) {
-  if (!project.description) return null;
-  return (
-    <section className="flex flex-col gap-3">
-      <span className="text-[11px] font-medium tracking-[0.66px] uppercase text-[#a3a3a3]">Overview</span>
-      <p className="font-light text-[15px] leading-[26px] tracking-[-0.2px] text-[#525252] whitespace-pre-line">
-        {project.description}
-      </p>
-    </section>
-  );
+// Authored blocks, or the legacy description as an "Overview" text block when none are renderable yet
+function ProjectBody({ project, caseStudy }) {
+  const blocks = caseStudy.blocks.some(isRenderable)
+    ? caseStudy.blocks
+    : [{ id: 'overview', type: 'text', label: 'Overview', heading: '', body: project.description || '' }];
+  return <BlockRenderer blocks={blocks} />;
 }
 
 function AdjacentCard({ project, direction, onOpenProject }) {
