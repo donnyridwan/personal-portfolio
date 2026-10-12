@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Reorder } from 'framer-motion';
 import ProjectEditor from './ProjectEditor';
-import { getProjectSlug } from '../../lib/projects';
+import { getProjectSlug, moveItem, nextSort, toSortOrder } from '../../lib/projects';
+import ProjectListRow from './ProjectListRow';
 import { saveToNeon, fetchPortfolioFromNeon } from '../../lib/neon';
 import { getCloudinaryConfig, saveCloudinaryConfig } from '../../lib/cloudinary';
 
@@ -75,6 +77,30 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
       notify('Project berhasil disimpan ke Neon Database!');
     } catch (e) {
       alert('Gagal menyimpan ke Neon: ' + e.message);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  // Latest data for drag callbacks, which fire after the render that started the drag
+  const dataRef = useRef(data);
+  dataRef.current = data;
+  const orderBeforeDrag = useRef(null);
+
+  // Saves the list order right after a drop or ↑/↓; reverts to the previous order if saving fails
+  const persistProjectOrder = async (ordered, previous) => {
+    const unchanged = previous && ordered.length === previous.length && ordered.every((p, i) => p.id === previous[i].id);
+    if (unchanged) return;
+    const sorted = ordered.map((p, i) => ({ ...p, sort: i + 1 }));
+    setData((prev) => ({ ...prev, projects: sorted }));
+    setIsSyncing(true);
+    try {
+      await saveToNeon('reorder_projects', toSortOrder(sorted));
+      onUpdatePortfolio({ ...dataRef.current, projects: sorted });
+      notify('Urutan disimpan.');
+    } catch (e) {
+      if (previous) setData((prev) => ({ ...prev, projects: previous }));
+      alert('Gagal menyimpan urutan: ' + e.message);
     } finally {
       setIsSyncing(false);
     }
@@ -360,6 +386,7 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
               <ProjectEditor
                 project={editingProject}
                 existingSlugs={data.projects.map(getProjectSlug)}
+                defaultSort={nextSort(data.projects)}
                 onSave={handleSaveProject}
                 onCancel={() => {
                   setIsAddingProject(false);
@@ -388,76 +415,33 @@ export default function CmsDashboard({ portfolio, onUpdatePortfolio, onExitCms }
                   </button>
                 </div>
 
-                {/* Projects Grid Table */}
-                <div className="grid grid-cols-1 gap-4">
+                {/* Projects list: drag the handle (or use ↑/↓) to change the order on the website */}
+                <Reorder.Group
+                  axis="y"
+                  values={data.projects}
+                  onReorder={(order) => setData((prev) => ({ ...prev, projects: order }))}
+                  className="flex flex-col gap-4"
+                >
                   {data.projects.map((project, idx) => (
-                    <div
-                      key={project.id || idx}
-                      className="bg-white border border-[#e5e5e7] p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all hover:border-[#b3b3b3]"
-                    >
-                      <div className="flex items-center gap-4">
-                        {/* Thumbnail */}
-                        <div className="w-20 h-16 bg-[#e7eef0] shrink-0 border border-[#e5e5e7] overflow-hidden flex items-center justify-center">
-                          {project.video ? (
-                            <span className="text-[11px] font-mono font-medium text-[#555]">
-                              ▶ Video
-                            </span>
-                          ) : project.image ? (
-                            <img
-                              src={project.image}
-                              alt=""
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <span className="text-[11px] text-[#999]">No Media</span>
-                          )}
-                        </div>
-
-                        <div className="flex flex-col">
-                          <div className="flex items-center gap-2">
-                            <h4 className="font-medium text-[15px] text-[#171717]">
-                              {project.title}
-                            </h4>
-                            <span className="text-[11px] bg-[#f0f0f2] text-[#666] px-2 py-0.5">
-                              {project.span === 'tall' ? 'Tall (605px)' : 'Short (365px)'}
-                            </span>
-                          </div>
-                          <p className="text-[12.5px] text-[#737373] mt-0.5">
-                            {project.category} • {project.year}
-                          </p>
-                          <div className="flex flex-wrap gap-1 mt-1.5">
-                            {project.tools?.slice(0, 3).map((t, ti) => (
-                              <span
-                                key={ti}
-                                className="text-[10.5px] text-[#888] bg-[#f7f7f8] px-1.5 py-0.5 border border-[#ececee]"
-                              >
-                                {t}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2 self-end sm:self-center">
-                        <button
-                          onClick={() => {
-                            setIsAddingProject(false);
-                            setEditingProject(project);
-                          }}
-                          className="px-3 py-1.5 bg-[#f5f5f7] border border-[#e5e5e7] text-[12px] font-medium text-[#333] hover:bg-black hover:text-white transition-colors cursor-pointer"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDeleteProject(project.id)}
-                          className="px-3 py-1.5 bg-white border border-[#e5e5e7] text-[12px] font-medium text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
-                        >
-                          Hapus
-                        </button>
-                      </div>
-                    </div>
+                    <ProjectListRow
+                      key={project.id}
+                      project={project}
+                      isFirst={idx === 0}
+                      isLast={idx === data.projects.length - 1}
+                      onDragStart={() => {
+                        orderBeforeDrag.current = dataRef.current.projects;
+                      }}
+                      onDragEnd={() => persistProjectOrder(dataRef.current.projects, orderBeforeDrag.current)}
+                      onMoveUp={() => persistProjectOrder(moveItem(data.projects, idx, -1), data.projects)}
+                      onMoveDown={() => persistProjectOrder(moveItem(data.projects, idx, 1), data.projects)}
+                      onEdit={() => {
+                        setIsAddingProject(false);
+                        setEditingProject(project);
+                      }}
+                      onDelete={() => handleDeleteProject(project.id)}
+                    />
                   ))}
-                </div>
+                </Reorder.Group>
               </div>
             )
           )}

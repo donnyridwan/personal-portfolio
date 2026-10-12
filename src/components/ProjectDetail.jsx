@@ -2,9 +2,10 @@ import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { normalizeCaseStudy, isRenderable } from '../lib/blocks';
 import BlockRenderer from './blocks/BlockRenderer';
+import MediaWithSkeleton from './MediaWithSkeleton';
 import StaggerOnMount from './motion/StaggerOnMount';
 import LearnChevron from './motion/LearnChevron';
-import { getAdjacentProjects, getProjectSlug } from '../lib/projects';
+import { getAdjacentProjects, getDetailCover, getProjectSlug } from '../lib/projects';
 import { projectPath } from '../lib/route';
 
 export default function ProjectDetail({ project, projects, isLoading, onOpenProject, onBack, onBookCall }) {
@@ -116,23 +117,19 @@ function BackLink({ onBack }) {
   );
 }
 
+// Detail cover at a fixed 4:3 (Dribbble shot frame), cropped to fit; only the All Work grid uses free heights
 function ProjectCover({ project }) {
-  const videoSrc = project.video || project.video_url;
-  const isVideo = project.mediaType === 'video' || Boolean(videoSrc);
-  if (!videoSrc && !project.image) return null;
-
+  const cover = getDetailCover(project);
+  if (!cover.url) return null;
   return (
-    <div
-      className="w-full aspect-[16/10] overflow-hidden relative"
-      style={{ backgroundColor: project.accentColor || '#e7eef0' }}
-    >
-      {isVideo && videoSrc ? (
-        <video src={videoSrc} autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover" />
-      ) : (
-        <img src={project.image} alt={project.title} className="absolute inset-0 w-full h-full object-cover" />
-      )}
+    <div className="w-full aspect-[4/3] overflow-hidden relative">
+      <CoverMedia cover={cover} alt={project.title} />
     </div>
   );
+}
+
+function CoverMedia({ cover, alt, className = '' }) {
+  return <MediaWithSkeleton url={cover.url} mediaType={cover.mediaType} alt={alt} mode="fill" mediaClassName={className} />;
 }
 
 // Authored blocks, or the legacy description as an "Overview" text block when none are renderable yet
@@ -146,6 +143,7 @@ function ProjectBody({ project, caseStudy }) {
 function AdjacentCard({ project, direction, onOpenProject }) {
   const slug = getProjectSlug(project);
   const isNext = direction === 'next';
+  const thumb = getDetailCover(project);
 
   return (
     <a
@@ -157,15 +155,12 @@ function AdjacentCard({ project, direction, onOpenProject }) {
       }}
       className={`t-learn ${isNext ? '' : 't-learn--back'} group flex flex-col gap-3 ${isNext ? 'sm:text-right' : ''}`}
     >
-      <div
-        className="w-full aspect-[4/3] overflow-hidden relative"
-        style={{ backgroundColor: project.accentColor || '#e7eef0' }}
-      >
-        {project.image && (
-          <img
-            src={project.image}
+      <div className="w-full aspect-[4/3] overflow-hidden relative">
+        {thumb.url && (
+          <CoverMedia
+            cover={thumb}
             alt=""
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+            className="transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
           />
         )}
       </div>

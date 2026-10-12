@@ -92,9 +92,12 @@ export default function BlockEditor({ blocks, onChange }) {
   return (
     <div className="flex flex-col gap-4">
       {blocks.length === 0 && (
-        <p className="text-[13px] text-[#737373] border border-dashed border-[#d4d4d8] px-5 py-8 text-center">
-          Belum ada block. Tambahkan block pertama untuk mulai menyusun case study.
-        </p>
+        <div className="border border-dashed border-[#d4d4d8] bg-[#fafafa] px-6 py-16 flex flex-col items-center text-center gap-2">
+          <span className="font-serif text-[22px] text-[#171717]">Belum ada block</span>
+          <p className="text-[13px] text-[#737373] max-w-[360px]">
+            Tambahkan block pertama (teks, gambar, galeri, video, angka, atau quote) untuk mulai menyusun case study.
+          </p>
+        </div>
       )}
 
       <Reorder.Group axis="y" values={blocks} onReorder={reorder} className="flex flex-col gap-4">

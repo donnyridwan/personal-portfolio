@@ -60,6 +60,7 @@ export default async function handler(req, res) {
         published: p.published !== false,
         slug: p.slug || slugify(p.name),
         caseStudy: normalizeCaseStudy(p.case_study),
+        sort: Number.isFinite(p.sort) ? p.sort : 0,
       }));
 
       // 3. Fetch Experience
@@ -228,6 +229,13 @@ export default async function handler(req, res) {
             case_study = EXCLUDED.case_study
         `;
         return res.status(200).json({ success: true, message: 'Project saved in Neon' });
+      }
+
+      if (type === 'reorder_projects') {
+        // data: [{ id, sort }] in display order; one transaction so the list never ends half-sorted
+        const items = Array.isArray(data) ? data : [];
+        await sql.transaction(items.map(({ id, sort }) => sql`UPDATE projects SET sort = ${sort} WHERE id = ${id}`));
+        return res.status(200).json({ success: true, message: 'Project order updated in Neon' });
       }
 
       if (type === 'delete_project') {

@@ -129,6 +129,28 @@
 /* Mirrored chevron for "back" links: shifts left instead */
 .t-learn--back:hover .t-learn-chevron { transform: translateX(calc(var(--learn-shift) * -1)); }
 
+/* ── Testimonial marquee ──────────────────────────────────
+   The track holds the list twice; sliding it by -50% loops seamlessly.
+   Items use margin (not gap) so both halves are exactly equal. */
+@keyframes t-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.t-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 48px, #000 calc(100% - 48px), transparent);
+}
+.t-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: t-marquee var(--marquee-dur, 40s) linear infinite;
+}
+/* Keyboard focus still pauses it; mouse hover keeps it moving */
+.t-marquee:focus-within .t-marquee-track {
+  animation-play-state: paused;
+}
+
 /* ── Reduced motion: show everything at rest, no movement ── */
 @media (prefers-reduced-motion: reduce) {
   .t-stagger-line,
@@ -142,4 +164,8 @@
   .t-dropdown { transition: none !important; }
   .t-learn-chevron,
   .t-learn-arm { transition: none !important; }
+  /* Static, manually scrollable row instead of a moving marquee */
+  .t-marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  .t-marquee-track { animation: none; }
+  .t-marquee-dup { display: none !important; }
 }
