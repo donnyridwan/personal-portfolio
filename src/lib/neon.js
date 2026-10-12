@@ -70,6 +70,7 @@ export async function fetchPortfolioFromNeon() {
       published: p.published !== false,
       slug: p.slug || slugify(p.name),
       caseStudy: normalizeCaseStudy(p.case_study),
+      sort: Number.isFinite(p.sort) ? p.sort : 0,
     }));
 
     // Fetch experience
@@ -231,6 +232,12 @@ export async function saveToNeon(type, data) {
         slug = EXCLUDED.slug,
         case_study = EXCLUDED.case_study
     `;
+    return { success: true };
+  }
+
+  if (type === 'reorder_projects') {
+    const items = Array.isArray(data) ? data : [];
+    await sql.transaction(items.map(({ id, sort }) => sql`UPDATE projects SET sort = ${sort} WHERE id = ${id}`));
     return { success: true };
   }
 

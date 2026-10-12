@@ -7,7 +7,7 @@ import { normalizeCaseStudy } from '../../lib/blocks';
 import { projectPath } from '../../lib/route';
 import { getProjectSlug } from '../../lib/projects';
 
-export default function ProjectEditor({ project, existingSlugs = [], onSave, onCancel }) {
+export default function ProjectEditor({ project, existingSlugs = [], defaultSort = 1, onSave, onCancel }) {
   const [formData, setFormData] = useState({
     id: project?.id || `project-${Date.now()}`,
     title: project?.title || '',
@@ -22,6 +22,8 @@ export default function ProjectEditor({ project, existingSlugs = [], onSave, onC
     video: project?.video || '',
     mediaType: project?.mediaType || (project?.video ? 'video' : 'image'),
     published: project?.published !== false,
+    // Keep the list position when editing; new projects go to the end
+    sort: Number.isFinite(project?.sort) && project.sort > 0 ? project.sort : defaultSort,
     slug: project?.slug || slugify(project?.title || ''),
     caseStudy: normalizeCaseStudy(project?.caseStudy),
   });
