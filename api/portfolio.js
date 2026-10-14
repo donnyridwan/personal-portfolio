@@ -1,12 +1,14 @@
 import { neon } from '@neondatabase/serverless';
+import { getBearerToken, verifyToken } from './_lib/cmsToken.js';
 import { slugify } from '../src/lib/slug.js';
 import { normalizeCaseStudy } from '../src/lib/blocks.js';
 
 function getDb() {
-  const connectionString =
-    process.env.DATABASE_URL ||
-    process.env.VITE_NEON_DATABASE_URL ||
-    'postgresql://neondb_owner:npg_8iFkIw3DVvCW@ep-autumn-snow-b5xiqct7-pooler.c-7.us-east-2.aws.neon.tech/neondb?sslmode=require';
+  // Server-only env var. Never use a VITE_-prefixed var here: those get bundled into client JS.
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    throw new Error('DATABASE_URL is not configured on the server');
+  }
   return neon(connectionString);
 }
 
@@ -134,6 +136,10 @@ export default async function handler(req, res) {
     }
 
     if (req.method === 'POST') {
+      if (!verifyToken(getBearerToken(req))) {
+        return res.status(401).json({ success: false, error: 'Unauthorized' });
+      }
+
       const body = req.body;
       const { type, data } = body;
 

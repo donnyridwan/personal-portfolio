@@ -16,34 +16,21 @@ export default function CmsLogin({ onLoginSuccess, onCancel }) {
     setError('');
 
     try {
-      // 1. Check via API endpoint if available
       const res = await fetch('/api/auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password }),
       });
+      const data = await res.json().catch(() => ({}));
 
-      if (res.ok) {
-        const data = await res.json();
-        if (data.success) {
-          sessionStorage.setItem('cms_auth_token', data.token || 'authenticated');
-          onLoginSuccess();
-          return;
-        }
+      if (res.ok && data.success && data.token) {
+        sessionStorage.setItem('cms_auth_token', data.token);
+        onLoginSuccess();
+        return;
       }
+      setError(data.error || 'Kata sandi salah.');
     } catch {
-      // API route not reachable (e.g. static preview), check client fallback
-    }
-
-    // 2. Client fallback check
-    const expected =
-      import.meta.env.VITE_CMS_ADMIN_PASSWORD || 'donny';
-
-    if (password === expected || password === 'donny' || password === 'donny2025' || password === 'admin') {
-      sessionStorage.setItem('cms_auth_token', 'authenticated');
-      onLoginSuccess();
-    } else {
-      setError('Kata sandi salah. Default: donny');
+      setError('Server auth tidak dapat dijangkau. Untuk lokal, jalankan `vercel dev`.');
     }
 
     setLoading(false);
@@ -86,7 +73,7 @@ export default function CmsLogin({ onLoginSuccess, onCancel }) {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Masukkan password (default: donny)"
+              placeholder="Masukkan password admin"
               className="w-full bg-white border border-[#e5e5e7] px-3.5 py-2.5 text-[14px] text-[#171717] focus:outline-none focus:border-black rounded-none"
               autoFocus
             />
