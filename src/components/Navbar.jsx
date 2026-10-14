@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Navbar({ onBookCall, onOpenMobileMenu, isMobileMenuOpen, activeTab, setActiveTab }) {
   return (
-    <header className="w-full h-[72px] bg-white flex items-center justify-between sticky top-0 z-40 pl-4 sm:pl-6 pr-2 sm:pr-4 lg:pr-8 max-w-[1440px] mx-auto">
+    <header className="w-full h-[72px] bg-white flex items-center justify-between sticky top-0 z-40 pl-4 sm:pl-6 pr-2 sm:pr-4 lg:pr-8">
       {/* Left Slot: Logo aligning with sidebar */}
       <div className="lg:w-[276px] flex items-center">
         <button

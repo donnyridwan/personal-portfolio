@@ -202,7 +202,7 @@ export default function App() {
       />
 
       {/* Main Body Layout matching 1440px desktop frame */}
-      <div className="flex-1 max-w-[1440px] w-full mx-auto flex flex-col lg:flex-row relative">
+      <div className="flex-1 w-full flex flex-col lg:flex-row relative">
         {/* Sidebar */}
         <div
           data-lenis-prevent

@@ -1,11 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import MediaWithSkeleton from './MediaWithSkeleton';
 import { motion } from 'framer-motion';
 import { portfolioData } from '../data/portfolioData';
 import { getPublishedProjects, getProjectSlug } from '../lib/projects';
 import { projectPath } from '../lib/route';
+import { distributeColumns } from '../lib/grid';
+
+// 3 masonry columns on wide screens (Tailwind 2xl, ≥1536px), 2 otherwise
+const WIDE_QUERY = '(min-width: 1536px)';
+function useColumnCount() {
+  const getCount = () => (typeof window !== 'undefined' && window.matchMedia(WIDE_QUERY).matches ? 3 : 2);
+  const [count, setCount] = useState(getCount);
+  useEffect(() => {
+    const mq = window.matchMedia(WIDE_QUERY);
+    const update = () => setCount(mq.matches ? 3 : 2);
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+  return count;
+}
+
+const GRID_COLS = { 2: 'md:grid-cols-2', 3: 'md:grid-cols-3' };
 
 export default function WorkGrid({ projects, isLoading, onOpenProject }) {
+  const columnCount = useColumnCount();
   if (isLoading) return <WorkGridSkeleton />;
 
   const projectList = getPublishedProjects(projects && projects.length > 0 ? projects : portfolioData.projects);
@@ -18,17 +36,17 @@ export default function WorkGrid({ projects, isLoading, onOpenProject }) {
     );
   }
 
-  // Two columns, alternating; cards take the cover's natural height (fixed width, free height)
-  const columns = [projectList.filter((_, idx) => idx % 2 === 0), projectList.filter((_, idx) => idx % 2 === 1)];
+  // Columns filled left to right; cards take the cover's natural height (fixed width, free height)
+  const columns = distributeColumns(projectList, columnCount);
 
   return (
     <div className="flex-1 relative pb-24 font-sans">
       {/* On mobile the columns flatten (display: contents) and cards keep their original order */}
-      <div className="flex flex-col gap-8 md:grid md:grid-cols-2 md:gap-7 md:items-start w-full">
+      <div className={`flex flex-col gap-8 md:grid ${GRID_COLS[columnCount]} md:gap-7 md:items-start w-full`}>
         {columns.map((column, col) => (
           <div key={col} className="contents md:flex md:flex-col md:gap-7">
-            {column.map((project, idx) => (
-              <ProjectCard key={project.id} project={project} index={idx * 2 + col} onOpen={onOpenProject} />
+            {column.map(({ item: project, index }) => (
+              <ProjectCard key={project.id} project={project} index={index} onOpen={onOpenProject} />
             ))}
           </div>
         ))}
@@ -42,12 +60,14 @@ function WorkGridSkeleton() {
   const columns = [
     ['aspect-[4/3] md:aspect-auto md:h-[365px]', 'aspect-[4/5] md:aspect-auto md:h-[605px]'],
     ['aspect-[4/5] md:aspect-auto md:h-[605px]', 'aspect-[4/3] md:aspect-auto md:h-[369px]'],
+    ['aspect-[4/3] md:aspect-auto md:h-[440px]', 'aspect-[4/3] md:aspect-auto md:h-[365px]'],
   ];
   return (
     <div className="flex-1 pb-24" aria-busy="true" aria-label="Loading projects">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-7 w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-8 md:gap-7 w-full">
         {columns.map((heights, col) => (
-          <div key={col} className="flex flex-col gap-8 md:gap-7">
+          // The third skeleton column only appears where the real grid has 3 columns
+          <div key={col} className={`flex-col gap-8 md:gap-7 ${col === 2 ? 'hidden 2xl:flex' : 'flex'}`}>
             {heights.map((h, idx) => (
               <div key={idx} data-skeleton className="flex flex-col gap-3.5">
                 <div className={`w-full ${h} bg-[#f5f5f7] motion-safe:animate-pulse`} />
