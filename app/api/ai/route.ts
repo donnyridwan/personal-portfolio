@@ -3,6 +3,7 @@
 import { createHash } from 'node:crypto';
 import Anthropic from '@anthropic-ai/sdk';
 import { aiSettingsFrom, buildSystemPrompt, sanitizeMessages } from '@/lib/ai';
+import { chunkText, demoAnswer } from '@/lib/ai-demo';
 import { loadFinderData, loadSettings } from '@/lib/db';
 import { takeAiQuota } from '@/lib/repo';
 
@@ -23,13 +24,36 @@ function visitorKey(req: Request) {
   return createHash('sha256').update(`dockfolio-ai:${ip}`).digest('hex').slice(0, 32);
 }
 
-export async function POST(req: Request) {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return json({ error: 'AI belum diaktifkan oleh pemilik situs.' }, 503);
+const TEXT_HEADERS = { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store', 'X-Accel-Buffering': 'no' };
+
+/** Mode demo (belum ada ANTHROPIC_API_KEY): jawaban dari data portofolio, dikirim bertahap. */
+async function demo(question: string) {
+  let answer: string;
+  try {
+    answer = demoAnswer(question, await loadFinderData());
+  } catch (err) {
+    console.error('[api/ai] demo', err);
+    return json({ error: 'Data belum bisa dimuat. Coba lagi sebentar.' }, 500);
   }
+  const encoder = new TextEncoder();
+  const parts = chunkText(answer);
+  const body = new ReadableStream<Uint8Array>({
+    async start(controller) {
+      for (const p of parts) {
+        controller.enqueue(encoder.encode(p));
+        await new Promise(r => setTimeout(r, 25));
+      }
+      controller.close();
+    },
+  });
+  return new Response(body, { headers: TEXT_HEADERS });
+}
+
+export async function POST(req: Request) {
   const body = (await req.json().catch(() => null)) as { messages?: unknown } | null;
   const parsed = sanitizeMessages(body?.messages);
   if (!parsed.ok) return json({ error: parsed.error }, 400);
+  if (!process.env.ANTHROPIC_API_KEY) return demo(parsed.messages.at(-1)!.content);
 
   let system: string;
   try {
@@ -82,11 +106,5 @@ export async function POST(req: Request) {
     },
   });
 
-  return new Response(body$, {
-    headers: {
-      'Content-Type': 'text/plain; charset=utf-8',
-      'Cache-Control': 'no-store',
-      'X-Accel-Buffering': 'no',
-    },
-  });
+  return new Response(body$, { headers: TEXT_HEADERS });
 }

@@ -33,6 +33,7 @@ async function info() {
     owner,
     first: owner.split(/\s+/)[0],
     ai: data?.ai?.name || 'Portfolio AI',
+    demo: !!data?.ai?.demo,
     contact: data?.contact ?? { email: '', links: [] },
   };
 }
@@ -97,7 +98,7 @@ async function openTerminal() {
       <input class="tm-input" type="text" maxlength="1000" spellcheck="false"
         placeholder='Coba "Apa proyek terbaru ${esc(i.first)}?"' aria-label="Pertanyaan">
     </form>
-    <div class="tm-foot"><span>◆ ${esc(i.ai)} · jawaban dari AI, bisa keliru</span><span>Esc untuk menutup</span></div>`;
+    <div class="tm-foot"><span>◆ ${esc(i.ai)} · ${i.demo ? 'mode demo, jawaban otomatis' : 'jawaban dari AI, bisa keliru'}</span><span>Esc untuk menutup</span></div>`;
   wire(win, i);
   document.body.appendChild(win);
   placeCenter();

@@ -55,7 +55,7 @@ export type FinderData = {
   /** Ikon desktop (hanya dari /api/finder; finder-data.json offline tidak punya). */
   desktop?: DesktopItem[];
   /** Nama AI Terminal (catatan untuk AI tidak pernah dikirim ke browser). */
-  ai?: { name: string };
+  ai?: { name: string; demo: boolean };
 };
 
 export type DesktopKind = 'project' | 'folder' | 'photo' | 'file' | 'app';

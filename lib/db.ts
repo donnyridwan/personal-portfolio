@@ -34,6 +34,7 @@ export async function loadFinderData(): Promise<FinderData> {
   ]);
   const data = buildFinderData(categories as CategoryRow[], projects as ProjectRow[], settings);
   data.desktop = buildDesktop(desktop as DesktopRow[], data.projects, data.categories, data.resume.url);
-  data.ai = { name: aiSettingsFrom(settings.ai).name };
+  // demo = belum ada API key: terminal menjawab dari data saja (lihat lib/ai-demo.ts).
+  data.ai = { name: aiSettingsFrom(settings.ai).name, demo: !process.env.ANTHROPIC_API_KEY };
   return data;
 }
