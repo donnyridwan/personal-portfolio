@@ -18,3 +18,8 @@
 .framer-1he8gp5-container {
   display: none !important;
 }
+
+/* App "Showreel" di desktop dihapus (permintaan pemilik). */
+.framer-1sap26b-container {
+  display: none !important;
+}
