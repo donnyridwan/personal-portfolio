@@ -102,42 +102,35 @@
   --dk-accent: #0a64ff;
   --dk-ui: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
 }
+/* Bilah mode edit: kecil, di tengah baris menu atas Framer (sejajar logo Apple). */
 #dk-editbar {
   position: fixed;
   z-index: 2147483200;
-  top: 40px;
+  top: 4px;
   left: 50%;
   transform: translateX(-50%);
+  height: 24px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  max-width: calc(100vw - 24px);
-  padding: 6px 8px 6px 14px;
+  gap: 6px;
+  padding: 0 3px 0 9px;
   border-radius: 999px;
-  background: rgba(28, 28, 30, .82);
+  background: rgba(0, 0, 0, .28);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   color: #fff;
-  font: 13px/1.3 var(--dk-ui);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, .25);
+  font: 500 12px/1 var(--dk-ui);
   white-space: nowrap;
 }
-.dk-editbar-dot { width: 8px; height: 8px; border-radius: 50%; background: #28c840; box-shadow: 0 0 0 3px rgba(40, 200, 64, .25); }
-.dk-editbar-hint { color: rgba(255, 255, 255, .65); overflow: hidden; text-overflow: ellipsis; }
+#dk-editbar strong { font-weight: 600; margin-right: 2px; }
+.dk-editbar-dot { width: 6px; height: 6px; border-radius: 50%; background: #28c840; }
 #dk-editbar a, #dk-editbar button {
-  font: inherit; color: #fff; background: rgba(255, 255, 255, .14); border: 0; border-radius: 999px;
-  padding: 4px 11px; cursor: pointer; text-decoration: none;
+  font: inherit; color: #fff; background: rgba(255, 255, 255, .16); border: 0; border-radius: 999px;
+  padding: 4px 9px; cursor: pointer; text-decoration: none;
 }
-#dk-editbar a:hover, #dk-editbar button:hover { background: rgba(255, 255, 255, .26); }
-@media (max-width: 980px) { .dk-editbar-hint { display: none; } }
-@media (max-width: 809.98px) {
-  #dk-editbar {
-    top: auto; bottom: 104px; gap: 6px; padding: 6px 8px;
-    flex-wrap: wrap; justify-content: center; white-space: normal; border-radius: 16px;
-    width: max-content; max-width: calc(100vw - 24px);
-  }
-  #dk-editbar a, #dk-editbar button { padding: 4px 9px; font-size: 12px; }
-}
+#dk-editbar a:hover, #dk-editbar button:hover { background: rgba(255, 255, 255, .3); }
+/* Di HP baris menu atas sudah penuh (nama, sosial, tanggal): bilah pindah ke atas dock. */
+@media (max-width: 809.98px) { #dk-editbar { top: auto; bottom: 104px; height: 28px; } }
 
 .dk-editing .dk-icon { cursor: default; }
 .dk-editing [data-framer-name="Drag Canvas"] [class*="-container"] { cursor: default; }

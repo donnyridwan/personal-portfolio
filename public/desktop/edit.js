@@ -214,12 +214,12 @@ const editProject = id => openPanel(`/admin/projects/${encodeURIComponent(id)}`,
 function editBar() {
   const bar = document.createElement('div');
   bar.id = 'dk-editbar';
+  bar.title = 'Seret ikon untuk memindah · klik kanan untuk menambah · seret file ke desktop untuk upload';
   bar.innerHTML = `
     <span class="dk-editbar-dot"></span>
     <strong>Mode Edit</strong>
-    <span class="dk-editbar-hint">Seret ikon untuk memindah · klik kanan untuk menambah · seret file ke desktop untuk upload</span>
     <button data-act="panel">Panel</button>
-    <a href="/">Lihat sebagai pengunjung</a>
+    <a href="/">Pratinjau</a>
     <a href="/admin/logout">Keluar</a>`;
   for (const t of ['pointerdown', 'pointerup', 'mousedown', 'mouseup', 'click']) bar.addEventListener(t, e => e.stopPropagation());
   bar.querySelector('[data-act="panel"]').addEventListener('click', () => openPanel('/admin/projects', 'Panel Admin'));
