@@ -1,4 +1,5 @@
 // Baris database → JSON yang dibaca public/finder/finder.js. Fungsi murni (dites di tests/finder-data.test.ts).
+import { legacyToDoc } from './blocks';
 import type { CategoryRow, Contact, Favorite, FinderData, ProjectRow, SettingsMap } from './types';
 
 export const DEFAULT_FAVORITES: Favorite[] = [
@@ -35,6 +36,10 @@ export function buildFinderData(
     thumbnail: p.thumbnail ?? '',
     images: p.images ?? [],
     url: p.url ?? '',
+    body: p.body ?? legacyToDoc({
+      summary: p.summary ?? '', images: p.images ?? [], challenge: p.challenge ?? '',
+      solution: p.solution ?? '', final_thoughts: p.final_thoughts ?? '',
+    }),
   }));
 
   const order = (p: ProjectRow) => p.featured_order ?? Number.POSITIVE_INFINITY;

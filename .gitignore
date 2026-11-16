@@ -16,3 +16,6 @@ out/
 # Next.js
 next-env.d.ts
 *.tsbuildinfo
+
+# Bundel editor (dibuat oleh npm run build:editor)
+public/editor/

@@ -4,6 +4,7 @@ import {
   validateData, getProject, projectsInCategory, featuredProjects, createHistory,
   parseViewPrefs, VIEW_MODES, GRID_SIZES,
 } from './finder-model.js';
+import { renderDoc } from './doc-render.js';
 
 const PREFS_KEY = 'dockfolio-finder-view';
 
@@ -72,6 +73,10 @@ export async function reloadData() {
 }
 
 export const currentView = () => (root?.isConnected && history ? history.current() : null);
+
+/** Mode edit memasang editor di atas tampilan yang baru digambar. fn(view, contentEl, data). */
+let renderHook = null;
+export function setRenderHook(fn) { renderHook = fn; }
 export const finderRoot = () => (root?.isConnected ? root : null);
 
 /** Path lokal di data ("assets/…") dihitung dari root situs; URL penuh dibiarkan. */
@@ -111,8 +116,10 @@ function sized(url, px) {
   } catch { return url; }
 }
 
-const img = (src, cls = '', w = 20, h = 20) =>
-  `<img src="${esc(sized(asset(src), w > 100 ? 1024 : 512))}" alt="" width="${w}" height="${h}" class="${cls}" loading="lazy" decoding="async">`;
+const img = (src, cls = '', w = 20, h = 20) => src
+  ? `<img src="${esc(sized(asset(src), w > 100 ? 1024 : 512))}" alt="" width="${w}" height="${h}" class="${cls}" loading="lazy" decoding="async">`
+  // Belum ada gambar: kotak abu-abu seukuran gambar (bukan ikon gambar rusak).
+  : `<img alt="" width="${w}" height="${h}" class="${cls} df-img-failed">`;
 
 const MODE_LABELS = { list: 'List', details: 'Detail', grid: 'Grid' };
 // Ukuran thumbnail grid (px). Ditampilkan sebagai persen zoom relatif ke ukuran sedang.
@@ -242,6 +249,8 @@ function setupDrag(bar) {
 }
 
 function onKey(e) {
+  // Esc di dalam editor/isian (mis. menutup menu "/") tidak menutup Finder.
+  if (e.target?.closest?.('[contenteditable="true"], input, textarea')) return;
   if (e.key === 'Escape' && root?.isConnected) closeFinder();
 }
 
@@ -341,6 +350,7 @@ function render() {
   const content = root.querySelector('.df-content');
   content.innerHTML = html;
   content.scrollTop = 0;
+  renderHook?.(view, content, data);
 }
 
 function renderView(view) {
@@ -398,6 +408,22 @@ function renderProject(id) {
     ? `<a class="df-visit" href="${esc(p.url)}" target="_blank" rel="noopener">Visit ${icon('external', 13)}</a>`
     : '';
   const tags = (p.tags ?? []).map(t => `<span>${esc(t)}</span>`).join('');
+  if (p.body) {
+    // Kop (template) + isi bebas dari kanvas.
+    return {
+      title: p.name,
+      html: `
+        <article class="df-detail">
+          <div class="df-detail-head">
+            ${img(p.thumbnail, '', 48, 48)}
+            <div><h2>${esc(p.name)}</h2><div class="df-meta">Client: ${esc(p.client)} • Year: ${esc(p.year)}</div></div>
+            ${visit}
+          </div>
+          ${tags ? `<div class="df-tags df-kop-tags">${tags}</div>` : ''}
+          <div class="df-doc" data-project="${esc(p.id)}">${renderDoc(p.body, src => img(src, '', 640, 400))}</div>
+        </article>`,
+    };
+  }
   const preview = (p.images ?? []).map(src => img(src, '', 640, 400)).join('');
   return {
     title: p.name,

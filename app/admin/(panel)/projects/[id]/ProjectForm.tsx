@@ -24,7 +24,6 @@ export default function ProjectForm({ project, isNew, categories }: Props) {
   const [name, setName] = useState(project.name);
   const [id, setId] = useState(project.id);
   const [thumb, setThumb] = useState(project.thumbnail ? [project.thumbnail] : []);
-  const [images, setImages] = useState(project.images);
   const [featured, setFeatured] = useState(!!project.featured_color);
 
   // Folder Cloudinary mengikuti id proyek (atau nama, untuk proyek baru).
@@ -35,7 +34,6 @@ export default function ProjectForm({ project, isNew, categories }: Props) {
       <form onSubmit={submitWithoutReset(action)}>
         <input type="hidden" name="originalId" value={isNew ? '' : project.id} />
         <input type="hidden" name="thumbnail" value={JSON.stringify(thumb)} />
-        <input type="hidden" name="images" value={JSON.stringify(images)} />
 
         <div className="adm-card">
           <div className="adm-grid2">
@@ -81,23 +79,15 @@ export default function ProjectForm({ project, isNew, categories }: Props) {
         </div>
 
         <div className="adm-card">
-          <h2>Gambar</h2>
+          <h2>Thumbnail</h2>
           <div className="adm-field">
-            <span className="adm-label">Thumbnail</span>
             <ImageField value={thumb} onChange={setThumb} folder={folder} />
-          </div>
-          <div className="adm-field">
-            <span className="adm-label">Preview <span className="adm-hint">— bisa banyak sekaligus, urutan = urutan tampil</span></span>
-            <ImageField value={images} onChange={setImages} folder={folder} multiple />
           </div>
         </div>
 
-        <div className="adm-card">
-          <h2>Cerita proyek</h2>
-          <label className="adm-field"><span>Ringkasan</span><textarea name="summary" defaultValue={project.summary} /></label>
-          <label className="adm-field"><span>Challenge</span><textarea name="challenge" defaultValue={project.challenge} /></label>
-          <label className="adm-field"><span>Solution</span><textarea name="solution" defaultValue={project.solution} /></label>
-          <label className="adm-field"><span>Final thoughts</span><textarea name="final_thoughts" defaultValue={project.final_thoughts} /></label>
+        <div className="adm-card adm-muted">
+          Isi halaman proyek (teks, judul, gambar, daftar, dll.) diedit langsung di kanvas:
+          buka proyek ini di Finder pada <a href="/?edit">desktop mode edit</a>, lalu ketik di bawah kop. Ketik <b>/</b> untuk memilih blok.
         </div>
 
         <div className="adm-card">

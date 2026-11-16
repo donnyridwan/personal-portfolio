@@ -1,4 +1,5 @@
 // Bentuk baris database (db/schema.sql) dan bentuk JSON yang dibaca finder.js.
+import type { DocNode } from './blocks';
 
 export type CategoryRow = { id: string; label: string; sort: number };
 
@@ -19,6 +20,8 @@ export type ProjectRow = {
   featured_color: string | null;
   featured_order: number | null;
   sort: number;
+  /** Isi detail (dokumen blok). null = belum pernah diedit → dibuat dari kolom lama. */
+  body?: DocNode | null;
 };
 
 export type SettingsMap = Record<string, unknown>;
@@ -42,6 +45,8 @@ export type FinderProject = {
   thumbnail: string;
   images: string[];
   url: string;
+  /** Isi detail proyek (dokumen blok Tiptap). Tidak ada di finder-data.json offline. */
+  body?: DocNode;
 };
 
 export type FinderData = {

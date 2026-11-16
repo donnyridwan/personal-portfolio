@@ -6,10 +6,11 @@
     "test": "tests"
   },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "npm run build:editor && next dev",
+    "build": "npm run build:editor && next build",
     "start": "next start",
-    "test": "vitest run && node --test tests/*.test.mjs"
+    "test": "vitest run && node --test tests/*.test.mjs",
+    "build:editor": "esbuild editor-src/editor.js --bundle --format=esm --minify --target=es2020 --outfile=public/editor/editor.js"
   },
   "repository": {
     "type": "git",
@@ -28,9 +29,17 @@
     "server-only": "^0.0.1"
   },
   "devDependencies": {
+    "@tiptap/core": "^3.34.0",
+    "@tiptap/extension-bubble-menu": "^3.34.0",
+    "@tiptap/extension-image": "^3.34.0",
+    "@tiptap/extensions": "^3.34.0",
+    "@tiptap/pm": "^3.34.0",
+    "@tiptap/starter-kit": "^3.34.0",
+    "@tiptap/suggestion": "^3.34.0",
     "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "esbuild": "^0.28.2",
     "typescript": "^7.0.2",
     "vitest": "^5.1.0"
   },

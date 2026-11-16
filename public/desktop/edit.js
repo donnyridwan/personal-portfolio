@@ -1,7 +1,7 @@
 // Mode edit admin: situs yang sama dengan pengunjung, tapi ikon bisa digeser (tersimpan),
 // ditambah, diganti nama, dan dihapus — seperti mengelola file di komputer.
 // Dimuat oleh desktop.js hanya kalau ?edit ada dan /api/admin/session = 200. Semua tulis dicek di server.
-import { currentView, finderRoot, loadData, openFinder, reloadData } from '../finder/finder.js';
+import { currentView, finderRoot, loadData, openFinder, reloadData, setRenderHook } from '../finder/finder.js';
 import { esc } from './desktop.js';
 import { kindForFile, toFraction } from './desktop-model.js';
 
@@ -611,7 +611,7 @@ function installDrop() {
     hint = setTimeout(clear, 300);
   });
   window.addEventListener('drop', e => {
-    if (!hasFiles(e)) return;
+    if (!hasFiles(e) || e.defaultPrevented) return; // sudah ditangani editor kanvas
     e.preventDefault();
     clear();
     const files = [...e.dataTransfer.files];
@@ -619,6 +619,120 @@ function installDrop() {
     if (finderRoot()?.contains(e.target)) dropIntoFinder(files);
     else if (!panel?.contains(e.target)) uploadToDesktop(files, pointAt(e.clientX, e.clientY));
   });
+}
+
+/* ---------- Kanvas isi proyek (editor ala Notion) ---------- */
+
+const SAVE_DELAY = 900;
+let editorModule = null;
+let canvas = null; // { id, project, handle, timer, pending, saving, status }
+
+function loadEditor() {
+  // Bundel editor (public/editor/editor.js) hanya dimuat di mode edit.
+  editorModule ??= import('../editor/editor.js');
+  return editorModule;
+}
+
+function setStatus(text, kind = '') {
+  if (!canvas?.status) return;
+  canvas.status.textContent = text;
+  canvas.status.dataset.kind = kind;
+}
+
+async function saveCanvas(c = canvas, { keepalive = false } = {}) {
+  if (!c?.pending) return;
+  clearTimeout(c.timer);
+  const body = c.pending;
+  c.pending = null;
+  c.saving = true;
+  if (c === canvas) setStatus('Menyimpan…');
+  try {
+    const res = await fetch(`/api/admin/projects/${encodeURIComponent(c.id)}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ body }),
+      keepalive,
+    });
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(out.error ?? `Gagal menyimpan (${res.status})`);
+    c.project.body = body; // tampilan Finder berikutnya memakai isi terbaru
+    if (c === canvas && !c.pending) setStatus('Tersimpan ✓', 'ok');
+  } catch (err) {
+    c.pending ??= body; // coba lagi pada perubahan berikutnya
+    if (c === canvas) setStatus(`${err.message} — klik untuk coba lagi`, 'error');
+  } finally {
+    c.saving = false;
+  }
+}
+
+function closeCanvas() {
+  if (!canvas) return;
+  const c = canvas;
+  canvas = null;
+  if (c.pending) saveCanvas(c, { keepalive: true });
+  c.handle?.destroy();
+}
+
+async function mountCanvas(view, content, finderData) {
+  closeCanvas();
+  if (view.type !== 'project') return;
+  const docEl = content.querySelector('.df-doc[data-project]');
+  const project = finderData.projects.find(p => p.id === view.id);
+  if (!docEl || !project) return;
+
+  // Kop: tombol untuk mengubah thumbnail/nama/klien/tahun/tag + status simpan.
+  const head = content.querySelector('.df-detail-head');
+  const tools = document.createElement('div');
+  tools.className = 'ed-tools';
+  tools.innerHTML = '<span class="ed-status" aria-live="polite"></span><button type="button" class="ed-kop">Edit kop…</button>';
+  head?.appendChild(tools);
+  tools.querySelector('.ed-kop').addEventListener('click', async () => {
+    await saveCanvas();
+    editProject(project.id);
+  });
+
+  const host = document.createElement('div');
+  host.className = 'ed-host';
+  docEl.replaceWith(host);
+  const c = { id: project.id, project, handle: null, timer: 0, pending: null, saving: false, status: tools.querySelector('.ed-status') };
+  canvas = c;
+  c.status.addEventListener('click', () => { if (c.status.dataset.kind === 'error') saveCanvas(c); });
+
+  let mod;
+  try {
+    mod = await loadEditor();
+  } catch (err) {
+    console.error('[edit] editor', err);
+    host.replaceWith(docEl);
+    setStatus('Editor gagal dimuat', 'error');
+    return;
+  }
+  if (canvas !== c) return; // pindah tampilan saat editor dimuat
+  c.handle = mod.mountEditor(host, {
+    content: structuredClone(project.body ?? { type: 'doc', content: [{ type: 'paragraph' }] }),
+    onUpdate(json) {
+      c.pending = json;
+      setStatus('Belum tersimpan…');
+      clearTimeout(c.timer);
+      c.timer = setTimeout(() => saveCanvas(c), SAVE_DELAY);
+    },
+    async uploadImage(file) {
+      toast(`Mengunggah ${file.name}…`, 0);
+      try {
+        const out = await uploadFile(file, `dockfolio/projects/${project.id}`);
+        if (out.kind !== 'photo') throw new Error(`"${file.name}" bukan gambar.`);
+        hideToast();
+        return out.url;
+      } catch (err) {
+        toast(err.message, 4000, true);
+        throw err;
+      }
+    },
+    pickImages: () => pickFiles('image/jpeg,image/png,image/webp,image/gif'),
+    onError: msg => toast(msg, 4000, true),
+  });
+  window.dockfolioCanvas = c.handle; // untuk debug/tes
+  setStatus(project.body && JSON.stringify(project.body).length > 60 ? 'Tersimpan ✓' : 'Kanvas kosong — ketik "/"', 'ok');
 }
 
 /* ---------- Mulai ---------- */
@@ -631,6 +745,11 @@ export async function startEdit(d) {
   desktop.hooks.moved = savePosition;
   desktop.hooks.contextmenu = desktopMenu;
   window.addEventListener('dockfolio:data', e => { data = e.detail; });
+  setRenderHook((view, content, finderData) => { mountCanvas(view, content, finderData); });
+  window.addEventListener('pagehide', () => { if (canvas?.pending) saveCanvas(canvas, { keepalive: true }); });
+  // Finder ditutup → simpan dan lepas editor.
+  new MutationObserver(() => { if (canvas && !finderRoot()) closeCanvas(); })
+    .observe(document.body, { childList: true });
   editBar();
   installAppDrag();
   installDrop();

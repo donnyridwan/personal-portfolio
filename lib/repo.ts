@@ -1,6 +1,7 @@
 // Query admin (tulis/baca) ke Neon. Hanya dipanggil dari Server Action/halaman admin yang sudah requireAdmin().
 import 'server-only';
 import { loadSettings, sql } from './db';
+import { validateDoc } from './blocks';
 import { clampPos } from './desktop';
 import { slugify, uniqueId, uniqueName } from './slug';
 import type { CategoryRow, DesktopKind, ProjectRow, SettingsMap } from './types';
@@ -11,7 +12,7 @@ export class UserError extends Error {}
 export type ProjectInput = Omit<ProjectRow, 'featured_order' | 'sort'>;
 
 const PROJECT_COLS = `id, name, client, year, summary, challenge, solution, final_thoughts, url, thumbnail,
-  images, tags, categories, featured_color, featured_order, sort`;
+  images, tags, categories, featured_color, featured_order, sort, body`;
 
 /* ---------- Urutan ---------- */
 
@@ -78,9 +79,8 @@ export async function saveProject(originalId: string | null, input: ProjectInput
 
   const rows = await db`
     update projects set
-      id = ${id}, name = ${name}, client = ${input.client}, year = ${input.year}, summary = ${input.summary},
-      challenge = ${input.challenge}, solution = ${input.solution}, final_thoughts = ${input.final_thoughts},
-      url = ${input.url}, thumbnail = ${input.thumbnail}, images = ${input.images}, tags = ${input.tags},
+      id = ${id}, name = ${name}, client = ${input.client}, year = ${input.year},
+      url = ${input.url}, thumbnail = ${input.thumbnail}, tags = ${input.tags},
       categories = ${input.categories}, featured_color = ${color},
       featured_order = case
         when ${color}::text is null then null
@@ -131,11 +131,23 @@ export async function renameProject(id: string, name: string) {
 export async function addProjectImages(id: string, urls: string[]) {
   const list = urls.filter(u => /^https?:\/\//.test(u));
   if (!list.length) return;
+  // Kalau proyek sudah punya isi kanvas, gambar juga ditambahkan sebagai blok di akhir kanvas.
+  const blocks = JSON.stringify(list.map(src => ({ type: 'image', attrs: { src, alt: '' } })));
   const rows = await sql()`
     update projects set images = images || ${list}::text[],
       thumbnail = case when thumbnail = '' then ${list[0]} else thumbnail end,
+      body = case when body is null then null
+                  else jsonb_set(body, '{content}', coalesce(body->'content', '[]'::jsonb) || ${blocks}::jsonb) end,
       updated_at = now()
     where id = ${id} returning id`;
+  if (!rows.length) throw new UserError('Proyek tidak ditemukan.');
+}
+
+/** Simpan isi kanvas (dokumen blok) proyek. */
+export async function saveProjectBody(id: string, input: unknown) {
+  const doc = validateDoc(input);
+  if (!doc) throw new UserError('Isi tidak valid atau terlalu besar.');
+  const rows = await sql()`update projects set body = ${JSON.stringify(doc)}::jsonb, updated_at = now() where id = ${id} returning id`;
   if (!rows.length) throw new UserError('Proyek tidak ditemukan.');
 }
 

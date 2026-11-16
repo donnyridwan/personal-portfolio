@@ -52,3 +52,6 @@ create table ai_usage (
   count int  not null default 0,
   primary key (day, key)
 );
+
+-- Isi detail proyek (db/migrations/004-project-body.sql).
+alter table projects add column body jsonb;

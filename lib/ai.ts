@@ -1,4 +1,5 @@
 // AI Terminal: system prompt dari data portofolio + validasi pesan pengunjung. Fungsi murni (dites).
+import { docText } from './blocks';
 import type { FinderData } from './types';
 
 export type AiSettings = { name: string; knowledge: string };
@@ -37,10 +38,10 @@ export function buildSystemPrompt(data: FinderData, ai: AiSettings): string {
       + line('Kategori', p.categories.map(c => catLabel.get(c) ?? c).join(', '))
       + line('Tag', p.tags.join(', '))
       + line('Link', p.url)
-      + line('Ringkasan', p.summary)
-      + line('Tantangan', p.challenge)
-      + line('Solusi', p.solution)
-      + line('Penutup', p.finalThoughts),
+      + (p.body
+        ? line('Isi halaman proyek', `\n${docText(p.body)}`)
+        : line('Ringkasan', p.summary) + line('Tantangan', p.challenge)
+          + line('Solusi', p.solution) + line('Penutup', p.finalThoughts)),
   ].join('\n').trim()).join('\n\n');
 
   const about = data.about ?? {};

@@ -1,5 +1,6 @@
 // Mode demo AI Terminal: dipakai selama ANTHROPIC_API_KEY belum diisi.
 // Menjawab pertanyaan dasar dari data portofolio dengan pencocokan kata kunci (tanpa AI sungguhan).
+import { docText } from './blocks';
 import type { FinderData, FinderProject } from './types';
 
 /** Kata utuh (boleh berakhiran "-nya"), supaya "hi" tidak cocok dengan "him". */
@@ -32,8 +33,13 @@ export function demoAnswer(question: string, data: FinderData): string {
   });
   if (named) {
     const meta = [named.client && (en ? `for ${named.client}` : `untuk ${named.client}`), named.year].filter(Boolean).join(', ');
-    return `**${named.name}**${meta ? ` (${meta})` : ''}: ${named.summary || (en ? 'no description yet.' : 'belum ada deskripsi.')}`
-      + (named.solution ? `\n\n${named.solution}` : '')
+    // Isi kanvas: ambil paragraf (bukan judul pendek), maksimal ~700 karakter.
+    const paras = named.body
+      ? docText(named.body).split('\n').filter(l => l.length > 40)
+      : [named.summary, named.solution].filter(Boolean);
+    let story = '';
+    for (const p of paras) { if ((story + p).length > 700) break; story += (story ? '\n\n' : '') + p; }
+    return `**${named.name}**${meta ? ` (${meta})` : ''}: ${story || (en ? 'no description yet.' : 'belum ada deskripsi.')}`
       + (named.url ? `\n\n${named.url}` : '');
   }
 

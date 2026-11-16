@@ -26,9 +26,20 @@ function rowsFromJson() {
 }
 
 describe('buildFinderData', () => {
-  test('hasilnya sama dengan finder-data.json', () => {
+  test('hasilnya sama dengan finder-data.json (ditambah body)', () => {
     const { categories, projects, settings } = rowsFromJson();
-    expect(buildFinderData(categories, projects, settings)).toEqual(json);
+    const out = buildFinderData(categories, projects, settings);
+    expect({ ...out, projects: out.projects.map(({ body, ...p }) => p) }).toEqual(json);
+  });
+
+  test('body: dari kolom body kalau ada, kalau tidak dibuat dari isi lama', () => {
+    const { categories, projects, settings } = rowsFromJson();
+    const doc = { type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Baru' }] }] };
+    projects[0].body = doc;
+    const out = buildFinderData(categories, projects, settings);
+    expect(out.projects.find(p => p.id === projects[0].id)!.body).toEqual(doc);
+    const other = out.projects.find(p => p.id === projects[1].id)!;
+    expect(other.body!.content![0]).toMatchObject({ type: 'paragraph', content: [{ text: projects[1].summary }] });
   });
 
   test('hasilnya valid menurut model Finder', () => {

@@ -27,7 +27,7 @@ export async function loadFinderData(): Promise<FinderData> {
   const [categories, projects, settings, desktop] = await Promise.all([
     db`select id, label, sort from categories`,
     db`select id, name, client, year, summary, challenge, solution, final_thoughts, url, thumbnail,
-              images, tags, categories, featured_color, featured_order, sort
+              images, tags, categories, featured_color, featured_order, sort, body
        from projects`,
     loadSettings(),
     db`select id, kind, ref, label, src, x, y, mx, my, z from desktop_items`,
