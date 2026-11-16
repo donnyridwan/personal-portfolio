@@ -1,0 +1,7 @@
+/* Penyesuaian kecil pada situs Framer (tanpa mengedit kode ekspornya). */
+
+/* Ikon desktop yang dihapus: "Framer" (link ke framer.com) dan "Data privacy". */
+.framer-18p1fql-container,
+.framer-e41lzv-container {
+  display: none !important;
+}

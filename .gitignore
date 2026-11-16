@@ -1,0 +1,14 @@
+# Rahasia lokal
+.env
+.env*.local
+
+# Dependensi & build
+node_modules/
+.next/
+out/
+
+# Catatan kerja Claude (scratch)
+.superpowers/
+
+# macOS
+.DS_Store

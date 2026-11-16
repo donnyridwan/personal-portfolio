@@ -1,0 +1,261 @@
+{
+  "favorites": [
+    {
+      "id": "about",
+      "label": "About",
+      "icon": "person"
+    },
+    {
+      "id": "resume",
+      "label": "Resume",
+      "icon": "doc"
+    },
+    {
+      "id": "contact",
+      "label": "Kontak",
+      "icon": "mail"
+    }
+  ],
+  "categories": [
+    {
+      "id": "mobile-app",
+      "label": "Mobile App"
+    },
+    {
+      "id": "website",
+      "label": "Website"
+    },
+    {
+      "id": "saas",
+      "label": "SaaS"
+    },
+    {
+      "id": "development",
+      "label": "Development"
+    }
+  ],
+  "projects": [
+    {
+      "id": "archline",
+      "name": "Archline",
+      "client": "Maisonluxe",
+      "year": 2025,
+      "categories": [
+        "website"
+      ],
+      "tags": [
+        "Web Design",
+        "Framer Development"
+      ],
+      "summary": "Archline is a refined website for an architecture studio, designed to present projects with clarity, calm spacing, and a minimalist, elegant visual language.",
+      "challenge": "The studio needed a digital presence that felt premium and architectural, while keeping navigation simple and allowing projects to remain the primary focus.",
+      "solution": "We structured the website with clean grids, generous whitespace, and restrained typography to create a calm browsing experience that highlights architecture.",
+      "finalThoughts": "Archline captures the studio’s philosophy through simplicity and precision, transforming the portfolio into a quiet, elegant experience that reflects architectural thinking.",
+      "thumbnail": "https://framerusercontent.com/images/EpE3EXTbHQgZGhvDOnYoCiOPO4Q.jpg",
+      "images": [
+        "https://framerusercontent.com/images/EymozPaAATTf6rydKIrqAIptRsU.jpg",
+        "https://framerusercontent.com/images/FQo8E0jYggHvidGdQnZnNkIeIms.jpg",
+        "https://framerusercontent.com/images/IMUNWYEfkn5T37D2j6dPFh4kYBo.jpg",
+        "https://framerusercontent.com/images/9uBDaRfp8jzIPpGe9xupADgkI.jpg"
+      ],
+      "url": ""
+    },
+    {
+      "id": "dewi",
+      "name": "Dewi",
+      "client": "Alex Luu",
+      "year": 2025,
+      "categories": [
+        "website"
+      ],
+      "tags": [
+        "Brand Identity",
+        "Web Design"
+      ],
+      "summary": "Dewi is a serene resort website inspired by Bali’s natural beauty, blending warm imagery, soft typography, and spacious layouts to evoke relaxation.",
+      "challenge": "The resort needed a website that conveyed tranquility and luxury while clearly presenting accommodations, experiences, and booking information without overwhelming visitors.",
+      "solution": "We designed airy layouts with natural colors, immersive imagery, and gentle scrolling transitions to create a calm digital journey reflecting the resort atmosphere.",
+      "finalThoughts": "Dewi captures the spirit of a Bali getaway, transforming the website into a peaceful digital escape that invites visitors to relax and imagine their stay.",
+      "thumbnail": "https://framerusercontent.com/images/MZaxJjFtRo4mSnx24EjY6XllOg.png",
+      "images": [
+        "https://framerusercontent.com/images/lIte5WocdwZOBvMNrXRz6OdTos.png",
+        "https://framerusercontent.com/images/u1FcPcPkmbTEkoXXiGYzyNCmPlU.jpg",
+        "https://framerusercontent.com/images/tP36bF9dCnTuEzzQ2OJ66pAFwtE.jpg",
+        "https://framerusercontent.com/images/rtmhvemWx36r95T3imM5QZfQ.jpg",
+        "https://framerusercontent.com/images/kWJhJ7MBBejIH1wBhGGONDPw2o.jpg"
+      ],
+      "url": ""
+    },
+    {
+      "id": "nonsence",
+      "name": "Nonsence",
+      "client": "Jamie",
+      "year": 2024,
+      "categories": [
+        "website"
+      ],
+      "tags": [
+        "Web Design",
+        "Motion Graphics"
+      ],
+      "summary": "Nonsence is a minimal personal portfolio focused on typography, using clean layouts and restrained visuals to highlight projects with clarity and intention.",
+      "challenge": "The challenge was creating a distinctive portfolio without relying on heavy visuals, allowing typography and spacing to carry personality and structure.",
+      "solution": "We built a simple grid, bold typographic hierarchy, and generous whitespace to guide attention, letting projects stand out without unnecessary decoration.",
+      "finalThoughts": "Nonsence demonstrates how minimal design and strong typography can create a confident portfolio that feels refined, focused, and timeless.",
+      "thumbnail": "https://framerusercontent.com/images/UJRysqwXqt9PEy3vxbN9XI5QXQ.png",
+      "images": [
+        "https://framerusercontent.com/images/BoGTMK7AaJPSwR19PrCWBEkIdU.jpeg",
+        "https://framerusercontent.com/images/jR5nT4eidqPyGLPnkKhYwXBWTw.png",
+        "https://framerusercontent.com/images/pXMCuNOhpqCYOzFtPKZBZcq86A.png"
+      ],
+      "url": ""
+    },
+    {
+      "id": "creatory",
+      "name": "Creatory",
+      "client": "Wilson",
+      "year": 2023,
+      "categories": [
+        "website"
+      ],
+      "tags": [
+        "Web Design",
+        "Motion Graphics",
+        "3D Design"
+      ],
+      "summary": "Creatory is a bold website for a Gen Z–focused social media agency, combining playful layouts, vibrant colors, and expressive typography.",
+      "challenge": "The agency needed a website that felt energetic and culturally relevant while clearly presenting services, case studies, and credibility to potential clients.",
+      "solution": "We designed dynamic layouts with vibrant gradients, playful typography, and engaging micro-interactions to create an experience aligned with fast-moving social culture.",
+      "finalThoughts": "Creatory turns the agency’s identity into a lively digital presence that resonates with Gen Z audiences while maintaining clarity and strong brand personality.",
+      "thumbnail": "https://framerusercontent.com/images/BioZIG0GuLlZAIoshbFOCdctS7I.png",
+      "images": [
+        "https://framerusercontent.com/images/uqKjhjevbBLdejvNTpHOHdjRe8.png",
+        "https://framerusercontent.com/images/RwJfvfA9ufwf6M2MM1DBM3p0UU.png",
+        "https://framerusercontent.com/images/nmExbQeqjxRG57npvnCrrvhhfrI.jpg",
+        "https://framerusercontent.com/images/CtDtwTfs20B0ZoX4YfKIx5DeTI.png"
+      ],
+      "url": ""
+    },
+    {
+      "id": "nexmind",
+      "name": "Nexmind®",
+      "client": "Simon Hale",
+      "year": 2025,
+      "categories": [
+        "saas"
+      ],
+      "tags": [
+        "Brand Identity",
+        "Motion Graphics",
+        "3D Design"
+      ],
+      "summary": "Nexmind is a dark-mode website for an AI agency, combining futuristic visuals and structured layouts to present advanced technology in a clear, compelling way.",
+      "challenge": "The agency needed a modern website that communicated complex AI capabilities while maintaining clarity, credibility, and a visually striking technological identity.",
+      "solution": "We designed a dark interface with glowing accents, modular sections, and bold typography to showcase services, simplify navigation, and emphasize innovation.",
+      "finalThoughts": "Nexmind transforms the agency’s presence into a confident digital platform that reflects technological depth while guiding visitors smoothly toward trust and engagement.",
+      "thumbnail": "https://framerusercontent.com/images/EPRSL4XDvXGg2KRgMLqqktSo.png",
+      "images": [
+        "https://framerusercontent.com/images/N2RS74zXn9pmJpNEkbzk3HysSU.jpg",
+        "https://framerusercontent.com/images/GCipfAigW5tdV27gbBuLhY2B9fk.png",
+        "https://framerusercontent.com/images/Q9VWtO4xfyjoc8cc16ZRfTTzJk.jpg",
+        "https://framerusercontent.com/images/OsGx3Pbiv9v4DdmU5YTBQjNLdg.png"
+      ],
+      "url": ""
+    },
+    {
+      "id": "glaze",
+      "name": "Glaze",
+      "client": "Capi Agency",
+      "year": 2026,
+      "categories": [
+        "saas"
+      ],
+      "tags": [
+        "Motion Graphics",
+        "3D Design"
+      ],
+      "summary": "Glaze is a modern website for an AI agent platform, combining sleek visuals, structured layouts, and subtle motion to communicate intelligence and automation.",
+      "challenge": "The challenge was presenting complex AI capabilities in a way that feels approachable, credible, and easy for visitors to understand quickly.",
+      "solution": "We designed modular sections, futuristic accents, and concise messaging to simplify product explanations while highlighting automation features and intelligent workflows.",
+      "finalThoughts": "Glaze positions the AI agent as a powerful yet accessible tool, transforming complex technology into a clear, engaging digital experience.",
+      "thumbnail": "https://framerusercontent.com/images/adZOUatDWxd54qP773wJrAePo.jpg",
+      "images": [
+        "https://framerusercontent.com/images/ot3280OOVp3x550UVevzU70I.png",
+        "https://framerusercontent.com/images/G0cUgOPzBFAmQ6OoZuDfxuUSvmw.jpg",
+        "https://framerusercontent.com/images/TXb6XY1jscgFBvhuTnhJGTVEKXc.jpeg"
+      ],
+      "url": ""
+    },
+    {
+      "id": "brnd",
+      "name": "BRND™",
+      "client": "Jacob Olenick",
+      "year": 2024,
+      "categories": [
+        "development"
+      ],
+      "tags": [
+        "Web Design",
+        "Framer Development",
+        "Motion Graphics"
+      ],
+      "summary": "BRND™ is a clean, minimal website designed to present brand guidelines clearly, helping teams and partners access essential assets and visual standards.",
+      "challenge": "The challenge was organizing complex brand rules and assets into a simple structure that remains accessible, consistent, and easy to navigate.",
+      "solution": "We designed a structured layout with clear sections, restrained typography, and generous spacing to present brand elements in a calm, organized way.",
+      "finalThoughts": "BRND™ transforms brand documentation into a streamlined digital system, making guidelines easier to understand, share, and maintain across teams.",
+      "thumbnail": "https://framerusercontent.com/images/r8zjZl4nPR79RdtcO521JQC2iw.png",
+      "images": [
+        "https://framerusercontent.com/images/vNCmGscmP8AZWPigQbWyz1UL4Hw.jpg",
+        "https://framerusercontent.com/images/VFeozosSzLUoaMd4cqV75XTjjCM.jpg",
+        "https://framerusercontent.com/images/dkLGf25J6u0rMKWEcoapWyfA4WQ.jpg",
+        "https://framerusercontent.com/images/1QbPIA8skAdl1OpVyHFL4xhiY8w.jpg"
+      ],
+      "url": ""
+    }
+  ],
+  "featured": [
+    {
+      "projectId": "archline",
+      "color": "#ff5f57"
+    },
+    {
+      "projectId": "nexmind",
+      "color": "#febc2e"
+    },
+    {
+      "projectId": "glaze",
+      "color": "#28c840"
+    }
+  ],
+  "about": {
+    "name": "David Tran",
+    "role": "Senior Product Designer · eUp Group",
+    "avatar": "assets/framerusercontent.com/images/GDtwfDWvA44HAxAwR3Zp0UYLnRU.0vek3j5.png",
+    "paragraphs": [
+      "Hi there, my name is Tuan Anh aka David Tran",
+      "I’m a Senior Product Designer at eUP Group, focused on crafting thoughtful and user-centered digital experiences. I work across product strategy, UX, and visual design to turn complex ideas into clear, usable products. My goal is to create designs that not only look great but also solve real problems and deliver meaningful value to users.",
+      "I design interfaces that truly serve people. Ensuring they’re not just visually appealing but also intuitive and purposeful. Whether it’s a product dashboard, an app, or a portfolio, my aim is to craft experiences that feel natural and effortless.",
+      "Details matter most to me. I believe precision is what elevates good design into great design. My eye for detail helps build trust with clients, because they know I’ll pour the same dedication into their projects as if they were my own."
+    ]
+  },
+  "contact": {
+    "email": "",
+    "links": [
+      {
+        "label": "LinkedIn",
+        "url": "https://www.linkedin.com/"
+      },
+      {
+        "label": "Instagram",
+        "url": "https://www.instagram.com/"
+      },
+      {
+        "label": "X",
+        "url": "https://x.com/"
+      }
+    ]
+  },
+  "resume": {
+    "url": ""
+  }
+}

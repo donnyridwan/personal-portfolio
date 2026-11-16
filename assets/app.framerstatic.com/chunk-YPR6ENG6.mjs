@@ -1,0 +1,2 @@
+import{a as r}from"https://app.framerstatic.com/chunk-XNIFBQQE.mjs";import{b as a}from"https://app.framerstatic.com/chunk-P4XC5FWJ.mjs";import{c as o}from"https://app.framerstatic.com/chunk-ISW56VHA.mjs";var e={modalBackground:a.dark94},t={modalBackground:a.dark92},s={modalBackground:a.dark100},k={tokens:e,scope:r},m=o([k]),n={tokens:t,scope:r},p=o([n]),l={tokens:s,scope:r},D=o([l]);export{e as a,m as b,p as c,D as d};
+//# sourceMappingURL=https://app.framerstatic.com/chunk-YPR6ENG6.mjs.map
