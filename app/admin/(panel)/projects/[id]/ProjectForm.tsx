@@ -1,4 +1,5 @@
 'use client';
+import { submitWithoutReset } from '@/app/admin/submitWithoutReset';
 import { useActionState, useState } from 'react';
 import ImageField from '@/app/admin/ImageField';
 import { slugify } from '@/lib/slug';
@@ -31,7 +32,7 @@ export default function ProjectForm({ project, isNew, categories }: Props) {
 
   return (
     <>
-      <form action={action}>
+      <form onSubmit={submitWithoutReset(action)}>
         <input type="hidden" name="originalId" value={isNew ? '' : project.id} />
         <input type="hidden" name="thumbnail" value={JSON.stringify(thumb)} />
         <input type="hidden" name="images" value={JSON.stringify(images)} />
