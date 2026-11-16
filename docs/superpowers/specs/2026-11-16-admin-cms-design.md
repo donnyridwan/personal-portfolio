@@ -62,7 +62,7 @@ dockfolio/
 - `/` tetap menampilkan situs Framer (rewrite ke `public/index.html`). Tidak ada `app/page.tsx`.
 - `finder.js` mengambil data dari `/api/finder`. Kalau gagal, tampil pesan "Data belum bisa dimuat. Coba lagi." dengan tombol coba lagi. `preview.html` tetap memakai `finder-data.json` sebagai data contoh offline.
 
-### Database (Neon, proyek baru `dockfolio`, region `aws-ap-southeast-1`)
+### Database (Neon, proyek "Personally", branch `production`)
 - `categories(id text pk, label text, sort int)`
 - `projects(id text pk, name, client, year int, summary, challenge, solution, final_thoughts, url, thumbnail text, images text[], tags text[], categories text[], featured_color text null, featured_order int null, sort int, updated_at timestamptz)`
   - `id` = slug dari nama (otomatis, bisa diubah). Featured = `featured_color` terisi.
@@ -107,7 +107,7 @@ dockfolio/
 - Lokal dulu, hosting nanti.
 
 ## Keputusan saya (bisa dikoreksi)
-- Proyek Neon baru `dockfolio` di Singapura (`aws-ap-southeast-1`), terpisah dari 6 proyek lain, di **org "Donny" (`org-super-waterfall-96221581`)**, yaitu akun yang tersambung ke Claude (bukan akun CLI gandariastudio). Claude membuat proyeknya dan menulis `DATABASE_URL` ke `.env.local`. *(org dipilih pemilik)*
+- **Database memakai proyek Neon yang sudah ada, "Personally"** (`floral-cake-12638576`, region `aws-us-east-2`, branch `production`, database `neondb`) di org "Donny", bukan proyek baru. *(diminta pemilik, 2026-11-16)* Kesembilan tabel lama (auth_attempts, contact, experience, media_library, projects, showcase, site_settings, skills, testimonials) sudah dihapus, lalu diganti `categories`, `projects`, dan `settings` dari `db/schema.sql` + `db/seed.sql`. Data lama dicadangkan di branch `backup-sebelum-dockfolio-2026-11-16` (`br-wandering-credit-b56hk9ri`). Claude menulis `DATABASE_URL` ke `.env.local` saat membangun.
 - Seed dari data contoh yang ada sekarang.
 - Admin ditulis dengan CSS biasa, tanpa library UI.
 - Gambar yang dihapus di admin tidak ikut dihapus dari Cloudinary.
