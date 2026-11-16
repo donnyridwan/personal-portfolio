@@ -223,3 +223,17 @@
 @media (prefers-reduced-motion: reduce) {
   #df-finder, .df-sidebar { transition: none; }
 }
+
+/* Status muat / gagal (data dari /api/finder). */
+.df-status { text-align: center; }
+.df-status p { margin: 0 0 12px; }
+.df-retry {
+  font: inherit; font-size: 13px;
+  padding: 5px 14px;
+  border-radius: 6px;
+  border: 0;
+  background: #0a64ff;
+  color: #fff;
+  cursor: pointer;
+}
+.df-retry:hover { filter: brightness(1.08); }

@@ -1,4 +1,5 @@
-// Finder baru ala macOS. Isi diambil dari finder-data.json (nanti bisa diganti URL API CMS).
+// Finder baru ala macOS. Di situs utama isinya dari /api/finder (database);
+// preview.html memakai finder-data.json sebagai data contoh offline.
 import {
   validateData, getProject, projectsInCategory, featuredProjects, createHistory,
   parseViewPrefs, VIEW_MODES, GRID_SIZES,
@@ -15,18 +16,23 @@ function savePrefs() {
 let prefs = loadPrefs();
 
 const SITE_ROOT = new URL('../', import.meta.url);
-const DEFAULT_DATA_URL = new URL('finder-data.json', import.meta.url).href;
+// Hanya di situs utama (bukan di preview.html) data diambil dari API dan Finder disambungkan ke Framer.
+const IS_MAIN_SITE = !location.pathname.includes('/finder/');
+const DEFAULT_DATA_URL = IS_MAIN_SITE
+  ? new URL('api/finder', SITE_ROOT).href
+  : new URL('finder-data.json', import.meta.url).href;
 
 let data = null;
 let dataPromise = null;
 let history = null;
 let root = null;
 let selectedRow = null;
+let pendingView = null; // tampilan yang diminta saat data belum siap
 
 /* ---------- Data ---------- */
 
 export async function loadFinderData(url = DEFAULT_DATA_URL) {
-  const res = await fetch(url);
+  const res = await fetch(url, { cache: 'no-store' });
   if (!res.ok) throw new Error(`Gagal memuat data Finder (${res.status})`);
   const json = await res.json();
   const errs = validateData(json);
@@ -35,7 +41,11 @@ export async function loadFinderData(url = DEFAULT_DATA_URL) {
 }
 
 function ensureData() {
-  if (!dataPromise) dataPromise = loadFinderData().then(d => (data = d));
+  if (!dataPromise) {
+    dataPromise = loadFinderData()
+      .then(d => (data = d))
+      .catch(err => { dataPromise = null; throw err; }); // gagal: boleh dicoba lagi
+  }
   return dataPromise;
 }
 
@@ -142,7 +152,47 @@ function buildWindow() {
     root.addEventListener(t, e => e.stopPropagation());
   }
   setupDrag(root.querySelector('.df-titlebar'));
-  renderSidebar();
+}
+
+/** Isi jendela saat data belum ada: "Memuat…" atau pesan gagal + tombol coba lagi. */
+function showStatus(kind) {
+  root.querySelector('.df-title').textContent = 'Finder';
+  root.querySelector('.df-toolbar').hidden = true;
+  root.querySelector('.df-zoom').hidden = true;
+  root.querySelector('[data-act="back"]').disabled = true;
+  root.querySelector('[data-act="fwd"]').disabled = true;
+  root.querySelector('.df-content').innerHTML = kind === 'error'
+    ? `<div class="df-empty df-status" role="alert"><div>
+         <p>Data belum bisa dimuat. Coba lagi.</p>
+         <button class="df-retry" data-act="retry">Coba lagi</button>
+       </div></div>`
+    : '<div class="df-empty df-status" aria-live="polite">Memuat…</div>';
+}
+
+/** Tunggu data, lalu tampilkan isi jendela yang sedang terbuka. */
+async function showWhenReady() {
+  const win = root;
+  if (!data) {
+    showStatus('loading');
+    try {
+      await ensureData();
+    } catch (err) {
+      console.error('[finder]', err);
+      if (root === win) showStatus('error');
+      return;
+    }
+  }
+  if (!root || root !== win) return; // jendela ditutup saat memuat
+  const target = pendingView;
+  pendingView = null;
+  if (!history) {
+    const firstFilled = data.categories.find(c => projectsInCategory(data, c.id).length) ?? data.categories[0];
+    history = createHistory(target ?? { type: 'category', id: firstFilled?.id });
+    renderSidebar();
+    render();
+  } else if (target) {
+    navigate(target);
+  }
 }
 
 function setupDrag(bar) {
@@ -175,6 +225,7 @@ function onClick(e) {
   if (!el) return;
   const act = el.dataset.act;
   if (act === 'close') return closeFinder();
+  if (act === 'retry') return showWhenReady();
   if (act === 'menu') return root.classList.toggle('df-sidebar-open');
   if (act === 'back') { if (history.canBack()) { history.back(); render(); } return; }
   if (act === 'fwd') { if (history.canForward()) { history.forward(); render(); } return; }
@@ -384,18 +435,15 @@ function renderResume() {
 /* ---------- API ---------- */
 
 export async function openFinder(view) {
-  await ensureData();
-  const firstFilled = data.categories.find(c => projectsInCategory(data, c.id).length) ?? data.categories[0];
-  const target = view ?? { type: 'category', id: firstFilled?.id };
   if (!root?.isConnected) {
-    history = createHistory(target);
+    history = null;
     buildWindow();
-    render();
     document.addEventListener('keydown', onKey);
-    requestAnimationFrame(() => requestAnimationFrame(() => root.classList.add('df-open')));
-  } else {
-    navigate(target);
+    const win = root;
+    requestAnimationFrame(() => requestAnimationFrame(() => win.classList.add('df-open')));
   }
+  if (view) pendingView = view;
+  await showWhenReady();
   return root;
 }
 
@@ -456,7 +504,7 @@ function installHooks() {
     ensureData().then(() => {
       const p = data.projects.find(x => x.name === name);
       if (p) openFinder({ type: 'project', id: p.id });
-    });
+    }, () => openFinder()); // data gagal: jendela menampilkan pesan + tombol coba lagi
     block(e);
     swallowClick = true;
   }, opts);
@@ -470,5 +518,8 @@ function installHooks() {
   }, opts);
 }
 
-// Hanya di situs utama (bukan di preview.html).
-if (!location.pathname.includes('/finder/')) installHooks();
+if (IS_MAIN_SITE) {
+  installHooks();
+  // Ambil data begitu halaman dimuat, supaya jeda bangun database tidak terasa saat Finder diklik.
+  ensureData().catch(() => { /* ditampilkan saat Finder dibuka */ });
+}
