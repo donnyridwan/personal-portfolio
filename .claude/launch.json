@@ -1,6 +1,6 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "dockfolio", "runtimeExecutable": "python3", "runtimeArgs": ["-m", "http.server", "5173", "--directory", "/Users/donny/Projects/dockfolio"], "port": 5173 }
+    { "name": "dockfolio", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev"], "port": 3000 }
   ]
 }

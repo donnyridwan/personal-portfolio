@@ -4,9 +4,9 @@ import { readFileSync } from 'node:fs';
 import {
   validateData, getProject, projectsInCategory, featuredProjects, createHistory,
   parseViewPrefs, DEFAULT_VIEW_PREFS,
-} from '../finder/finder-model.js';
+} from '../public/finder/finder-model.js';
 
-const data = JSON.parse(readFileSync(new URL('../finder/finder-data.json', import.meta.url), 'utf8'));
+const data = JSON.parse(readFileSync(new URL('../public/finder/finder-data.json', import.meta.url), 'utf8'));
 
 test('data asli valid', () => assert.deepEqual(validateData(data), []));
 
