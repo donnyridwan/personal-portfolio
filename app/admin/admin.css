@@ -1,0 +1,149 @@
+/* Admin Dockfolio: gaya sederhana ala Finder macOS. */
+:root {
+  --a-accent: #0a64ff;
+  --a-bg: #f5f5f7;
+  --a-card: #ffffff;
+  --a-text: #1d1d1f;
+  --a-muted: #6e6e73;
+  --a-line: #e3e3e8;
+  --a-danger: #d70015;
+  --a-radius: 10px;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --a-bg: #1c1c1e;
+    --a-card: #2c2c2e;
+    --a-text: #f5f5f7;
+    --a-muted: #a1a1a6;
+    --a-line: #3a3a3c;
+    --a-danger: #ff453a;
+  }
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--a-bg);
+  color: var(--a-text);
+  font: 14px/1.45 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--a-accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1 { font-size: 22px; margin: 0 0 16px; }
+h2 { font-size: 16px; margin: 0 0 12px; }
+
+/* Kepala */
+.adm-header {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; gap: 20px;
+  padding: 10px 24px;
+  background: color-mix(in srgb, var(--a-card) 85%, transparent);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--a-line);
+}
+.adm-brand { font-size: 15px; }
+.adm-nav { display: flex; gap: 4px; }
+.adm-nav a { padding: 5px 10px; border-radius: 6px; color: var(--a-text); }
+.adm-nav a:hover { background: var(--a-line); text-decoration: none; }
+.adm-nav a[aria-current="page"] { background: var(--a-accent); color: #fff; }
+.adm-header-end { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+.adm-header-end form { margin: 0; }
+.adm-main { max-width: 980px; margin: 0 auto; padding: 24px; }
+.adm-toprow { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.adm-toprow h1 { margin: 0; }
+
+/* Kartu & form */
+.adm-card {
+  background: var(--a-card);
+  border: 1px solid var(--a-line);
+  border-radius: var(--a-radius);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.adm-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+.adm-field > span, .adm-label { font-weight: 600; font-size: 13px; }
+.adm-hint { color: var(--a-muted); font-size: 12px; font-weight: 400; }
+.adm-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+.adm-grid3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0 16px; }
+@media (max-width: 640px) {
+  .adm-grid2, .adm-grid3 { grid-template-columns: 1fr; }
+  .adm-header { flex-wrap: wrap; padding: 10px 16px; gap: 10px; }
+  .adm-main { padding: 16px; }
+}
+input[type="text"], input[type="url"], input[type="email"], input[type="number"], input[type="password"], textarea, select {
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  background: var(--a-bg);
+  border: 1px solid var(--a-line);
+  border-radius: 7px;
+  padding: 7px 10px;
+}
+textarea { min-height: 84px; resize: vertical; }
+input:focus, textarea:focus, select:focus { outline: 3px solid color-mix(in srgb, var(--a-accent) 35%, transparent); border-color: var(--a-accent); }
+.adm-checks { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+.adm-checks label { display: flex; align-items: center; gap: 6px; font-weight: 400; }
+
+/* Tombol */
+.adm-btn {
+  font: inherit; font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 7px;
+  border: 1px solid var(--a-line);
+  background: var(--a-card);
+  color: var(--a-text);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.adm-btn:hover:not(:disabled) { border-color: var(--a-muted); }
+.adm-btn:disabled { opacity: .45; cursor: default; }
+.adm-primary { background: var(--a-accent); border-color: var(--a-accent); color: #fff; }
+.adm-primary:hover:not(:disabled) { border-color: var(--a-accent); filter: brightness(1.08); }
+.adm-danger { color: var(--a-danger); }
+.adm-icon { padding: 3px 8px; }
+.adm-actions { display: flex; gap: 8px; align-items: center; }
+.adm-actions .adm-spacer { flex: 1; }
+.adm-inline { display: inline; margin: 0; }
+
+.adm-error { color: var(--a-danger); margin: 0 0 12px; }
+.adm-ok { color: #1f8f3a; margin: 0 0 12px; }
+.adm-muted { color: var(--a-muted); }
+
+/* Tabel */
+.adm-table { width: 100%; border-collapse: collapse; background: var(--a-card); border: 1px solid var(--a-line); border-radius: var(--a-radius); overflow: hidden; }
+.adm-table th, .adm-table td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--a-line); vertical-align: middle; }
+.adm-table th { font-size: 12px; color: var(--a-muted); font-weight: 600; background: var(--a-bg); }
+.adm-table tr:last-child td { border-bottom: 0; }
+.adm-table tbody tr:hover { background: color-mix(in srgb, var(--a-accent) 6%, transparent); }
+.adm-table .adm-thumb { width: 40px; height: 40px; border-radius: 6px; object-fit: cover; background: var(--a-line); display: block; }
+.adm-table .adm-name a { color: var(--a-text); font-weight: 600; }
+.adm-table td.adm-move { width: 1%; white-space: nowrap; }
+.adm-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; vertical-align: middle; }
+
+/* Warna featured */
+.adm-swatches { display: flex; gap: 8px; flex-wrap: wrap; }
+.adm-swatches label { position: relative; cursor: pointer; }
+.adm-swatches input { position: absolute; opacity: 0; }
+.adm-swatches span { display: block; width: 24px; height: 24px; border-radius: 50%; border: 2px solid transparent; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
+.adm-swatches input:checked + span { outline: 2px solid var(--a-accent); outline-offset: 2px; }
+.adm-swatches input:focus-visible + span { outline: 3px solid var(--a-accent); outline-offset: 2px; }
+
+/* Gambar */
+.adm-images { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
+.adm-image { width: 120px; border: 1px solid var(--a-line); border-radius: 8px; overflow: hidden; background: var(--a-bg); }
+.adm-image img { width: 120px; height: 80px; object-fit: cover; display: block; background: var(--a-line); }
+.adm-image .adm-actions { padding: 4px; justify-content: space-between; }
+.adm-upload-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.adm-upload-row input[type="url"] { flex: 1; min-width: 200px; }
+.adm-file { position: relative; overflow: hidden; }
+.adm-file input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+
+.adm-rows { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+.adm-row { display: grid; grid-template-columns: 1fr 2fr auto; gap: 8px; }
+
+/* Login */
+.adm-login { min-height: 100vh; display: grid; place-items: center; padding: 16px; }
+.adm-login-card { width: 100%; max-width: 340px; }
+.adm-login-card .adm-btn { width: 100%; padding: 8px; }

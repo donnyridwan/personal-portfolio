@@ -1,0 +1,22 @@
+'use client';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+const LINKS = [
+  { href: '/admin', label: 'Proyek' },
+  { href: '/admin/categories', label: 'Kategori' },
+  { href: '/admin/profile', label: 'Profil' },
+];
+
+export default function NavLinks() {
+  const path = usePathname();
+  const active = (href: string) =>
+    href === '/admin' ? path === '/admin' || path.startsWith('/admin/projects') : path.startsWith(href);
+  return (
+    <nav className="adm-nav">
+      {LINKS.map(l => (
+        <Link key={l.href} href={l.href} aria-current={active(l.href) ? 'page' : undefined}>{l.label}</Link>
+      ))}
+    </nav>
+  );
+}
