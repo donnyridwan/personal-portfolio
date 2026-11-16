@@ -20,6 +20,7 @@ test('signParams sesuai contoh resmi Cloudinary', () => {
 
 test('hanya folder dockfolio yang boleh ditandatangani', () => {
   expect(isAllowedFolder('dockfolio/profile')).toBe(true);
+  expect(isAllowedFolder('dockfolio/desktop')).toBe(true);
   expect(isAllowedFolder('dockfolio/projects/archline')).toBe(true);
   expect(isAllowedFolder('dockfolio/projects/new')).toBe(true);
   expect(isAllowedFolder('dockfolio/projects/../x')).toBe(false);

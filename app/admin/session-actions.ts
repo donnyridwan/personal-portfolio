@@ -15,7 +15,7 @@ export async function login(_prev: string | null, form: FormData): Promise<strin
     path: '/',
     maxAge: COOKIE_MAX_AGE,
   });
-  redirect('/admin');
+  redirect('/?edit');
 }
 
 export async function logout(): Promise<void> {

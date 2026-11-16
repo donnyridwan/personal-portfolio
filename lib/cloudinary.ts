@@ -26,5 +26,5 @@ export function signParams(params: Record<string, string | number>, secret: stri
 }
 
 export function isAllowedFolder(folder: string): boolean {
-  return folder === 'dockfolio/profile' || /^dockfolio\/projects\/[a-z0-9-]+$/.test(folder);
+  return folder === 'dockfolio/profile' || folder === 'dockfolio/desktop' || /^dockfolio\/projects\/[a-z0-9-]+$/.test(folder);
 }

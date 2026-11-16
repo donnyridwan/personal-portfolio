@@ -32,3 +32,15 @@ create table settings (
   key   text primary key,
   value jsonb not null
 );
+
+-- Ikon desktop (lihat db/migrations/002-desktop.sql untuk isi awal).
+create table desktop_items (
+  id         text primary key default gen_random_uuid()::text,
+  kind       text not null check (kind in ('project','folder','photo','file','app')),
+  ref        text not null default '',
+  label      text not null default '',
+  src        text not null default '',
+  x real, y real, mx real, my real,
+  z          int  not null default 0,
+  created_at timestamptz not null default now()
+);

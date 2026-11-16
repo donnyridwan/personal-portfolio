@@ -52,4 +52,24 @@ export type FinderData = {
   about: About;
   contact: Contact;
   resume: Resume;
+  /** Ikon desktop (hanya dari /api/finder; finder-data.json offline tidak punya). */
+  desktop?: DesktopItem[];
 };
+
+export type DesktopKind = 'project' | 'folder' | 'photo' | 'file' | 'app';
+
+export type DesktopRow = {
+  id: string;
+  kind: DesktopKind;
+  ref: string;
+  label: string;
+  src: string;
+  x: number | null;
+  y: number | null;
+  mx: number | null;
+  my: number | null;
+  z: number;
+};
+
+/** Ikon desktop siap tampil: nama & gambar proyek/folder sudah diisi dari datanya. */
+export type DesktopItem = DesktopRow & { img: string };

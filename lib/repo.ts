@@ -1,8 +1,9 @@
 // Query admin (tulis/baca) ke Neon. Hanya dipanggil dari Server Action/halaman admin yang sudah requireAdmin().
 import 'server-only';
 import { loadSettings, sql } from './db';
-import { slugify } from './slug';
-import type { CategoryRow, ProjectRow, SettingsMap } from './types';
+import { clampPos } from './desktop';
+import { slugify, uniqueId, uniqueName } from './slug';
+import type { CategoryRow, DesktopKind, ProjectRow, SettingsMap } from './types';
 
 /** Kesalahan yang pesannya aman ditampilkan ke admin. */
 export class UserError extends Error {}
@@ -89,11 +90,53 @@ export async function saveProject(originalId: string | null, input: ProjectInput
     where id = ${originalId}
     returning id`;
   if (!rows.length) throw new UserError('Proyek tidak ditemukan (mungkin sudah dihapus).');
+  if (id !== originalId) {
+    await db`update desktop_items set ref = ${id} where kind = 'project' and ref = ${originalId}`;
+  }
   return id;
 }
 
+/** Hapus proyek beserta ikonnya di desktop. */
 export async function deleteProject(id: string) {
-  await sql()`delete from projects where id = ${id}`;
+  const db = sql();
+  await db.transaction([
+    db`delete from desktop_items where kind = 'project' and ref = ${id}`,
+    db`delete from projects where id = ${id}`,
+  ]);
+}
+
+/** Proyek baru cepat (dari desktop/Finder): nama & id dibuat unik otomatis. */
+export async function createProjectQuick(opts: { name?: string; categories?: string[]; images?: string[] }) {
+  const db = sql();
+  const existing = (await db`select id, name from projects`) as { id: string; name: string }[];
+  const name = uniqueName((opts.name ?? '').trim() || 'Proyek Baru', existing.map(p => p.name));
+  const id = uniqueId(slugify(name), existing.map(p => p.id));
+  const images = (opts.images ?? []).filter(Boolean);
+  const cats = (opts.categories ?? []).filter(Boolean);
+  await db`
+    insert into projects (id, name, year, thumbnail, images, categories, sort)
+    values (${id}, ${name}, ${new Date().getFullYear()}, ${images[0] ?? ''}, ${images}, ${cats},
+            (select coalesce(max(sort), -1) + 1 from projects))`;
+  return { id, name };
+}
+
+export async function renameProject(id: string, name: string) {
+  const clean = name.trim();
+  if (!clean) throw new UserError('Nama tidak boleh kosong.');
+  const rows = await sql()`update projects set name = ${clean}, updated_at = now() where id = ${id} returning id`;
+  if (!rows.length) throw new UserError('Proyek tidak ditemukan.');
+}
+
+/** Tambah gambar preview; jadi thumbnail juga kalau thumbnail masih kosong. */
+export async function addProjectImages(id: string, urls: string[]) {
+  const list = urls.filter(u => /^https?:\/\//.test(u));
+  if (!list.length) return;
+  const rows = await sql()`
+    update projects set images = images || ${list}::text[],
+      thumbnail = case when thumbnail = '' then ${list[0]} else thumbnail end,
+      updated_at = now()
+    where id = ${id} returning id`;
+  if (!rows.length) throw new UserError('Proyek tidak ditemukan.');
 }
 
 export const moveProject = (id: string, dir: -1 | 1) => move('projects', id, dir);
@@ -143,10 +186,22 @@ export async function renameCategory(id: string, label: string) {
   await sql()`update categories set label = ${clean} where id = ${id}`;
 }
 
-/** Hapus kategori dan lepaskan dari semua proyek yang memakainya. */
+/** Folder baru cepat: nama "Folder Baru", "Folder Baru 2", … */
+export async function addCategoryUnique(label?: string) {
+  const db = sql();
+  const existing = (await db`select id, label from categories`) as { id: string; label: string }[];
+  const clean = uniqueName((label ?? '').trim() || 'Folder Baru', existing.map(c => c.label));
+  const id = uniqueId(slugify(clean), existing.map(c => c.id));
+  await db`insert into categories (id, label, sort)
+           values (${id}, ${clean}, (select coalesce(max(sort), -1) + 1 from categories))`;
+  return { id, label: clean };
+}
+
+/** Hapus kategori dan lepaskan dari semua proyek yang memakainya (ikon foldernya ikut hilang). */
 export async function deleteCategory(id: string) {
   const db = sql();
   await db.transaction([
+    db`delete from desktop_items where kind = 'folder' and ref = ${id}`,
     db`update projects set categories = array_remove(categories, ${id}), updated_at = now()
        where ${id} = any(categories)`,
     db`delete from categories where id = ${id}`,
@@ -164,4 +219,72 @@ export async function saveSetting(key: 'about' | 'contact' | 'resume', value: un
   await sql()`
     insert into settings (key, value) values (${key}, ${json}::jsonb)
     on conflict (key) do update set value = excluded.value`;
+}
+
+/* ---------- Desktop ---------- */
+
+export type DesktopInput = {
+  kind: DesktopKind;
+  ref?: string;
+  label?: string;
+  src?: string;
+  x?: unknown;
+  y?: unknown;
+  layout?: 'd' | 'm';
+};
+
+const KINDS: DesktopKind[] = ['project', 'folder', 'photo', 'file', 'app'];
+
+export async function createDesktopItem(input: DesktopInput): Promise<string> {
+  if (!KINDS.includes(input.kind) || input.kind === 'app') throw new UserError('Jenis ikon tidak dikenal.');
+  const db = sql();
+  const ref = String(input.ref ?? '');
+  const src = String(input.src ?? '');
+  if (input.kind === 'photo' || input.kind === 'file') {
+    if (!/^https:\/\//.test(src)) throw new UserError('File harus berupa URL https.');
+  } else {
+    const table = input.kind === 'project' ? 'projects' : 'categories';
+    const found = await db.query(`select 1 from ${table} where id = $1`, [ref]);
+    if (!found.length) throw new UserError('Proyek/folder tidak ditemukan.');
+    const dup = (await db`select id from desktop_items where kind = ${input.kind} and ref = ${ref}`) as { id: string }[];
+    if (dup.length) return dup[0].id; // sudah ada di desktop
+  }
+  const x = clampPos(input.x);
+  const y = clampPos(input.y);
+  const mobile = input.layout === 'm';
+  const rows = (await db`
+    insert into desktop_items (kind, ref, label, src, x, y, mx, my, z)
+    values (${input.kind}, ${ref}, ${String(input.label ?? '').trim()}, ${src},
+            ${mobile ? null : x}, ${mobile ? null : y}, ${mobile ? x : null}, ${mobile ? y : null},
+            (select coalesce(max(z), 0) + 1 from desktop_items))
+    returning id`) as { id: string }[];
+  return rows[0].id;
+}
+
+/** Simpan posisi (untuk layout 'd' atau 'm') dan bawa ke paling atas. */
+export async function moveDesktopItem(id: string, x: unknown, y: unknown, layout: 'd' | 'm') {
+  const cx = clampPos(x);
+  const cy = clampPos(y);
+  if (cx === null || cy === null) throw new UserError('Posisi tidak valid.');
+  const db = sql();
+  const rows = layout === 'm'
+    ? await db`update desktop_items set mx = ${cx}, my = ${cy}, z = (select coalesce(max(z), 0) + 1 from desktop_items)
+               where id = ${id} returning id`
+    : await db`update desktop_items set x = ${cx}, y = ${cy}, z = (select coalesce(max(z), 0) + 1 from desktop_items)
+               where id = ${id} returning id`;
+  if (!rows.length) throw new UserError('Ikon tidak ditemukan.');
+}
+
+export async function renameDesktopItem(id: string, label: string) {
+  const clean = label.trim();
+  if (!clean) throw new UserError('Nama tidak boleh kosong.');
+  await sql()`update desktop_items set label = ${clean} where id = ${id} and kind in ('photo', 'file', 'app')`;
+}
+
+export async function deleteDesktopItem(id: string) {
+  await sql()`delete from desktop_items where id = ${id} and kind <> 'app'`;
+}
+
+export async function removeFromDesktop(kind: 'project' | 'folder', ref: string) {
+  await sql()`delete from desktop_items where kind = ${kind} and ref = ${ref}`;
 }

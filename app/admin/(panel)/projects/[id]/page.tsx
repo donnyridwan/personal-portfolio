@@ -17,7 +17,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ id: st
   if (!project) notFound();
   return (
     <>
-      <p><Link href="/admin">← Semua proyek</Link></p>
+      <p><Link href="/admin/projects">← Semua proyek</Link></p>
       <h1>{isNew ? 'Proyek baru' : project.name}</h1>
       <ProjectForm project={project} isNew={isNew} categories={categories.map(c => ({ id: c.id, label: c.label }))} />
     </>

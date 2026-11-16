@@ -9,3 +9,17 @@ export function slugify(name: string): string {
     .replace(/^-+|-+$/g, '');
   return s || 'proyek';
 }
+
+/** "Folder Baru" → "Folder Baru 2" kalau nama itu sudah ada (tanpa beda huruf besar/kecil). */
+export function uniqueName(base: string, existing: string[]): string {
+  const taken = new Set(existing.map(s => s.trim().toLowerCase()));
+  if (!taken.has(base.toLowerCase())) return base;
+  for (let n = 2; ; n++) if (!taken.has(`${base} ${n}`.toLowerCase())) return `${base} ${n}`;
+}
+
+/** "glaze" → "glaze-2" kalau id sudah dipakai. */
+export function uniqueId(base: string, existing: string[]): string {
+  const taken = new Set(existing);
+  if (!taken.has(base)) return base;
+  for (let n = 2; ; n++) if (!taken.has(`${base}-${n}`)) return `${base}-${n}`;
+}

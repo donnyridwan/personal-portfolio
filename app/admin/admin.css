@@ -148,3 +148,7 @@ input:focus, textarea:focus, select:focus { outline: 3px solid color-mix(in srgb
 .adm-login-card { width: 100%; max-width: 340px; }
 .adm-login-card .adm-btn { width: 100%; padding: 8px; }
 .adm-pdf { display: grid; place-items: center; width: 120px; height: 80px; font-size: 13px; }
+
+/* Di dalam jendela "Edit Detail" pada desktop mode edit */
+.adm-embed .adm-header { display: none; }
+.adm-embed .adm-main { padding-top: 16px; }

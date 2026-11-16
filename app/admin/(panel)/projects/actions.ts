@@ -51,24 +51,24 @@ export async function saveProjectAction(_prev: SaveState, form: FormData): Promi
     return { error: 'Gagal menyimpan. Database mungkin sedang bangun — coba lagi sebentar.' };
   }
   revalidatePath('/admin', 'layout');
-  redirect(`/admin?saved=${encodeURIComponent(id)}`);
+  redirect(`/admin/projects?saved=${encodeURIComponent(id)}`);
 }
 
 export async function deleteProjectAction(form: FormData) {
   await requireAdmin();
   await deleteProject(str(form, 'id'));
   revalidatePath('/admin', 'layout');
-  redirect('/admin');
+  redirect('/admin/projects?deleted=1');
 }
 
 export async function moveProjectAction(form: FormData) {
   await requireAdmin();
   await moveProject(str(form, 'id'), str(form, 'dir') === 'up' ? -1 : 1);
-  revalidatePath('/admin');
+  revalidatePath('/admin/projects');
 }
 
 export async function moveFeaturedAction(form: FormData) {
   await requireAdmin();
   await moveFeatured(str(form, 'id'), str(form, 'dir') === 'up' ? -1 : 1);
-  revalidatePath('/admin');
+  revalidatePath('/admin/projects');
 }

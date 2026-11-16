@@ -5,3 +5,16 @@
 .framer-e41lzv-container {
   display: none !important;
 }
+
+/* Ikon portofolio bawaan Framer (7 proyek + resume.pdf) diganti ikon dari database
+   (public/desktop/desktop.js), supaya bisa ditambah dan digeser dari admin. */
+.framer-9k8nvi-container,
+.framer-dwoxt9-container,
+.framer-1rnf8y2-container,
+.framer-1qfqxy7-container,
+.framer-qttbv1-container,
+.framer-1765lca-container,
+.framer-tn18al-container,
+.framer-1he8gp5-container {
+  display: none !important;
+}

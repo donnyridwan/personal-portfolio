@@ -49,6 +49,31 @@ function ensureData() {
   return dataPromise;
 }
 
+/** Data bersama untuk desktop.js dan edit.js (satu kali ambil). */
+export const loadData = ensureData;
+
+/** Ambil ulang data (setelah diubah di mode edit) lalu gambar ulang Finder yang sedang terbuka. */
+export async function reloadData() {
+  dataPromise = null;
+  await ensureData();
+  if (root?.isConnected && history) {
+    const cur = history.current();
+    const gone = (cur.type === 'project' && !getProject(data, cur.id))
+      || (cur.type === 'category' && !data.categories.some(c => c.id === cur.id));
+    renderSidebar();
+    if (gone) {
+      const first = data.categories.find(c => projectsInCategory(data, c.id).length) ?? data.categories[0];
+      history = createHistory({ type: 'category', id: first?.id });
+    }
+    render();
+  }
+  window.dispatchEvent(new CustomEvent('dockfolio:data', { detail: data }));
+  return data;
+}
+
+export const currentView = () => (root?.isConnected && history ? history.current() : null);
+export const finderRoot = () => (root?.isConnected ? root : null);
+
 /** Path lokal di data ("assets/…") dihitung dari root situs; URL penuh dibiarkan. */
 function asset(path) {
   return path ? new URL(path, SITE_ROOT).href : '';
@@ -456,7 +481,7 @@ export function closeFinder() {
   setTimeout(() => el.remove(), 180);
 }
 
-window.dockfolioFinder = { open: openFinder, close: closeFinder };
+window.dockfolioFinder = { open: openFinder, close: closeFinder, reload: reloadData };
 
 /* ---------- Sambungan ke situs Framer ---------- */
 
@@ -464,8 +489,6 @@ window.dockfolioFinder = { open: openFinder, close: closeFinder };
 // (D-Small ↔ D-Large) saat dock membesar di bawah kursor, jadi jangan bergantung pada nama varian.
 const DOCK_FINDER = '[data-framer-name="Dock Menu"] a';
 const DOCK_FINDER_IMG = 'jHPLi4pph6s8pBdTePue1xYLs';
-const DESKTOP_PROJECT = '[data-framer-name="Desktop/Horizontal"], [data-framer-name="Desktop/Vertical"]';
-const TAP_SLOP = 5;
 
 function dockFinderTarget(el) {
   const a = el.closest?.(DOCK_FINDER);
@@ -473,7 +496,6 @@ function dockFinderTarget(el) {
 }
 
 function installHooks() {
-  let down = null; // { x, y, projectName } dari pointerdown di ikon proyek desktop
   let swallowClick = false;
   const opts = { capture: true };
 
@@ -482,10 +504,7 @@ function installHooks() {
   window.addEventListener('pointerdown', e => {
     swallowClick = false;
     if (root?.contains(e.target)) return;
-    if (dockFinderTarget(e.target)) { block(e); e.preventDefault(); return; }
-    const icon = e.target.closest?.(DESKTOP_PROJECT);
-    // Biarkan lewat supaya Framer tetap bisa menggeser ikonnya.
-    down = icon ? { x: e.clientX, y: e.clientY, name: icon.textContent.trim() } : null;
+    if (dockFinderTarget(e.target)) { block(e); e.preventDefault(); }
   }, opts);
 
   window.addEventListener('pointerup', e => {
@@ -494,19 +513,7 @@ function installHooks() {
       block(e); e.preventDefault();
       swallowClick = true;
       openFinder();
-      return;
     }
-    if (!down) return;
-    const moved = Math.hypot(e.clientX - down.x, e.clientY - down.y);
-    const name = down.name;
-    down = null;
-    if (moved >= TAP_SLOP) return; // digeser, bukan diklik
-    ensureData().then(() => {
-      const p = data.projects.find(x => x.name === name);
-      if (p) openFinder({ type: 'project', id: p.id });
-    }, () => openFinder()); // data gagal: jendela menampilkan pesan + tombol coba lagi
-    block(e);
-    swallowClick = true;
   }, opts);
 
   window.addEventListener('click', e => {
