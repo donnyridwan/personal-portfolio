@@ -31,11 +31,13 @@ export async function saveProfileAction(_p: ProfileState, f: FormData): Promise<
       .filter(Boolean),
   };
   const resume = { url: json<string[]>(f, 'resume', [])[0] ?? '' };
+  const ai = { name: str(f, 'ai_name').slice(0, 40), knowledge: String(f.get('ai_knowledge') ?? '').trim().slice(0, 20000) };
 
   try {
     await saveSetting('about', about);
     await saveSetting('contact', { email, links });
     await saveSetting('resume', resume);
+    await saveSetting('ai', ai);
   } catch (err) {
     console.error('[admin] profil', err);
     return { error: 'Gagal menyimpan. Database mungkin sedang bangun — coba lagi sebentar.' };

@@ -44,3 +44,11 @@ create table desktop_items (
   z          int  not null default 0,
   created_at timestamptz not null default now()
 );
+
+-- Pemakaian AI Terminal per hari (db/migrations/003-ai-usage.sql).
+create table ai_usage (
+  day   date not null,
+  key   text not null,
+  count int  not null default 0,
+  primary key (day, key)
+);

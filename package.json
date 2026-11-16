@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/donnyridwan/personal-portfolio#readme",
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.8.0",
     "@neondatabase/serverless": "^1.2.1",
     "next": "^16.4.6",
     "react": "^19.3.1",

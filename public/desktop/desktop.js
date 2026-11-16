@@ -2,6 +2,7 @@
 // Ikon portofolio asli Framer disembunyikan di site-overrides.css; lapisan ini menggantikannya.
 import { loadData, openFinder } from '../finder/finder.js';
 import { layoutFor, placeAll, savedPos, toFraction } from './desktop-model.js';
+import { installTerminal } from '../terminal/terminal.js';
 
 const SITE_ROOT = new URL('../', import.meta.url);
 const CANVAS = '[data-framer-name="Drag Canvas"]';
@@ -298,4 +299,7 @@ async function start() {
   }
 }
 
-if (!location.pathname.includes('/finder/')) start();
+if (!location.pathname.includes('/finder/')) {
+  installTerminal(desktop); // ikon Terminal membuka terminal AI
+  start();
+}

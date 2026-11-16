@@ -1,6 +1,7 @@
 // Koneksi Neon (HTTP, tanpa pool) — hanya dipakai di server.
 import 'server-only';
 import { neon, type NeonQueryFunction } from '@neondatabase/serverless';
+import { aiSettingsFrom } from './ai';
 import { buildDesktop } from './desktop';
 import { buildFinderData } from './finder-data';
 import type { CategoryRow, DesktopRow, FinderData, ProjectRow, SettingsMap } from './types';
@@ -33,5 +34,6 @@ export async function loadFinderData(): Promise<FinderData> {
   ]);
   const data = buildFinderData(categories as CategoryRow[], projects as ProjectRow[], settings);
   data.desktop = buildDesktop(desktop as DesktopRow[], data.projects, data.categories, data.resume.url);
+  data.ai = { name: aiSettingsFrom(settings.ai).name };
   return data;
 }

@@ -2,12 +2,13 @@
 import { submitWithoutReset } from '@/app/admin/submitWithoutReset';
 import { useActionState, useState } from 'react';
 import ImageField from '@/app/admin/ImageField';
+import type { AiSettings } from '@/lib/ai';
 import type { About, Contact, Resume } from '@/lib/types';
 import { saveProfileAction } from './actions';
 
-type Props = { about: About; contact: Contact; resume: Resume };
+type Props = { about: About; contact: Contact; resume: Resume; ai: AiSettings };
 
-export default function ProfileForm({ about, contact, resume }: Props) {
+export default function ProfileForm({ about, contact, resume, ai }: Props) {
   const [state, action, pending] = useActionState(saveProfileAction, null);
   const [avatar, setAvatar] = useState(about.avatar ? [about.avatar] : []);
   const [resumeUrl, setResumeUrl] = useState(resume.url ? [resume.url] : []);
@@ -60,6 +61,20 @@ export default function ProfileForm({ about, contact, resume }: Props) {
         <h2>Resume</h2>
         <p className="adm-muted" style={{ marginTop: 0 }}>Upload PDF (maks. 10 MB) atau tempel URL. Kosong = Finder menampilkan &ldquo;Resume belum tersedia&rdquo;.</p>
         <ImageField value={resumeUrl} onChange={setResumeUrl} folder="dockfolio/profile" kind="pdf" />
+      </div>
+
+      <div className="adm-card">
+        <h2>AI Terminal</h2>
+        <p className="adm-muted" style={{ marginTop: 0 }}>
+          Ikon Terminal di desktop membuka asisten AI yang menjawab pertanyaan pengunjung tentang kamu. AI membaca
+          About, Kontak, semua proyek, dan catatan di bawah. Catatan ini tidak pernah tampil di situs, hanya dibaca AI.
+        </p>
+        <label className="adm-field"><span>Nama AI</span><input type="text" name="ai_name" defaultValue={ai.name} maxLength={40} placeholder="Portfolio AI" /></label>
+        <label className="adm-field">
+          <span>Tentang aku (untuk AI) <span className="adm-hint">— latar belakang, pengalaman kerja, skill & tools, cara kerja, ketersediaan/harga, hal yang tidak boleh dijawab</span></span>
+          <textarea name="ai_knowledge" rows={12} maxLength={20000} defaultValue={ai.knowledge}
+            placeholder={'Contoh:\n- Desainer produk 6 tahun, fokus SaaS & mobile app.\n- Pernah di …\n- Tools: Figma, Framer, …\n- Terbuka untuk proyek freelance mulai Januari.\n- Jangan sebutkan tarif; arahkan ke email.'} />
+        </label>
       </div>
 
       {state?.error && <p className="adm-error" role="alert">{state.error}</p>}

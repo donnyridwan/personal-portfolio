@@ -214,7 +214,7 @@ export const moveCategory = (id: string, dir: -1 | 1) => move('categories', id, 
 
 export const getSettings = (): Promise<SettingsMap> => loadSettings();
 
-export async function saveSetting(key: 'about' | 'contact' | 'resume', value: unknown) {
+export async function saveSetting(key: 'about' | 'contact' | 'resume' | 'ai', value: unknown) {
   const json = JSON.stringify(value);
   await sql()`
     insert into settings (key, value) values (${key}, ${json}::jsonb)
@@ -287,4 +287,22 @@ export async function deleteDesktopItem(id: string) {
 
 export async function removeFromDesktop(kind: 'project' | 'folder', ref: string) {
   await sql()`delete from desktop_items where kind = ${kind} and ref = ${ref}`;
+}
+
+/* ---------- Kuota AI Terminal ---------- */
+
+/**
+ * Catat satu pertanyaan untuk pengunjung ini dan untuk total hari ini.
+ * Mengembalikan 'ip' / 'global' kalau batasnya terlewati, 'ok' kalau boleh lanjut.
+ */
+export async function takeAiQuota(visitorKey: string, perVisitor: number, perDay: number): Promise<'ok' | 'ip' | 'global'> {
+  const rows = (await sql()`
+    insert into ai_usage (day, key, count)
+    values (current_date, ${visitorKey}, 1), (current_date, '__all__', 1)
+    on conflict (day, key) do update set count = ai_usage.count + 1
+    returning key, count`) as { key: string; count: number }[];
+  const of = (k: string) => rows.find(r => r.key === k)?.count ?? 0;
+  if (of('__all__') > perDay) return 'global';
+  if (of(visitorKey) > perVisitor) return 'ip';
+  return 'ok';
 }
