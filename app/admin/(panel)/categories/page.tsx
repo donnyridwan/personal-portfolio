@@ -3,7 +3,7 @@ import MoveButtons from '../MoveButtons';
 import { moveCategoryAction } from './actions';
 import { AddCategoryForm, DeleteCategoryForm, RenameCategoryForm } from './CategoryForms';
 
-export const metadata = { title: 'Kategori · Dockfolio Admin' };
+export const metadata = { title: 'Kategori · Donny Ridwan · Admin' };
 
 export default async function CategoriesPage() {
   const cats = await listCategories();

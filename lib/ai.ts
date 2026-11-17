@@ -5,7 +5,7 @@ import type { FinderData } from './types';
 export type AiSettings = { name: string; knowledge: string };
 export type ChatMessage = { role: 'user' | 'assistant'; content: string };
 
-export const defaultAiSettings: AiSettings = { name: 'Portfolio AI', knowledge: '' };
+export const defaultAiSettings: AiSettings = { name: 'Donny AI', knowledge: '' };
 
 export const LIMITS = {
   /** Panjang maksimum satu pertanyaan pengunjung (karakter). */

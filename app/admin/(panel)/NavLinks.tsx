@@ -6,6 +6,7 @@ const LINKS = [
   { href: '/admin/projects', label: 'Proyek' },
   { href: '/admin/categories', label: 'Kategori' },
   { href: '/admin/profile', label: 'Profil' },
+  { href: '/admin/messages', label: 'Pesan' },
 ];
 
 export default function NavLinks() {

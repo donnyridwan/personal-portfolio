@@ -6,7 +6,7 @@ export default function LoginForm() {
   const [error, action, pending] = useActionState(login, null);
   return (
     <form action={action} className="adm-card adm-login-card">
-      <h1>Dockfolio Admin</h1>
+      <h1>Donny Ridwan · Admin</h1>
       <label className="adm-field">
         <span>Password</span>
         <input type="password" name="password" autoComplete="current-password" autoFocus required />

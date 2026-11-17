@@ -32,7 +32,7 @@ async function info() {
   return {
     owner,
     first: owner.split(/\s+/)[0],
-    ai: data?.ai?.name || 'Portfolio AI',
+    ai: data?.ai?.name || 'Donny AI',
     demo: !!data?.ai?.demo,
     contact: data?.contact ?? { email: '', links: [] },
   };

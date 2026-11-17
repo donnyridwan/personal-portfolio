@@ -3,7 +3,7 @@ import { buildFinderData } from '@/lib/finder-data';
 import { getSettings } from '@/lib/repo';
 import ProfileForm from './ProfileForm';
 
-export const metadata = { title: 'Profil · Dockfolio Admin' };
+export const metadata = { title: 'Profil · Donny Ridwan · Admin' };
 
 export default async function ProfilePage() {
   // buildFinderData merapikan nilai kosong/rusak jadi bentuk default yang aman.

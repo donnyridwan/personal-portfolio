@@ -318,3 +318,31 @@ export async function takeAiQuota(visitorKey: string, perVisitor: number, perDay
   if (of(visitorKey) > perVisitor) return 'ip';
   return 'ok';
 }
+
+/* ---------- Pesan dari formulir Contact ---------- */
+
+export type ContactMessage = { id: number; created_at: string; name: string; email: string; message: string };
+
+/** Simpan pesan; 'limit' kalau pengunjung ini sudah kirim 5 pesan dalam 1 jam atau total hari ini > 200. */
+export async function saveContactMessage(
+  m: { name: string; email: string; message: string; fields: Record<string, string> },
+  visitor: string,
+): Promise<'ok' | 'limit'> {
+  const db = sql();
+  const [{ mine, today }] = (await db`
+    select count(*) filter (where visitor = ${visitor} and created_at > now() - interval '1 hour')::int as mine,
+           count(*) filter (where created_at > now() - interval '1 day')::int as today
+    from contact_messages`) as { mine: number; today: number }[];
+  if (mine >= 5 || today >= 200) return 'limit';
+  await db`insert into contact_messages (name, email, message, fields, visitor)
+           values (${m.name}, ${m.email}, ${m.message}, ${JSON.stringify(m.fields)}::jsonb, ${visitor})`;
+  return 'ok';
+}
+
+export async function listContactMessages(): Promise<ContactMessage[]> {
+  return (await sql()`select id, created_at, name, email, message from contact_messages order by created_at desc limit 500`) as ContactMessage[];
+}
+
+export async function deleteContactMessage(id: number) {
+  await sql()`delete from contact_messages where id = ${id}`;
+}

@@ -1,6 +1,6 @@
 import LoginForm from './LoginForm';
 
-export const metadata = { title: 'Masuk · Dockfolio Admin' };
+export const metadata = { title: 'Masuk · Donny Ridwan · Admin' };
 
 export default function LoginPage() {
   return (

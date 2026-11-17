@@ -17,7 +17,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
       <script dangerouslySetInnerHTML={{ __html: EMBED_SCRIPT }} />
       <Suspense fallback={null}><EmbedBridge /></Suspense>
       <header className="adm-header">
-        <strong className="adm-brand">Dockfolio</strong>
+        <strong className="adm-brand">Donny Ridwan</strong>
         <a href="/?edit" className="adm-btn adm-primary">Desktop (mode edit)</a>
         <NavLinks />
         <div className="adm-header-end">

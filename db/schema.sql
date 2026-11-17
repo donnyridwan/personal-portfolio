@@ -55,3 +55,14 @@ create table ai_usage (
 
 -- Isi detail proyek (db/migrations/004-project-body.sql).
 alter table projects add column body jsonb;
+
+-- Pesan dari formulir Contact (db/migrations/005-contact-messages.sql).
+create table contact_messages (
+  id         bigserial primary key,
+  created_at timestamptz not null default now(),
+  name       text not null default '',
+  email      text not null default '',
+  message    text not null default '',
+  fields     jsonb not null default '{}'::jsonb,
+  visitor    text not null default ''
+);

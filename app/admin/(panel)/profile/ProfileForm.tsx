@@ -69,7 +69,7 @@ export default function ProfileForm({ about, contact, resume, ai }: Props) {
           Ikon Terminal di desktop membuka asisten AI yang menjawab pertanyaan pengunjung tentang kamu. AI membaca
           About, Kontak, semua proyek, dan catatan di bawah. Catatan ini tidak pernah tampil di situs, hanya dibaca AI.
         </p>
-        <label className="adm-field"><span>Nama AI</span><input type="text" name="ai_name" defaultValue={ai.name} maxLength={40} placeholder="Portfolio AI" /></label>
+        <label className="adm-field"><span>Nama AI</span><input type="text" name="ai_name" defaultValue={ai.name} maxLength={40} placeholder="Donny AI" /></label>
         <label className="adm-field">
           <span>Tentang aku (untuk AI) <span className="adm-hint">— latar belakang, pengalaman kerja, skill & tools, cara kerja, ketersediaan/harga, hal yang tidak boleh dijawab</span></span>
           <textarea name="ai_knowledge" rows={12} maxLength={20000} defaultValue={ai.knowledge}

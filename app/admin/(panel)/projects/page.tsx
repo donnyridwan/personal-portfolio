@@ -4,7 +4,7 @@ import { displaySrc } from '@/lib/upload-client';
 import MoveButtons from '../MoveButtons';
 import { moveFeaturedAction, moveProjectAction } from './actions';
 
-export const metadata = { title: 'Proyek · Dockfolio Admin' };
+export const metadata = { title: 'Proyek · Donny Ridwan · Admin' };
 
 export default async function ProjectsPage({ searchParams }: { searchParams: Promise<{ saved?: string }> }) {
   const [{ saved }, projects, categories] = await Promise.all([searchParams, listProjects(), listCategories()]);
