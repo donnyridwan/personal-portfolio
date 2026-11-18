@@ -60,7 +60,7 @@ export function createHistory(initial) {
 /* Pilihan tampilan folder (seperti View di Finder Mac). */
 export const VIEW_MODES = ['list', 'details', 'grid'];
 export const GRID_SIZES = ['small', 'medium', 'large'];
-export const DEFAULT_VIEW_PREFS = Object.freeze({ mode: 'details', gridSize: 'medium' });
+export const DEFAULT_VIEW_PREFS = Object.freeze({ mode: 'grid', gridSize: 'medium' });
 
 /** Membaca pilihan tersimpan (string JSON); nilai rusak/tak dikenal jatuh ke default. */
 export function parseViewPrefs(raw) {

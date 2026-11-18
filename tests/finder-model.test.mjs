@@ -53,8 +53,8 @@ test('history mundur dan maju', () => {
   assert.deepEqual(h.current(), { type: 'about' });
 });
 
-test('pilihan tampilan default: detail, grid sedang', () =>
-  assert.deepEqual(DEFAULT_VIEW_PREFS, { mode: 'details', gridSize: 'medium' }));
+test('pilihan tampilan default: grid, ukuran sedang', () =>
+  assert.deepEqual(DEFAULT_VIEW_PREFS, { mode: 'grid', gridSize: 'medium' }));
 
 test('parseViewPrefs membaca pilihan tersimpan yang valid', () =>
   assert.deepEqual(parseViewPrefs('{"mode":"grid","gridSize":"large"}'), { mode: 'grid', gridSize: 'large' }));

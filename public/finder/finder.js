@@ -6,7 +6,8 @@ import {
 } from './finder-model.js';
 import { renderDoc } from './doc-render.js';
 
-const PREFS_KEY = 'dockfolio-finder-view';
+// v2: default berubah jadi Grid sedang; pilihan lama (default Detail) tidak dipakai lagi.
+const PREFS_KEY = 'dockfolio-finder-view-v2';
 
 function loadPrefs() {
   try { return parseViewPrefs(localStorage.getItem(PREFS_KEY)); } catch { return parseViewPrefs(null); }
