@@ -49,11 +49,12 @@
 .ab .ab-label { color: var(--ab-muted); font-size: 12.5px; }
 
 .ab-exp { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; text-align: left; }
-.ab-job { display: grid; grid-template-columns: minmax(150px, 34%) 1fr; gap: 16px; padding: 14px 16px; background: var(--ab-box); border-radius: 10px; }
-.ab-job-head b { display: block; font-weight: 600; }
-.ab-job-head span { display: block; color: var(--ab-muted); font-size: 12.5px; }
-.ab-job-head small { display: block; color: var(--ab-faint); font-size: 12px; margin-top: 2px; }
-.ab .ab-job p { margin: 0; color: var(--ab-muted); }
+.ab-job { display: grid; grid-template-columns: minmax(160px, 32%) 1fr; gap: 20px; padding: 14px 16px; background: var(--ab-box); border-radius: 10px; }
+/* Kartu pengalaman: satu ukuran dasar 12.5px, hierarki lewat ketebalan & warna (seperti daftar di Finder) */
+.ab .ab-job-head b { display: block; font-size: 13px; font-weight: 600; line-height: 1.35; letter-spacing: -.005em; }
+.ab .ab-job-head span { display: block; font-size: 12px; color: var(--ab-muted); line-height: 1.4; margin-top: 2px; }
+.ab .ab-job-head small { display: block; font-size: 11.5px; color: var(--ab-faint); line-height: 1.4; margin-top: 1px; }
+.ab .ab-job p { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--ab-muted); }
 
 .ab-contact { margin-top: 20px; padding: 28px 16px; background: var(--ab-box); border-radius: 12px; }
 .ab-direct { margin-top: 16px; }

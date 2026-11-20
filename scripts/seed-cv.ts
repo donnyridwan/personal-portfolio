@@ -49,11 +49,11 @@ const about = {
   ],
   experienceIntro: '4+ years of building products from first brief to launch.',
   experience: [
-    { role: 'Senior Product Designer (Part-time)', company: 'Gandaria Studio · Semarang', period: 'Feb 2024 – Present',
+    { role: 'Senior Product Designer', company: 'Gandaria Studio · Semarang', period: 'Feb 2024 – Present',
       summary: 'Led a SaaS redesign that lifted user retention by 20%, raised an e-commerce conversion rate by 25%, and built a Figma design system that sped up developer handoff.' },
     { role: 'Freelance UI/UX & Website Designer', company: 'Upwork · Remote', period: 'May 2024 – Present',
       summary: 'Conversion-focused landing pages and marketing websites for e-commerce and DTC brands — 60+ contracts, Top Rated, and a 100% Job Success Score.' },
-    { role: 'UI/UX Designer (Part-time)', company: 'Tappifyd · Jeddah, Saudi Arabia', period: 'Dec 2024 – Jun 2026',
+    { role: 'UI/UX Designer', company: 'Tappifyd · Jeddah, Saudi Arabia', period: 'Dec 2024 – Jun 2026',
       summary: 'Led design of an event participant-tracking app used at an F1-related event and Hajj 2025, and turned an MVP into a multi-sector B2B platform.' },
     { role: 'UI/UX Designer (Internship)', company: 'Aksantara Digital · Semarang', period: 'Oct 2023 – Mar 2024',
       summary: 'Designed mobile and web interfaces for 5+ client pitch decks and a fashion marketplace; a Dribbble shot reached 20,000 impressions.' },
@@ -72,7 +72,7 @@ const contact = {
 };
 
 const experience = doc(
-  ...job('Senior Product Designer (Part-time)', 'Gandaria Studio', 'Feb 2024 – Present · Semarang, Indonesia', [
+  ...job('Senior Product Designer', 'Gandaria Studio', 'Feb 2024 – Present · Semarang, Indonesia', [
     'Led an end-to-end UX redesign of a SaaS platform, lifting user retention by 20% and task completion by 15%.',
     'Raised an e-commerce platform’s conversion rate by 25% with engineering and marketing through CRO-focused UX changes: clearer hierarchy, stronger CTAs, and simpler navigation.',
     'Designed and prototyped a fintech mobile app; feedback-driven iterations drove a 30% increase in downloads.',
@@ -88,7 +88,7 @@ const experience = doc(
     'Completed 60+ contracts and 1,200+ hours on Upwork across website design, landing pages, SaaS, e-commerce, mobile app, and CRO projects.',
     'Earned Top Rated status with a 100% Job Success Score.',
   ]),
-  ...job('UI/UX Designer (Part-time)', 'Tappifyd', 'Dec 2024 – Jun 2026 · Jeddah, Saudi Arabia', [
+  ...job('UI/UX Designer', 'Tappifyd', 'Dec 2024 – Jun 2026 · Jeddah, Saudi Arabia', [
     'Led product design of an event participant-tracking app for an F1-related event, later used during Hajj 2025.',
     'Designed a food-ordering app for the Middle East market, used by several restaurants in the UAE.',
     'Redesigned an MVP into a multi-sector B2B platform for hospitals, hotels, and other industries.',
