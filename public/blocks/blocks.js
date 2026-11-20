@@ -9,13 +9,13 @@ const BEST_KEY = 'dockfolio-blockfall-best';
 
 // Bentuk balok (matriks persegi supaya rotasi sederhana) dan warnanya.
 const SHAPES = {
-  I: { c: '#5ac8fa', m: [[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]] },
-  O: { c: '#ffd60a', m: [[1, 1], [1, 1]] },
-  T: { c: '#bf5af2', m: [[0, 1, 0], [1, 1, 1], [0, 0, 0]] },
-  S: { c: '#30d158', m: [[0, 1, 1], [1, 1, 0], [0, 0, 0]] },
-  Z: { c: '#ff375f', m: [[1, 1, 0], [0, 1, 1], [0, 0, 0]] },
-  J: { c: '#0a84ff', m: [[1, 0, 0], [1, 1, 1], [0, 0, 0]] },
-  L: { c: '#ff9f0a', m: [[0, 0, 1], [1, 1, 1], [0, 0, 0]] },
+  I: { c: '#29b6e8', m: [[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]] },
+  O: { c: '#f2e21b', m: [[1, 1], [1, 1]] },
+  T: { c: '#e0249b', m: [[0, 1, 0], [1, 1, 1], [0, 0, 0]] },
+  S: { c: '#22d13b', m: [[0, 1, 1], [1, 1, 0], [0, 0, 0]] },
+  Z: { c: '#e8141c', m: [[1, 1, 0], [0, 1, 1], [0, 0, 0]] },
+  J: { c: '#1a2fe0', m: [[1, 0, 0], [1, 1, 1], [0, 0, 0]] },
+  L: { c: '#f08a12', m: [[0, 0, 1], [1, 1, 1], [0, 0, 0]] },
 };
 const LINE_SCORE = [0, 100, 300, 500, 800];
 
@@ -138,12 +138,37 @@ const speed = g => Math.max(80, 800 - (g.level - 1) * 70); // ms per baris
 
 /* ---------- Gambar ---------- */
 
-function cell(ctx, x, y, s, color, alpha = 1) {
-  ctx.globalAlpha = alpha;
-  ctx.fillStyle = color;
-  ctx.beginPath();
-  ctx.roundRect(x * s + 1, y * s + 1, s - 2, s - 2, Math.max(2, s * .18));
-  ctx.fill();
+const EMPTY = '#2b2b2b';
+
+/** Hex → rgb yang digeser terang (+) / gelap (-). */
+function shade(hex, amt) {
+  const n = parseInt(hex.slice(1), 16);
+  const f = v => Math.round(amt >= 0 ? v + (255 - v) * amt : v * (1 + amt));
+  return `rgb(${f(n >> 16)},${f((n >> 8) & 255)},${f(n & 255)})`;
+}
+
+/** Warna bayangan tempat jatuh: versi sangat gelap dari warna balok (tetap hex). */
+const ghostOf = hex => '#' + [16, 8, 0].map(sh => Math.round(((parseInt(hex.slice(1), 16) >> sh) & 255) * .3 + 0x2b * .55).toString(16).padStart(2, '0')).join('');
+
+/** Satu kotak bergaya timbul: sisi atas/kiri terang, bawah/kanan gelap, muka mengkilap. */
+function cell(ctx, x, y, s, color, opts = {}) {
+  const px = x * s, py = y * s, b = Math.max(2, s * .13);
+  const empty = color === EMPTY;
+  ctx.globalAlpha = opts.alpha ?? 1;
+  const poly = (fill, pts) => { ctx.fillStyle = fill; ctx.beginPath(); pts.forEach(([u, v], i) => (i ? ctx.lineTo : ctx.moveTo).call(ctx, px + u, py + v)); ctx.closePath(); ctx.fill(); };
+  poly(shade(color, empty ? .12 : .55), [[0, 0], [s, 0], [s - b, b], [b, b]]);           // atas
+  poly(shade(color, empty ? .06 : .3), [[0, 0], [b, b], [b, s - b], [0, s]]);             // kiri
+  poly(shade(color, empty ? -.55 : -.5), [[0, s], [b, s - b], [s - b, s - b], [s, s]]);   // bawah
+  poly(shade(color, empty ? -.4 : -.3), [[s, 0], [s, s], [s - b, s - b], [s - b, b]]);    // kanan
+  const gr = ctx.createLinearGradient(0, py + b, 0, py + s - b);
+  gr.addColorStop(0, shade(color, empty ? .02 : .18));
+  gr.addColorStop(1, shade(color, empty ? -.12 : -.12));
+  ctx.fillStyle = gr;
+  ctx.fillRect(px + b, py + b, s - 2 * b, s - 2 * b);
+  ctx.strokeStyle = 'rgba(0,0,0,.85)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(px + .5, py + .5, s - 1, s - 1);
+  if (opts.active) { ctx.strokeStyle = 'rgba(255,255,255,.75)'; ctx.strokeRect(px + .5, py + .5, s - 1, s - 1); }
   ctx.globalAlpha = 1;
 }
 
@@ -160,24 +185,20 @@ function paint() {
   }
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.clearRect(0, 0, cv.clientWidth, cv.clientHeight);
-  ctx.fillStyle = 'rgba(255,255,255,.04)';
-  for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) {
-    ctx.fillRect(x * s + s / 2 - 1, y * s + s / 2 - 1, 2, 2);
-  }
-  g.board.forEach((row, y) => row.forEach((c, x) => { if (c) cell(ctx, x, y, s, c); }));
+  g.board.forEach((row, y) => row.forEach((c, x) => cell(ctx, x, y, s, c || EMPTY)));
   const p = g.piece;
   if (p && g.state !== 'over') {
     const gy = ghostY(g);
     p.m.forEach((row, r) => row.forEach((v, c) => {
       if (!v) return;
-      if (gy + r >= 0) cell(ctx, p.x + c, gy + r, s, p.c, .22);
-      if (p.y + r >= 0) cell(ctx, p.x + c, p.y + r, s, p.c);
+      if (gy + r >= 0 && gy !== p.y) cell(ctx, p.x + c, gy + r, s, ghostOf(p.c));
+      if (p.y + r >= 0) cell(ctx, p.x + c, p.y + r, s, p.c, { active: true });
     }));
   }
 
   const nv = win.querySelector('.bf-next');
   const nctx = nv.getContext('2d');
-  const ns = nv.clientWidth / 4;
+  const ns = nv.clientHeight / 2;
   if (nv.width !== Math.round(nv.clientWidth * dpr)) { nv.width = Math.round(nv.clientWidth * dpr); nv.height = Math.round(nv.clientHeight * dpr); }
   nctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   nctx.clearRect(0, 0, nv.clientWidth, nv.clientHeight);
@@ -186,16 +207,17 @@ function paint() {
     const rows = m.filter(r => r.some(Boolean));
     const w = Math.max(...m.map(r => r.lastIndexOf(1) - r.indexOf(1) + 1).filter(n => n > 0));
     const minC = Math.min(...m.map(r => r.indexOf(1)).filter(n => n >= 0));
-    const ox = (4 - w) / 2 - minC, oy = (nv.clientHeight / ns - rows.length) / 2;
+    const ox = (nv.clientWidth / ns - w) / 2 - minC, oy = (2 - rows.length) / 2;
     rows.forEach((row, r) => row.forEach((v, c) => { if (v) cell(nctx, c + ox, r + oy, ns, g.next.c); }));
   }
 
   win.querySelector('[data-v="score"]').textContent = g.score.toLocaleString('en-US');
   win.querySelector('[data-v="lines"]').textContent = g.lines;
   win.querySelector('[data-v="level"]').textContent = g.level;
-  win.querySelector('[data-v="best"]').textContent = Math.max(g.best, g.score).toLocaleString('en-US');
+  win.querySelector('[data-act="pause"]').disabled = g.state !== 'play';
+  win.querySelector('[data-act="start"].bf-round').disabled = g.state === 'play';
   const overlay = win.querySelector('.bf-overlay');
-  const msg = { ready: ['Blockfall', 'Press Space or tap Start'], pause: ['Paused', 'Press P to resume'], over: ['Game over', `Score ${g.score.toLocaleString('en-US')}`] }[g.state];
+  const msg = { ready: ['Blockfall', `Best ${g.best.toLocaleString('en-US')} · Space or ▶ to start`], pause: ['Paused', 'Press P to resume'], over: ['Game over', `Score ${g.score.toLocaleString('en-US')} · Best ${Math.max(g.best, g.score).toLocaleString('en-US')}`] }[g.state];
   overlay.hidden = !msg;
   if (msg) {
     overlay.querySelector('b').textContent = msg[0];
@@ -260,21 +282,19 @@ export function openBlocks() {
       <div class="nt-lights"><button class="nt-close" aria-label="Tutup"></button><span></span><span></span></div>
       <span class="nt-title">${NAME}</span>
     </div>
-    <div class="bf-main">
-      <div class="bf-well">
-        <canvas class="bf-board" aria-label="Papan permainan"></canvas>
-        <div class="bf-overlay"><b></b><span></span><button type="button" data-act="start"></button></div>
+    <div class="bf-hud">
+      <canvas class="bf-next" aria-label="Balok berikutnya"></canvas>
+      <div class="bf-stats">
+        <span>Score: <b data-v="score">0</b></span>
+        <span>Level: <b data-v="level">1</b></span>
+        <span>Lines: <b data-v="lines">0</b></span>
       </div>
-      <aside class="bf-side">
-        <div class="bf-box"><small>Next</small><canvas class="bf-next"></canvas></div>
-        <div class="bf-box"><small>Score</small><b data-v="score">0</b></div>
-        <div class="bf-row">
-          <div class="bf-box"><small>Lines</small><b data-v="lines">0</b></div>
-          <div class="bf-box"><small>Level</small><b data-v="level">1</b></div>
-        </div>
-        <div class="bf-box"><small>Best</small><b data-v="best">0</b></div>
-        <dl class="bf-help"><dt>← →</dt><dd>Move</dd><dt>↑</dt><dd>Rotate</dd><dt>↓</dt><dd>Soft drop</dd><dt>Space</dt><dd>Drop</dd><dt>P</dt><dd>Pause</dd></dl>
-      </aside>
+      <button type="button" class="bf-round" data-act="start" aria-label="Main"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></svg></button>
+      <button type="button" class="bf-round" data-act="pause" aria-label="Jeda"><svg width="16" height="16" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"/></svg></button>
+    </div>
+    <div class="bf-well">
+      <canvas class="bf-board" aria-label="Papan permainan"></canvas>
+      <div class="bf-overlay"><b></b><span></span><button type="button" data-act="start"></button></div>
     </div>
     <div class="bf-pad">
       ${pad('left', 'Kiri', arrow('M15 6l-6 6 6 6'))}
