@@ -5,6 +5,7 @@ import { layoutFor, placeAll, savedPos, toFraction } from './desktop-model.js';
 import { installTerminal } from '../terminal/terminal.js';
 import { installNotes } from '../notes/notes.js';
 import { installContact } from '../contact/contact.js';
+import { installBlocks } from '../blocks/blocks.js';
 
 const SITE_ROOT = new URL('../', import.meta.url);
 const CANVAS = '[data-framer-name="Drag Canvas"]';
@@ -304,6 +305,7 @@ async function start() {
 if (!location.pathname.includes('/finder/')) {
   installTerminal(desktop); // ikon Terminal membuka terminal AI
   installNotes(); // ikon Notes di dock membuka About/Experience/Services kita
+  installBlocks(desktop); // app Space Shooter diganti game Blockfall
   installContact(); // ikon Contact di dock: kontak dari Profil + formulir ke menu Pesan
   start();
 }

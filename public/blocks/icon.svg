@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b2f45"/>
+      <stop offset="1" stop-color="#14162a"/>
+    </linearGradient>
+  </defs>
+  <rect width="120" height="120" rx="27" fill="url(#bg)"/>
+  <g stroke="#14162a" stroke-width="2">
+    <!-- balok jatuh -->
+    <rect x="44" y="14" width="16" height="16" rx="3" fill="#ff9f0a"/>
+    <rect x="60" y="14" width="16" height="16" rx="3" fill="#ff9f0a"/>
+    <rect x="60" y="30" width="16" height="16" rx="3" fill="#ff9f0a"/>
+    <!-- tumpukan -->
+    <rect x="20" y="70" width="16" height="16" rx="3" fill="#0a84ff"/>
+    <rect x="20" y="86" width="16" height="16" rx="3" fill="#0a84ff"/>
+    <rect x="36" y="86" width="16" height="16" rx="3" fill="#0a84ff"/>
+    <rect x="52" y="86" width="16" height="16" rx="3" fill="#30d158"/>
+    <rect x="52" y="70" width="16" height="16" rx="3" fill="#30d158"/>
+    <rect x="68" y="70" width="16" height="16" rx="3" fill="#30d158"/>
+    <rect x="68" y="86" width="16" height="16" rx="3" fill="#bf5af2"/>
+    <rect x="84" y="86" width="16" height="16" rx="3" fill="#bf5af2"/>
+    <rect x="84" y="70" width="16" height="16" rx="3" fill="#ff375f"/>
+    <rect x="84" y="54" width="16" height="16" rx="3" fill="#ff375f"/>
+  </g>
+</svg>
