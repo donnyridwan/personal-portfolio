@@ -2,6 +2,7 @@
 import 'server-only';
 import { neon, type NeonQueryFunction } from '@neondatabase/serverless';
 import { aiSettingsFrom } from './ai';
+import { validateDoc } from './blocks';
 import { buildDesktop } from './desktop';
 import { buildFinderData } from './finder-data';
 import type { CategoryRow, DesktopRow, FinderData, ProjectRow, SettingsMap } from './types';
@@ -36,5 +37,7 @@ export async function loadFinderData(): Promise<FinderData> {
   data.desktop = buildDesktop(desktop as DesktopRow[], data.projects, data.categories, data.resume.url);
   // demo = belum ada API key: terminal menjawab dari data saja (lihat lib/ai-demo.ts).
   data.ai = { name: aiSettingsFrom(settings.ai).name, demo: !process.env.ANTHROPIC_API_KEY };
+  const notes = (settings.notes ?? {}) as Record<string, unknown>;
+  data.notes = { experience: validateDoc(notes.experience), services: validateDoc(notes.services) };
   return data;
 }

@@ -61,6 +61,8 @@ export type FinderData = {
   desktop?: DesktopItem[];
   /** Nama AI Terminal (catatan untuk AI tidak pernah dikirim ke browser). */
   ai?: { name: string; demo: boolean };
+  /** Isi tab Experience & Services di app Notes (dokumen blok). */
+  notes?: { experience: DocNode | null; services: DocNode | null };
 };
 
 export type DesktopKind = 'project' | 'folder' | 'photo' | 'file' | 'app';

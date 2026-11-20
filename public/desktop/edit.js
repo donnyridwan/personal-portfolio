@@ -3,6 +3,7 @@
 // Dimuat oleh desktop.js hanya kalau ?edit ada dan /api/admin/session = 200. Semua tulis dicek di server.
 import { currentView, finderRoot, loadData, openFinder, reloadData, setRenderHook } from '../finder/finder.js';
 import { esc } from './desktop.js';
+import { setNotesHook } from '../notes/notes.js';
 import { kindForFile, toFraction } from './desktop-model.js';
 
 const MAX_BYTES = 10 * 1024 * 1024;
@@ -621,11 +622,13 @@ function installDrop() {
   });
 }
 
-/* ---------- Kanvas isi proyek (editor ala Notion) ---------- */
+/* ---------- Kanvas (editor ala Notion): isi proyek di Finder & tab Notes ---------- */
 
 const SAVE_DELAY = 900;
 let editorModule = null;
-let canvas = null; // { id, project, handle, timer, pending, saving, status }
+// Satu kanvas per jendela: { save, onSaved, handle, timer, pending, saving, status }
+let canvas = null;      // halaman proyek di Finder
+let notesCanvas = null; // tab Experience / Services di Notes
 
 function loadEditor() {
   // Bundel editor (public/editor/editor.js) hanya dimuat di mode edit.
@@ -633,45 +636,92 @@ function loadEditor() {
   return editorModule;
 }
 
-function setStatus(text, kind = '') {
-  if (!canvas?.status) return;
-  canvas.status.textContent = text;
-  canvas.status.dataset.kind = kind;
+function setStatus(c, text, kind = '') {
+  if (!c?.status) return;
+  c.status.textContent = text;
+  c.status.dataset.kind = kind;
 }
 
-async function saveCanvas(c = canvas, { keepalive = false } = {}) {
+async function saveCanvas(c, { keepalive = false } = {}) {
   if (!c?.pending) return;
   clearTimeout(c.timer);
   const body = c.pending;
   c.pending = null;
   c.saving = true;
-  if (c === canvas) setStatus('Menyimpan…');
+  setStatus(c, 'Menyimpan…');
   try {
-    const res = await fetch(`/api/admin/projects/${encodeURIComponent(c.id)}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ body }),
-      keepalive,
-    });
+    const res = await c.save(body, keepalive);
     const out = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(out.error ?? `Gagal menyimpan (${res.status})`);
-    c.project.body = body; // tampilan Finder berikutnya memakai isi terbaru
-    if (c === canvas && !c.pending) setStatus('Tersimpan ✓', 'ok');
+    c.onSaved(body); // tampilan berikutnya memakai isi terbaru
+    if (!c.pending) setStatus(c, 'Tersimpan ✓', 'ok');
   } catch (err) {
     c.pending ??= body; // coba lagi pada perubahan berikutnya
-    if (c === canvas) setStatus(`${err.message} — klik untuk coba lagi`, 'error');
+    setStatus(c, `${err.message} — klik untuk coba lagi`, 'error');
   } finally {
     c.saving = false;
   }
 }
 
-function closeCanvas() {
-  if (!canvas) return;
-  const c = canvas;
-  canvas = null;
+function releaseCanvas(c) {
+  if (!c) return;
   if (c.pending) saveCanvas(c, { keepalive: true });
   c.handle?.destroy();
+  c.dead = true;
 }
+
+function closeCanvas() { releaseCanvas(canvas); canvas = null; }
+function closeNotesCanvas() { releaseCanvas(notesCanvas); notesCanvas = null; }
+
+/** Ganti docEl dengan editor. c: { save(body, keepalive), onSaved(body), status, initial, folder } */
+async function attachEditor(c, docEl) {
+  const host = document.createElement('div');
+  host.className = 'ed-host';
+  docEl.replaceWith(host);
+  c.status?.addEventListener('click', () => { if (c.status.dataset.kind === 'error') saveCanvas(c); });
+  let mod;
+  try {
+    mod = await loadEditor();
+  } catch (err) {
+    console.error('[edit] editor', err);
+    host.replaceWith(docEl);
+    setStatus(c, 'Editor gagal dimuat', 'error');
+    return;
+  }
+  if (c.dead) return; // jendela/tampilan berganti saat editor dimuat
+  c.handle = mod.mountEditor(host, {
+    content: structuredClone(c.initial ?? { type: 'doc', content: [{ type: 'paragraph' }] }),
+    onUpdate(json) {
+      c.pending = json;
+      setStatus(c, 'Belum tersimpan…');
+      clearTimeout(c.timer);
+      c.timer = setTimeout(() => saveCanvas(c), SAVE_DELAY);
+    },
+    async uploadImage(file) {
+      toast(`Mengunggah ${file.name}…`, 0);
+      try {
+        const out = await uploadFile(file, c.folder);
+        if (out.kind !== 'photo') throw new Error(`"${file.name}" bukan gambar.`);
+        hideToast();
+        return out.url;
+      } catch (err) {
+        toast(err.message, 4000, true);
+        throw err;
+      }
+    },
+    pickImages: () => pickFiles('image/jpeg,image/png,image/webp,image/gif'),
+    onError: msg => toast(msg, 4000, true),
+  });
+  window.dockfolioCanvas = c.handle; // untuk debug/tes
+  setStatus(c, c.initial && JSON.stringify(c.initial).length > 60 ? 'Tersimpan ✓' : 'Kanvas kosong — ketik "/"', 'ok');
+}
+
+const patchJson = (url, payload, keepalive) => fetch(url, {
+  method: 'PATCH',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(payload),
+  keepalive,
+});
 
 async function mountCanvas(view, content, finderData) {
   closeCanvas();
@@ -686,53 +736,48 @@ async function mountCanvas(view, content, finderData) {
   tools.className = 'ed-tools';
   tools.innerHTML = '<span class="ed-status" aria-live="polite"></span><button type="button" class="ed-kop">Edit kop…</button>';
   head?.appendChild(tools);
+  const c = {
+    initial: project.body,
+    folder: `dockfolio/projects/${project.id}`,
+    status: tools.querySelector('.ed-status'),
+    save: (body, keepalive) => patchJson(`/api/admin/projects/${encodeURIComponent(project.id)}`, { body }, keepalive),
+    onSaved: body => { project.body = body; },
+  };
+  canvas = c;
   tools.querySelector('.ed-kop').addEventListener('click', async () => {
-    await saveCanvas();
+    await saveCanvas(c);
     editProject(project.id);
   });
+  await attachEditor(c, docEl);
+}
 
-  const host = document.createElement('div');
-  host.className = 'ed-host';
-  docEl.replaceWith(host);
-  const c = { id: project.id, project, handle: null, timer: 0, pending: null, saving: false, status: tools.querySelector('.ed-status') };
-  canvas = c;
-  c.status.addEventListener('click', () => { if (c.status.dataset.kind === 'error') saveCanvas(c); });
-
-  let mod;
-  try {
-    mod = await loadEditor();
-  } catch (err) {
-    console.error('[edit] editor', err);
-    host.replaceWith(docEl);
-    setStatus('Editor gagal dimuat', 'error');
+/** Notes: About me → tombol ke form Profil; Experience/Services → kanvas. */
+async function mountNotesCanvas(tab, content, notesData) {
+  closeNotesCanvas();
+  if (!tab || !content) return; // jendela Notes ditutup
+  const head = content.querySelector('.nt-head');
+  const tools = document.createElement('div');
+  tools.className = 'ed-tools nt-tools';
+  if (tab === 'about') {
+    tools.innerHTML = '<span class="ed-status">Nama, peran, foto, dan paragraf diubah di Profil.</span><button type="button" class="ed-kop">Edit profil…</button>';
+    head?.after(tools);
+    tools.querySelector('.ed-kop').addEventListener('click', () => openPanel('/admin/profile', 'Profil'));
     return;
   }
-  if (canvas !== c) return; // pindah tampilan saat editor dimuat
-  c.handle = mod.mountEditor(host, {
-    content: structuredClone(project.body ?? { type: 'doc', content: [{ type: 'paragraph' }] }),
-    onUpdate(json) {
-      c.pending = json;
-      setStatus('Belum tersimpan…');
-      clearTimeout(c.timer);
-      c.timer = setTimeout(() => saveCanvas(c), SAVE_DELAY);
-    },
-    async uploadImage(file) {
-      toast(`Mengunggah ${file.name}…`, 0);
-      try {
-        const out = await uploadFile(file, `dockfolio/projects/${project.id}`);
-        if (out.kind !== 'photo') throw new Error(`"${file.name}" bukan gambar.`);
-        hideToast();
-        return out.url;
-      } catch (err) {
-        toast(err.message, 4000, true);
-        throw err;
-      }
-    },
-    pickImages: () => pickFiles('image/jpeg,image/png,image/webp,image/gif'),
-    onError: msg => toast(msg, 4000, true),
-  });
-  window.dockfolioCanvas = c.handle; // untuk debug/tes
-  setStatus(project.body && JSON.stringify(project.body).length > 60 ? 'Tersimpan ✓' : 'Kanvas kosong — ketik "/"', 'ok');
+  const docEl = content.querySelector('.nt-doc[data-tab]');
+  if (!docEl) return;
+  tools.innerHTML = '<span class="ed-status" aria-live="polite"></span>';
+  head?.after(tools);
+  notesData.notes ??= { experience: null, services: null };
+  const c = {
+    initial: notesData.notes[tab],
+    folder: 'dockfolio/profile',
+    status: tools.querySelector('.ed-status'),
+    save: (body, keepalive) => patchJson('/api/admin/notes', { tab, body }, keepalive),
+    onSaved: body => { notesData.notes[tab] = body; },
+  };
+  notesCanvas = c;
+  await attachEditor(c, docEl);
 }
 
 /* ---------- Mulai ---------- */
@@ -746,7 +791,10 @@ export async function startEdit(d) {
   desktop.hooks.contextmenu = desktopMenu;
   window.addEventListener('dockfolio:data', e => { data = e.detail; });
   setRenderHook((view, content, finderData) => { mountCanvas(view, content, finderData); });
-  window.addEventListener('pagehide', () => { if (canvas?.pending) saveCanvas(canvas, { keepalive: true }); });
+  setNotesHook((tab, content, notesData) => { mountNotesCanvas(tab, content, notesData); });
+  window.addEventListener('pagehide', () => {
+    for (const c of [canvas, notesCanvas]) if (c?.pending) saveCanvas(c, { keepalive: true });
+  });
   // Finder ditutup → simpan dan lepas editor.
   new MutationObserver(() => { if (canvas && !finderRoot()) closeCanvas(); })
     .observe(document.body, { childList: true });

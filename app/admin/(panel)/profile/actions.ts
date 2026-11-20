@@ -18,8 +18,8 @@ export async function saveProfileAction(_p: ProfileState, f: FormData): Promise<
   const links = json<{ label: string; url: string }[]>(f, 'links', [])
     .map(l => ({ label: String(l.label ?? '').trim(), url: String(l.url ?? '').trim() }))
     .filter(l => l.label || l.url);
-  const badLink = links.find(l => !l.label || !/^(https?:\/\/|mailto:)/.test(l.url));
-  if (badLink) return { error: 'Setiap link Kontak perlu label dan URL yang diawali https:// (atau mailto:).' };
+  const badLink = links.find(l => !l.label || !/^(https?:\/\/|mailto:|tel:)/.test(l.url));
+  if (badLink) return { error: 'Setiap link Kontak perlu label dan URL yang diawali https:// (atau mailto:/tel:).' };
 
   const about = {
     name: str(f, 'name'),

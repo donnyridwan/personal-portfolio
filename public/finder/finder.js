@@ -466,7 +466,7 @@ function renderContact() {
   const rows = [
     c.email ? `<li><span>Email</span><a href="mailto:${esc(c.email)}">${esc(c.email)}</a></li>` : '',
     ...(c.links ?? []).map(l =>
-      `<li><span>${esc(l.label)}</span><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''))}</a></li>`),
+      `<li><span>${esc(l.label)}</span><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.url.replace(/^(https?:\/\/(www\.)?|tel:|mailto:)/, '').replace(/\/$/, ''))}</a></li>`),
   ].join('');
   return {
     title: labelFor('contact'),

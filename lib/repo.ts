@@ -226,6 +226,15 @@ export const moveCategory = (id: string, dir: -1 | 1) => move('categories', id, 
 
 export const getSettings = (): Promise<SettingsMap> => loadSettings();
 
+/** Simpan satu tab kanvas di app Notes (Experience / Services). */
+export async function saveNotesDoc(tab: 'experience' | 'services', input: unknown) {
+  const doc = validateDoc(input);
+  if (!doc) throw new UserError('Isi tidak valid atau terlalu besar.');
+  await sql()`
+    insert into settings (key, value) values ('notes', jsonb_build_object(${tab}::text, ${JSON.stringify(doc)}::jsonb))
+    on conflict (key) do update set value = settings.value || excluded.value`;
+}
+
 export async function saveSetting(key: 'about' | 'contact' | 'resume' | 'ai', value: unknown) {
   const json = JSON.stringify(value);
   await sql()`
