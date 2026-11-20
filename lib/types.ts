@@ -27,7 +27,25 @@ export type ProjectRow = {
 export type SettingsMap = Record<string, unknown>;
 
 export type Favorite = { id: string; label: string; icon: string };
-export type About = { name?: string; role?: string; avatar?: string; paragraphs?: string[] };
+export type AboutStat = { value: string; unit?: string; label: string };
+export type AboutJob = { role: string; company: string; period: string; summary: string };
+export type AboutTestimonial = { name: string; title: string; quote: string; rating?: number };
+export type About = {
+  name?: string;
+  role?: string;
+  avatar?: string;
+  /** Ringkasan (dibaca AI & mode demo; tidak tampil di halaman About). */
+  paragraphs?: string[];
+  /** Halaman About (Notes → About me, Finder → About). */
+  headline?: string;
+  subtitle?: string;
+  bookUrl?: string;
+  statsIntro?: string;
+  stats?: AboutStat[];
+  experienceIntro?: string;
+  experience?: AboutJob[];
+  testimonials?: AboutTestimonial[];
+};
 export type Contact = { email: string; links: { label: string; url: string }[] };
 export type Resume = { url: string };
 

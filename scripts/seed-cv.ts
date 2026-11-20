@@ -36,6 +36,31 @@ const about = {
     'I find where users get stuck or drop off, then research, wireframe, prototype, and test the fix in Figma. Every project ships with a design system developers can actually use, and I take designs live on WordPress or Shopify using AI-assisted development.',
     'Recent results: +20% user retention on a SaaS redesign, +25% e-commerce conversion rate, +30% fintech app downloads, and an event-tracking app used at an F1-related event and Hajj 2025.',
   ],
+  // Halaman About (tata letak dari screenshot pemilik, isi dari CV)
+  headline: 'I design products people can actually finish using.',
+  subtitle: 'Senior UI/UX and Product Designer with 4+ years of experience across SaaS, fintech & e-commerce. I find where users get stuck or drop off, then design, test, and ship the fix.',
+  bookUrl: '',
+  statsIntro: 'Delivering measurable impact across every project.',
+  stats: [
+    { value: '4+', unit: 'Yrs', label: 'Designing digital products' },
+    { value: '60+', unit: '', label: 'Contracts completed on Upwork' },
+    { value: '100%', unit: '', label: 'Job Success Score on Upwork' },
+    { value: '1,200+', unit: '', label: 'Hours logged on Upwork' },
+  ],
+  experienceIntro: '4+ years of building products from first brief to launch.',
+  experience: [
+    { role: 'Senior Product Designer (Part-time)', company: 'Gandaria Studio · Semarang', period: 'Feb 2024 – Present',
+      summary: 'Led a SaaS redesign that lifted user retention by 20%, raised an e-commerce conversion rate by 25%, and built a Figma design system that sped up developer handoff.' },
+    { role: 'Freelance UI/UX & Website Designer', company: 'Upwork · Remote', period: 'May 2024 – Present',
+      summary: 'Conversion-focused landing pages and marketing websites for e-commerce and DTC brands — 60+ contracts, Top Rated, and a 100% Job Success Score.' },
+    { role: 'UI/UX Designer (Part-time)', company: 'Tappifyd · Jeddah, Saudi Arabia', period: 'Dec 2024 – Jun 2026',
+      summary: 'Led design of an event participant-tracking app used at an F1-related event and Hajj 2025, and turned an MVP into a multi-sector B2B platform.' },
+    { role: 'UI/UX Designer (Internship)', company: 'Aksantara Digital · Semarang', period: 'Oct 2023 – Mar 2024',
+      summary: 'Designed mobile and web interfaces for 5+ client pitch decks and a fashion marketplace; a Dribbble shot reached 20,000 impressions.' },
+    { role: 'UI Designer (Internship)', company: 'Tupai Tech · Surakarta', period: 'Jul 2022 – Sep 2022',
+      summary: 'Redesigned an ERP dashboard website, driving +30% engagement, +25% inquiries, and +15% conversions.' },
+  ],
+  testimonials: [] as { name: string; title: string; quote: string; rating?: number }[],
 };
 
 const contact = {

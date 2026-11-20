@@ -759,8 +759,8 @@ async function mountNotesCanvas(tab, content, notesData) {
   const tools = document.createElement('div');
   tools.className = 'ed-tools nt-tools';
   if (tab === 'about') {
-    tools.innerHTML = '<span class="ed-status">Nama, peran, foto, dan paragraf diubah di Profil.</span><button type="button" class="ed-kop">Edit profil…</button>';
-    head?.after(tools);
+    tools.innerHTML = '<span class="ed-status">Isi halaman About (judul, angka, pengalaman, testimoni) diubah di Profil.</span><button type="button" class="ed-kop">Edit profil…</button>';
+    content.prepend(tools);
     tools.querySelector('.ed-kop').addEventListener('click', () => openPanel('/admin/profile', 'Profil'));
     return;
   }

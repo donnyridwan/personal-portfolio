@@ -2,6 +2,7 @@
 // dengan jendela kita sendiri. Isi dari /api/finder: About (Profil admin) + kanvas Experience & Services.
 import { loadData } from '../finder/finder.js';
 import { renderDoc } from '../finder/doc-render.js';
+import { renderAboutPage } from '../about/about-render.js';
 
 const NOTES_ICON = 'aGhKhWRUl22CO8sj6d7qvmsTSBU'; // gambar ikon Notes di dock
 const DOCK_LINK = '[data-framer-name="Dock Menu"] a';
@@ -54,10 +55,7 @@ function header(data) {
 }
 
 function body(data) {
-  if (tab === 'about') {
-    const [first, ...rest] = data.about?.paragraphs ?? [];
-    return `<div class="nt-doc">${first ? `<p><b>${esc(first)}</b></p>` : ''}${rest.map(p => `<p>${esc(p)}</p>`).join('')}</div>`;
-  }
+  if (tab === 'about') return renderAboutPage(data);
   const doc = data.notes?.[tab];
   const html = doc ? renderDoc(doc, src => `<img src="${esc(asset(src))}" alt="" loading="lazy">`) : '';
   return `<div class="nt-doc" data-tab="${tab}">${html || '<p class="nt-empty">Belum ada isi.</p>'}</div>`;
@@ -74,7 +72,8 @@ async function render() {
     return;
   }
   for (const b of win.querySelectorAll('[data-tab-btn]')) b.setAttribute('aria-current', b.dataset.tabBtn === tab ? 'page' : 'false');
-  content.innerHTML = header(data) + body(data);
+  // Tab About me punya kop sendiri (judul besar), jadi kop Notes tidak ditampilkan di sana.
+  content.innerHTML = (tab === 'about' ? '' : header(data)) + body(data);
   content.scrollTop = 0;
   hook?.(tab, content, data, win);
 }

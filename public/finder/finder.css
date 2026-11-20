@@ -256,3 +256,4 @@
 .df-doc figure { margin: 0 0 12px; }
 .df-doc figure img { width: 100%; height: auto; border-radius: 6px; display: block; background: var(--df-placeholder); }
 .df-doc a { color: var(--df-accent); }
+.df-page.df-about { max-width: 720px; margin: 0 auto; padding: 16px 24px 28px; }

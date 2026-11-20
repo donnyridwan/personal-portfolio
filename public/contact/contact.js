@@ -153,5 +153,12 @@ export function installContact() {
     block(e);
     openContact();
   }, { capture: true });
+  // Tombol "Book a Call" di halaman About (kalau belum ada link booking) membuka app Contact.
+  // (fase capture: jendela Notes/Finder menghentikan event klik di dalamnya supaya tidak sampai ke Framer)
+  document.addEventListener('click', e => {
+    if (!e.target.closest?.('[data-ab-book]')) return;
+    e.preventDefault();
+    openContact();
+  }, true);
   window.dockfolioContact = { open: openContact, close: closeContact };
 }

@@ -152,3 +152,8 @@ input:focus, textarea:focus, select:focus { outline: 3px solid color-mix(in srgb
 /* Di dalam jendela "Edit Detail" pada desktop mode edit */
 .adm-embed .adm-header { display: none; }
 .adm-embed .adm-main { padding-top: 16px; }
+
+/* Daftar baris (halaman About) */
+.adm-list-row { display: flex; gap: 10px; align-items: flex-start; padding: 12px; margin-bottom: 0; background: var(--a-bg); }
+.adm-list-fields { flex: 1; display: flex; flex-wrap: wrap; gap: 0 10px; }
+.adm-list-fields .adm-field { margin-bottom: 8px; }

@@ -5,6 +5,7 @@ import {
   parseViewPrefs, VIEW_MODES, GRID_SIZES,
 } from './finder-model.js';
 import { renderDoc } from './doc-render.js';
+import { renderAboutPage } from '../about/about-render.js';
 
 // v2: default berubah jadi Grid sedang; pilihan lama (default Detail) tidak dipakai lagi.
 const PREFS_KEY = 'dockfolio-finder-view-v2';
@@ -446,19 +447,7 @@ function renderProject(id) {
 }
 
 function renderAbout() {
-  const a = data.about ?? {};
-  const paras = (a.paragraphs ?? []).map(t => `<p>${esc(t)}</p>`).join('');
-  return {
-    title: labelFor('about'),
-    html: `
-      <div class="df-page">
-        <div class="df-profile">
-          ${a.avatar ? img(a.avatar, '', 56, 56) : ''}
-          <div><h2>${esc(a.name)}</h2><div class="df-meta">${esc(a.role)}</div></div>
-        </div>
-        ${paras}
-      </div>`,
-  };
+  return { title: labelFor('about'), html: `<div class="df-page df-about">${renderAboutPage(data)}</div>` };
 }
 
 function renderContact() {
