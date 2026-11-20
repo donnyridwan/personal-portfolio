@@ -474,8 +474,8 @@ function renderResume() {
   return {
     title: labelFor('resume'),
     html: `<div class="df-pdf" data-src="${esc(href)}">
-      <div class="df-pdf-bar"><a class="df-pdf-dl" href="${esc(href)}" target="_blank" rel="noopener">Download</a></div>
       <div class="df-pdf-pages"><div class="df-empty">Memuat resume…</div></div>
+      <div class="df-pdf-bar"><a class="df-pdf-dl" href="${esc(href)}" target="_blank" rel="noopener">Download</a></div>
     </div>`,
   };
 }
