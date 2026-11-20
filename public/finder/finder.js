@@ -466,7 +466,8 @@ function renderContact() {
 function renderResume() {
   const url = data.resume?.url;
   if (!url) return { title: labelFor('resume'), html: '<div class="df-empty">Resume belum tersedia</div>' };
-  const href = asset(url);
+  // Viewer PDF browser: tanpa panel thumbnail halaman, zoom 75% (dihormati Chrome/Edge/Firefox).
+  const href = `${asset(url).split('#')[0]}#zoom=75&navpanes=0&pagemode=none`;
   return {
     title: labelFor('resume'),
     html: `<iframe class="df-resume" src="${esc(href)}" title="Resume"></iframe>`,
