@@ -1,6 +1,7 @@
 'use client';
 import { useActionState } from 'react';
 import { login } from '../session-actions';
+import PasswordInput from '../PasswordInput';
 
 export default function LoginForm() {
   const [error, action, pending] = useActionState(login, null);
@@ -9,7 +10,7 @@ export default function LoginForm() {
       <h1>Donny Ridwan · Admin</h1>
       <label className="adm-field">
         <span>Password</span>
-        <input type="password" name="password" autoComplete="current-password" autoFocus required />
+        <PasswordInput name="password" autoComplete="current-password" autoFocus required />
       </label>
       {error && <p className="adm-error" role="alert">{error}</p>}
       <button className="adm-btn adm-primary" disabled={pending}>{pending ? 'Memeriksa…' : 'Masuk'}</button>

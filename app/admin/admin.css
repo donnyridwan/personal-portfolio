@@ -157,3 +157,14 @@ input:focus, textarea:focus, select:focus { outline: 3px solid color-mix(in srgb
 .adm-list-row { display: flex; gap: 10px; align-items: flex-start; padding: 12px; margin-bottom: 0; background: var(--a-bg); }
 .adm-list-fields { flex: 1; display: flex; flex-wrap: wrap; gap: 0 10px; }
 .adm-list-fields .adm-field { margin-bottom: 8px; }
+
+/* Kolom password + tombol mata */
+.adm-pw { position: relative; display: block; }
+.adm-pw input { padding-right: 38px; }
+.adm-pw-toggle {
+  position: absolute; top: 50%; right: 4px; transform: translateY(-50%);
+  display: grid; place-items: center; width: 30px; height: 30px; padding: 0;
+  border: 0; border-radius: 6px; background: transparent; color: var(--a-muted); cursor: pointer;
+}
+.adm-pw-toggle:hover { color: var(--a-text); background: var(--a-line); }
+.adm-pw-toggle:focus-visible { outline: 2px solid var(--a-accent); outline-offset: 1px; }
