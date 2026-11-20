@@ -27,3 +27,14 @@ test('hanya folder dockfolio yang boleh ditandatangani', () => {
   expect(isAllowedFolder('dockfolio/projects/')).toBe(false);
   expect(isAllowedFolder('lain')).toBe(false);
 });
+
+test('parseCloudinaryPdf mengenali PDF milik akun ini', async () => {
+  const { parseCloudinaryPdf } = await import('../lib/cloudinary');
+  expect(parseCloudinaryPdf('https://res.cloudinary.com/demo/image/upload/v123/dockfolio/profile/CV.pdf', 'demo'))
+    .toEqual({ resourceType: 'image', publicId: 'dockfolio/profile/CV', version: '123' });
+  expect(parseCloudinaryPdf('https://res.cloudinary.com/demo/raw/upload/a/b.pdf', 'demo'))
+    .toEqual({ resourceType: 'raw', publicId: 'a/b', version: '' });
+  expect(parseCloudinaryPdf('https://res.cloudinary.com/lain/image/upload/v1/x.pdf', 'demo')).toBeNull();
+  expect(parseCloudinaryPdf('https://contoh.com/cv.pdf', 'demo')).toBeNull();
+  expect(parseCloudinaryPdf('https://res.cloudinary.com/demo/image/upload/v1/x.png', 'demo')).toBeNull();
+});

@@ -2,6 +2,7 @@
 import 'server-only';
 import { neon, type NeonQueryFunction } from '@neondatabase/serverless';
 import { aiSettingsFrom } from './ai';
+import { parseCloudinaryPdf } from './cloudinary';
 import { validateDoc } from './blocks';
 import { buildDesktop } from './desktop';
 import { buildFinderData } from './finder-data';
@@ -34,6 +35,10 @@ export async function loadFinderData(): Promise<FinderData> {
     db`select id, kind, ref, label, src, x, y, mx, my, z from desktop_items`,
   ]);
   const data = buildFinderData(categories as CategoryRow[], projects as ProjectRow[], settings);
+  // PDF di Cloudinary disajikan lewat /api/resume (lihat app/api/resume/route.ts).
+  const cloud = /@([^/?#]+)$/.exec(process.env.CLOUDINARY_URL ?? '')?.[1] ?? '';
+  const pdf = cloud ? parseCloudinaryPdf(data.resume.url, cloud) : null;
+  if (pdf) data.resume.url = `/api/resume?v=${pdf.version || '1'}`;
   data.desktop = buildDesktop(desktop as DesktopRow[], data.projects, data.categories, data.resume.url);
   // demo = belum ada API key: terminal menjawab dari data saja (lihat lib/ai-demo.ts).
   data.ai = { name: aiSettingsFrom(settings.ai).name, demo: !process.env.ANTHROPIC_API_KEY };
