@@ -19,3 +19,6 @@ next-env.d.ts
 
 # Bundel editor (dibuat oleh npm run build:editor)
 public/editor/
+
+# Salinan pdf.js (dibuat oleh npm run build:pdf)
+public/pdfjs/

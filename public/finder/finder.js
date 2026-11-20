@@ -352,6 +352,9 @@ function render() {
   const content = root.querySelector('.df-content');
   content.innerHTML = html;
   content.scrollTop = 0;
+  if (view.type === 'resume') {
+    import('./pdf-view.js').then(m => m.mountPdf(content.querySelector('.df-pdf'))).catch(() => {});
+  }
   renderHook?.(view, content, data);
 }
 
@@ -466,11 +469,14 @@ function renderContact() {
 function renderResume() {
   const url = data.resume?.url;
   if (!url) return { title: labelFor('resume'), html: '<div class="df-empty">Resume belum tersedia</div>' };
-  // Viewer PDF browser: tanpa panel thumbnail halaman, zoom 75% (dihormati Chrome/Edge/Firefox).
-  const href = `${asset(url).split('#')[0]}#zoom=75&navpanes=0&pagemode=none`;
+  // Viewer sendiri (pdf-view.js): halaman disusun ke bawah, zoom 75%, tanpa toolbar/thumbnail browser.
+  const href = asset(url);
   return {
     title: labelFor('resume'),
-    html: `<iframe class="df-resume" src="${esc(href)}" title="Resume"></iframe>`,
+    html: `<div class="df-pdf" data-src="${esc(href)}">
+      <div class="df-pdf-bar"><a class="df-pdf-dl" href="${esc(href)}" target="_blank" rel="noopener">Download</a></div>
+      <div class="df-pdf-pages"><div class="df-empty">Memuat resume…</div></div>
+    </div>`,
   };
 }
 

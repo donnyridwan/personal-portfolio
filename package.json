@@ -6,11 +6,12 @@
     "test": "tests"
   },
   "scripts": {
-    "dev": "npm run build:editor && next dev",
-    "build": "npm run build:editor && next build",
+    "dev": "npm run build:editor && npm run build:pdf && next dev",
+    "build": "npm run build:editor && npm run build:pdf && next build",
     "start": "next start",
     "test": "vitest run && node --test tests/*.test.mjs",
-    "build:editor": "esbuild editor-src/editor.js --bundle --format=esm --minify --target=es2020 --outfile=public/editor/editor.js"
+    "build:editor": "esbuild editor-src/editor.js --bundle --format=esm --minify --target=es2020 --outfile=public/editor/editor.js",
+    "build:pdf": "node -e \"const fs=require('fs');fs.mkdirSync('public/pdfjs',{recursive:true});for(const f of ['pdf.min.mjs','pdf.worker.min.mjs'])fs.copyFileSync('node_modules/pdfjs-dist/build/'+f,'public/pdfjs/'+f)\""
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
     "@anthropic-ai/sdk": "^1.8.0",
     "@neondatabase/serverless": "^1.2.1",
     "next": "^16.4.6",
+    "pdfjs-dist": "^6.5.438",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "server-only": "^0.0.1"
