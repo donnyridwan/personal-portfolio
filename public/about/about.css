@@ -49,7 +49,7 @@
 .ab .ab-label { color: var(--ab-muted); font-size: 12.5px; }
 
 .ab-exp { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; text-align: left; }
-.ab-job { display: grid; grid-template-columns: minmax(170px, 34%) 1fr; gap: 32px; padding: 22px 26px; background: var(--ab-box); border-radius: 12px; }
+.ab-job { display: grid; grid-template-columns: minmax(170px, 34%) 1fr; align-items: center; gap: 32px; padding: 22px 26px; background: var(--ab-box); border-radius: 12px; }
 /* Kartu pengalaman: hierarki lewat ketebalan & warna, jarak lega supaya tidak padat */
 .ab .ab-job-head b { display: block; font-size: 13px; font-weight: 600; line-height: 1.4; letter-spacing: -.005em; }
 .ab .ab-job-head span { display: block; font-size: 12px; color: var(--ab-muted); line-height: 1.45; margin-top: 6px; }
