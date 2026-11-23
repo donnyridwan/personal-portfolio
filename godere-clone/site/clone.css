@@ -1,0 +1,8 @@
+/* Replaces Framer runtime behaviours removed from the static reconstruction */
+.rc-appear { transition: opacity .6s cubic-bezier(.44,0,.56,1), transform .8s cubic-bezier(.44,0,.56,1); }
+/* Nav hover: "( Projects )" brackets pulse while hovered (observed on the reference: ~0.1s fade-in, then ~0.8s pulse) */
+@keyframes rc-show { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rc-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .05; } }
+a:hover > .rc-hover-swap { animation: rc-show .1s ease-out, rc-pulse .8s ease-in-out .1s infinite; }
+a:hover > .rc-hover-swap ~ .rc-hover-swap { animation-delay: .03s; }
+@media (prefers-reduced-motion: reduce) { .rc-appear { transition: none !important; } a:hover > .rc-hover-swap { animation: none; opacity: 1 !important; } }

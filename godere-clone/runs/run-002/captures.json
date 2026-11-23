@@ -1,0 +1,1106 @@
+{
+  "version": 1,
+  "runId": "fb58ad0f-fcc9-477b-82e2-612e6f4ed16e",
+  "configHash": "3952052e7b61da24b31c4724371539afea44010cd37be9f690c9e0940a00ad63",
+  "createdAt": "2026-11-21T03:07:54.026Z",
+  "entries": [
+    {
+      "route": "/",
+      "width": 390,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "reference": {
+        "url": "https://godere.framer.website/",
+        "title": "Godere® - Premium Portfolio & Agency Template",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 390,
+        "documentHeight": 8848,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-reference",
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/19070568ef63157b-reference.png",
+        "sha256": "55b7acf96948a8f225128129f7449c83d0bfe6d6a2a2bb114f4e0f7927d95e61"
+      },
+      "local": {
+        "url": "http://127.0.0.1:3000/",
+        "title": "Godere® - Premium Portfolio & Agency Template",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 390,
+        "documentHeight": 8848,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-local",
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/19070568ef63157b-local.png",
+        "sha256": "40c813b616cafd2bad8fa0d8f48df2d4fe6c2e22aca44b6749593fa9b650290a"
+      }
+    },
+    {
+      "route": "/",
+      "width": 1024,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "reference": {
+        "url": "https://godere.framer.website/",
+        "title": "Godere® - Premium Portfolio & Agency Template",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1024,
+        "documentHeight": 8009,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-reference",
+        "viewport": {
+          "width": 1024,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/b5441f41d79fd95e-reference.png",
+        "sha256": "1eb6a80086d8e639ac444a852220a6d4293012adef3a68a2379cf558a58fab04"
+      },
+      "local": {
+        "url": "http://127.0.0.1:3000/",
+        "title": "Godere® - Premium Portfolio & Agency Template",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1024,
+        "documentHeight": 8009,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-local",
+        "viewport": {
+          "width": 1024,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/b5441f41d79fd95e-local.png",
+        "sha256": "253c87931ffd6c6c2f3509d6409a82145e53f1945ec6732d700cf59e51c0d530"
+      }
+    },
+    {
+      "route": "/",
+      "width": 1440,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "reference": {
+        "url": "https://godere.framer.website/",
+        "title": "Godere® - Premium Portfolio & Agency Template",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1440,
+        "documentHeight": 6687,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-reference",
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/a1544e2caa3f8779-reference.png",
+        "sha256": "6e33c86dce567ecf656600c16be47822f641249b38a8477fd156837d7f6f7a9d"
+      },
+      "local": {
+        "url": "http://127.0.0.1:3000/",
+        "title": "Godere® - Premium Portfolio & Agency Template",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1440,
+        "documentHeight": 6687,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-local",
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/a1544e2caa3f8779-local.png",
+        "sha256": "8cdc8a7ab2708db6cede831a2690393e791da27071c667c7514c25899c2d3b3c"
+      }
+    },
+    {
+      "route": "/projects/arcveil-brand-identity",
+      "width": 390,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "reference": {
+        "url": "https://godere.framer.website/projects/arcveil-brand-identity",
+        "title": "Arcveil — Brand Identity & Web - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 390,
+        "documentHeight": 2930,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-reference",
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/3b7fb0bcb3ecf177-reference.png",
+        "sha256": "c17a075d59ce6291b41a74ac35d9973182bf36624f3f65b3b7e5e159805baae0"
+      },
+      "local": {
+        "url": "http://127.0.0.1:3000/projects/arcveil-brand-identity",
+        "title": "Arcveil — Brand Identity & Web - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 390,
+        "documentHeight": 2930,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-local",
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/3b7fb0bcb3ecf177-local.png",
+        "sha256": "4a44bc71bdf82f20898f2a3ba2737a4c4be023f844de7e52eb1d14ed2e7c8852"
+      }
+    },
+    {
+      "route": "/projects/arcveil-brand-identity",
+      "width": 1024,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "reference": {
+        "url": "https://godere.framer.website/projects/arcveil-brand-identity",
+        "title": "Arcveil — Brand Identity & Web - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1024,
+        "documentHeight": 2081,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-reference",
+        "viewport": {
+          "width": 1024,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/989778836fc7d441-reference.png",
+        "sha256": "8a77fab2f1520cf4354a4180c8c67514052a147aedf77b9bd1aba397efa95739"
+      },
+      "local": {
+        "url": "http://127.0.0.1:3000/projects/arcveil-brand-identity",
+        "title": "Arcveil — Brand Identity & Web - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1024,
+        "documentHeight": 2081,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-local",
+        "viewport": {
+          "width": 1024,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/989778836fc7d441-local.png",
+        "sha256": "4df62e441d442934650552976c64d08f8e00841f506200ee83f991c8fdc0dd63"
+      }
+    },
+    {
+      "route": "/projects/arcveil-brand-identity",
+      "width": 1440,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "reference": {
+        "url": "https://godere.framer.website/projects/arcveil-brand-identity",
+        "title": "Arcveil — Brand Identity & Web - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1440,
+        "documentHeight": 2830,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-reference",
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/578830154910857e-reference.png",
+        "sha256": "88c754b3768dc0ef3d9f4682c4fec18aa2b4bd752e3a98f4984b76771350181a"
+      },
+      "local": {
+        "url": "http://127.0.0.1:3000/projects/arcveil-brand-identity",
+        "title": "Arcveil — Brand Identity & Web - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1440,
+        "documentHeight": 2830,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-local",
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/578830154910857e-local.png",
+        "sha256": "3937a4402f2a8bf1906aa75e47fec82461f7fec34e8043a2d38b6644b1c654dc"
+      }
+    },
+    {
+      "route": "/projects/lumio-product-design",
+      "width": 390,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "reference": {
+        "url": "https://godere.framer.website/projects/lumio-product-design",
+        "title": "Lumio — Product Design & Strategy - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 390,
+        "documentHeight": 3258,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-reference",
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/c1618b360b676be8-reference.png",
+        "sha256": "7a383f465b0ad15ae6eb2f3651f37889ecf0392708d585e494cbc990409bd0e0"
+      },
+      "local": {
+        "url": "http://127.0.0.1:3000/projects/lumio-product-design",
+        "title": "Lumio — Product Design & Strategy - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 390,
+        "documentHeight": 3258,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-local",
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/c1618b360b676be8-local.png",
+        "sha256": "4fbcf8499b9fa6b52142f0d6e6cd643aa4f45cc478e09ecef7d134d80739caf7"
+      }
+    },
+    {
+      "route": "/projects/lumio-product-design",
+      "width": 1024,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "reference": {
+        "url": "https://godere.framer.website/projects/lumio-product-design",
+        "title": "Lumio — Product Design & Strategy - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1024,
+        "documentHeight": 2446,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-reference",
+        "viewport": {
+          "width": 1024,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/015322b0197e9463-reference.png",
+        "sha256": "651c2aa38cea2100f63d4d1e9d5923e385346e1ee4974809aeca5bf5aca996fe"
+      },
+      "local": {
+        "url": "http://127.0.0.1:3000/projects/lumio-product-design",
+        "title": "Lumio — Product Design & Strategy - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1024,
+        "documentHeight": 2446,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-local",
+        "viewport": {
+          "width": 1024,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/015322b0197e9463-local.png",
+        "sha256": "53507efdc55cd2e999b682d6b59d63fb328070ec8d7c5eee7289e92a432b048b"
+      }
+    },
+    {
+      "route": "/projects/lumio-product-design",
+      "width": 1440,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "reference": {
+        "url": "https://godere.framer.website/projects/lumio-product-design",
+        "title": "Lumio — Product Design & Strategy - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1440,
+        "documentHeight": 3362,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-reference",
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/3a2c4ba4b6785601-reference.png",
+        "sha256": "7703a42efe25ad6d94d4e44fc6cfa2071e142799c7c3501b3c7f5f0775c4bcf2"
+      },
+      "local": {
+        "url": "http://127.0.0.1:3000/projects/lumio-product-design",
+        "title": "Lumio — Product Design & Strategy - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1440,
+        "documentHeight": 3362,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-local",
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/3a2c4ba4b6785601-local.png",
+        "sha256": "99e3e2333d3665c16016a14a9fc299ffa7f1f33ade4d52c6e5ae1855e1012fa0"
+      }
+    },
+    {
+      "route": "/projects/vela-brand-identity",
+      "width": 390,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "reference": {
+        "url": "https://godere.framer.website/projects/vela-brand-identity",
+        "title": "Vela — Brand Identity & Go-to-Market - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 390,
+        "documentHeight": 3590,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-reference",
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/d0c3fe91f678441a-reference.png",
+        "sha256": "4cb5aa935789b84526fc7bf5629b7d96ac0da1f47bb8a8503ec54012b4573663"
+      },
+      "local": {
+        "url": "http://127.0.0.1:3000/projects/vela-brand-identity",
+        "title": "Vela — Brand Identity & Go-to-Market - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 390,
+        "documentHeight": 3590,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-local",
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/d0c3fe91f678441a-local.png",
+        "sha256": "a5d39ad070e7f4a821cf7b1cbec1441ef68d2c9d3478475aceda4e56fe0e3d1f"
+      }
+    },
+    {
+      "route": "/projects/vela-brand-identity",
+      "width": 1024,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "reference": {
+        "url": "https://godere.framer.website/projects/vela-brand-identity",
+        "title": "Vela — Brand Identity & Go-to-Market - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1024,
+        "documentHeight": 2812,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-reference",
+        "viewport": {
+          "width": 1024,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/e0aad26e1be6242c-reference.png",
+        "sha256": "43d34329e2aa118710e8b2dcb56cac9255d6da350441fa31b0711b0336c41870"
+      },
+      "local": {
+        "url": "http://127.0.0.1:3000/projects/vela-brand-identity",
+        "title": "Vela — Brand Identity & Go-to-Market - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1024,
+        "documentHeight": 2812,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-local",
+        "viewport": {
+          "width": 1024,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/e0aad26e1be6242c-local.png",
+        "sha256": "8e40e8f2b60ae8f2336c89e6e2fd9e07dfc104a0a1a373bb0008cd014744899e"
+      }
+    },
+    {
+      "route": "/projects/vela-brand-identity",
+      "width": 1440,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "reference": {
+        "url": "https://godere.framer.website/projects/vela-brand-identity",
+        "title": "Vela — Brand Identity & Go-to-Market - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1440,
+        "documentHeight": 3894,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-reference",
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/ac5f1fc254d5cc31-reference.png",
+        "sha256": "c045ead943d1981783c16fc4e50ff703f458d698d43ec873924896d60ff68d8d"
+      },
+      "local": {
+        "url": "http://127.0.0.1:3000/projects/vela-brand-identity",
+        "title": "Vela — Brand Identity & Go-to-Market - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1440,
+        "documentHeight": 3894,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-local",
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/ac5f1fc254d5cc31-local.png",
+        "sha256": "b8926e85810cd72d9397dc1ac7607f4b40e7e379855d8cb23abc57dc43f4f05c"
+      }
+    },
+    {
+      "route": "/projects/kova-creative-direction",
+      "width": 390,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "reference": {
+        "url": "https://godere.framer.website/projects/kova-creative-direction",
+        "title": "Kova — Creative Direction & Campaign - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 390,
+        "documentHeight": 3306,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-reference",
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/1d98ee6c41ca1135-reference.png",
+        "sha256": "7e13fcaacdf83176c35cc84e16a75b33865cfd60f9f66ee2e91980e492c943cb"
+      },
+      "local": {
+        "url": "http://127.0.0.1:3000/projects/kova-creative-direction",
+        "title": "Kova — Creative Direction & Campaign - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 390,
+        "documentHeight": 3306,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-local",
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/1d98ee6c41ca1135-local.png",
+        "sha256": "78064de8201c9cc55f0105808f3cc1db98a33b6e3e95a1c767d18b8fbbd00cf5"
+      }
+    },
+    {
+      "route": "/projects/kova-creative-direction",
+      "width": 1024,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "reference": {
+        "url": "https://godere.framer.website/projects/kova-creative-direction",
+        "title": "Kova — Creative Direction & Campaign - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1024,
+        "documentHeight": 2446,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-reference",
+        "viewport": {
+          "width": 1024,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/0ad9a5d01d2bd560-reference.png",
+        "sha256": "d7a685fc8e30052d17fac5e102b084f374d470e0dce8e86fba60ecf9f2315464"
+      },
+      "local": {
+        "url": "http://127.0.0.1:3000/projects/kova-creative-direction",
+        "title": "Kova — Creative Direction & Campaign - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1024,
+        "documentHeight": 2446,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-local",
+        "viewport": {
+          "width": 1024,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/0ad9a5d01d2bd560-local.png",
+        "sha256": "86e2a5d766fe529f19f212e7b2f445e5932022e3f2297654c49d0ba02ed1511c"
+      }
+    },
+    {
+      "route": "/projects/kova-creative-direction",
+      "width": 1440,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "reference": {
+        "url": "https://godere.framer.website/projects/kova-creative-direction",
+        "title": "Kova — Creative Direction & Campaign - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1440,
+        "documentHeight": 3362,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-reference",
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/fafc0f1110957a84-reference.png",
+        "sha256": "4183f8f8dd5685f93d8bd3ea855f229c4658f165cb1f0f185516c362913baab7"
+      },
+      "local": {
+        "url": "http://127.0.0.1:3000/projects/kova-creative-direction",
+        "title": "Kova — Creative Direction & Campaign - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1440,
+        "documentHeight": 3362,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-local",
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/fafc0f1110957a84-local.png",
+        "sha256": "8452a1646d157bc27262ccb5c1a1ac1cb803876f8dc22d61876da9e9e390423a"
+      }
+    },
+    {
+      "route": "/projects/haux-web-redesign",
+      "width": 390,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "reference": {
+        "url": "https://godere.framer.website/projects/haux-web-redesign",
+        "title": "Haux — Web Redesign & Digital Strategy - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 390,
+        "documentHeight": 2258,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-reference",
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/006d613c4ac0c25a-reference.png",
+        "sha256": "9e07a9221622bcaa723607ca45ee5157a2f953e48e431f726a2689985a02f29b"
+      },
+      "local": {
+        "url": "http://127.0.0.1:3000/projects/haux-web-redesign",
+        "title": "Haux — Web Redesign & Digital Strategy - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 390,
+        "documentHeight": 2258,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-local",
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/006d613c4ac0c25a-local.png",
+        "sha256": "80512407105903d63c02687420337fca2498849e0a9818a23d89d3fe11e5373c"
+      }
+    },
+    {
+      "route": "/projects/haux-web-redesign",
+      "width": 1024,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "reference": {
+        "url": "https://godere.framer.website/projects/haux-web-redesign",
+        "title": "Haux — Web Redesign & Digital Strategy - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1024,
+        "documentHeight": 1470,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-reference",
+        "viewport": {
+          "width": 1024,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/bce4ee1b234257d7-reference.png",
+        "sha256": "08e57fa11dbf41cebaca4a34a720ed5984bd27a1f284ca60385cd95d2f9703d8"
+      },
+      "local": {
+        "url": "http://127.0.0.1:3000/projects/haux-web-redesign",
+        "title": "Haux — Web Redesign & Digital Strategy - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1024,
+        "documentHeight": 1470,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-local",
+        "viewport": {
+          "width": 1024,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/bce4ee1b234257d7-local.png",
+        "sha256": "417c4a94ed5396a600cfee99a8a2c1265b20cae046f33c4457de72eb26a3cbb2"
+      }
+    },
+    {
+      "route": "/projects/haux-web-redesign",
+      "width": 1440,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "reference": {
+        "url": "https://godere.framer.website/projects/haux-web-redesign",
+        "title": "Haux — Web Redesign & Digital Strategy - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1440,
+        "documentHeight": 1970,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-reference",
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/35472321154c1cb3-reference.png",
+        "sha256": "287498bdd283609eb8c630f00bdc00d44de75326f8b9e6cb35f0d4e2ef654130"
+      },
+      "local": {
+        "url": "http://127.0.0.1:3000/projects/haux-web-redesign",
+        "title": "Haux — Web Redesign & Digital Strategy - Godere®",
+        "visibility": "visible",
+        "fonts": "loaded",
+        "ready": true,
+        "scrollY": 0,
+        "documentWidth": 1440,
+        "documentHeight": 1970,
+        "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36",
+        "platform": "Linux x86_64",
+        "targetId": "playwright-local",
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "dpr": 1
+        },
+        "colorScheme": "light",
+        "reducedMotion": true,
+        "diagnostics": {
+          "errors": [],
+          "failures": [],
+          "truncated": false
+        },
+        "screenshot": "screenshots/35472321154c1cb3-local.png",
+        "sha256": "d739a7cf023c12b90f45084cd78bbc189ecc82e6fbf2ab288bfbf8daab7fe480"
+      }
+    }
+  ]
+}

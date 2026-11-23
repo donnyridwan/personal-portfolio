@@ -1,0 +1,19 @@
+{
+  "id": "project-link",
+  "sides": {
+    "reference": {
+      "expected": "navigates to Vela project page",
+      "url": "https://godere.framer.website/projects/vela-brand-identity",
+      "h1": "Vela — Brand Identity & Go-to-Market",
+      "pass": true,
+      "ms": 3285
+    },
+    "local": {
+      "expected": "navigates to Vela project page",
+      "url": "http://127.0.0.1:3000/projects/vela-brand-identity.html",
+      "h1": "Vela — Brand Identity & Go-to-Market",
+      "pass": true,
+      "ms": 737
+    }
+  }
+}

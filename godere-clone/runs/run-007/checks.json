@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "runId": "ccb2304b-451f-47b0-8ffd-3290cfa36b48",
+  "configHash": "2d7e144a0770bf92e511a842a304e716c29c655d6d8bae1878ae17035cbbf33e",
+  "items": [
+    {
+      "id": "nav-hover-brackets",
+      "status": "PASS",
+      "evidence": "checks/nav-hover-brackets.json"
+    },
+    {
+      "id": "anchor-services",
+      "status": "PASS",
+      "evidence": "checks/anchor-services.json"
+    },
+    {
+      "id": "project-link",
+      "status": "PASS",
+      "evidence": "checks/project-link.json"
+    },
+    {
+      "id": "normal-motion",
+      "status": "PASS",
+      "evidence": "checks/normal-motion.json"
+    }
+  ]
+}

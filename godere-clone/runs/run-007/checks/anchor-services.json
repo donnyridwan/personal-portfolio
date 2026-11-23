@@ -1,0 +1,21 @@
+{
+  "id": "anchor-services",
+  "sides": {
+    "reference": {
+      "expected": "#services section scrolled to near top of viewport",
+      "scrollY": 3445,
+      "top": 80,
+      "hash": "#services",
+      "pass": true,
+      "ms": 4836
+    },
+    "local": {
+      "expected": "#services section scrolled to near top of viewport",
+      "scrollY": 3445,
+      "top": 80,
+      "hash": "#services",
+      "pass": true,
+      "ms": 3184
+    }
+  }
+}

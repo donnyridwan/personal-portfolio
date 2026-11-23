@@ -1,0 +1,19 @@
+{
+  "id": "normal-motion",
+  "sides": {
+    "reference": {
+      "expected": "hero heading characters animate in (last char opacity <1 early, 1 after 3s)",
+      "early": 0.001,
+      "late": 1,
+      "pass": true,
+      "ms": 3419
+    },
+    "local": {
+      "expected": "hero heading characters animate in (last char opacity <1 early, 1 after 3s)",
+      "early": 0.001,
+      "late": 1,
+      "pass": true,
+      "ms": 3097
+    }
+  }
+}

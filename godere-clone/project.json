@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "reference": "https://godere.framer.website",
+  "local": "http://127.0.0.1:3000",
+  "routes": [
+    "/",
+    "/projects/arcveil-brand-identity",
+    "/projects/lumio-product-design",
+    "/projects/vela-brand-identity",
+    "/projects/kova-creative-direction",
+    "/projects/haux-web-redesign"
+  ],
+  "viewports": [
+    {
+      "width": 390,
+      "height": 900,
+      "dpr": 1
+    },
+    {
+      "width": 1024,
+      "height": 900,
+      "dpr": 1
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "dpr": 1
+    }
+  ],
+  "states": [
+    "default"
+  ],
+  "colorScheme": "light",
+  "assetOrigins": [
+    "https://framerusercontent.com"
+  ],
+  "thresholds": {
+    "perceptualThreshold": 0.1
+  },
+  "requiredChecks": [
+    "nav-hover-brackets",
+    "anchor-services",
+    "project-link",
+    "normal-motion"
+  ]
+}

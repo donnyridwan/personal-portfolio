@@ -1,0 +1,55 @@
+{
+  "id": "nav-hover-brackets",
+  "sides": {
+    "reference": {
+      "expected": "bracket hidden at rest; on hover above 0.75 within 300ms, then pulses (fades <0.2, returns >0.75) within 1.4s",
+      "before": 0,
+      "samples": [
+        0.04,
+        1,
+        0.71,
+        0.42,
+        0.17,
+        0.08,
+        0.37,
+        0.62,
+        0.91,
+        0.88,
+        0.59,
+        0.29,
+        0.04,
+        0.2
+      ],
+      "firstPeak": 1,
+      "firstTrough": 4,
+      "repeat": 8,
+      "pass": true,
+      "ms": 3935
+    },
+    "local": {
+      "expected": "bracket hidden at rest; on hover above 0.75 within 300ms, then pulses (fades <0.2, returns >0.75) within 1.4s",
+      "before": 0,
+      "samples": [
+        0,
+        1,
+        0.78,
+        0.33,
+        0.06,
+        0.1,
+        0.46,
+        0.83,
+        1,
+        0.83,
+        0.46,
+        0.1,
+        0.08,
+        0.33
+      ],
+      "firstPeak": 1,
+      "firstTrough": 4,
+      "repeat": 7,
+      "pass": true,
+      "ms": 2236
+    }
+  }
+}

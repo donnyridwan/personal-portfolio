@@ -1,0 +1,15 @@
+{
+  "status": "MEASURED",
+  "runId": "f3cba729-f008-444d-a650-5c365a4c7b4c",
+  "configHash": "3952052e7b61da24b31c4724371539afea44010cd37be9f690c9e0940a00ad63",
+  "expectedCases": 18,
+  "measuredCases": 18,
+  "requiredChecks": 0,
+  "evidencedChecks": 0,
+  "minimumExactMatchPercent": 62.53427460609782,
+  "aggregateExactMatchPercent": 76.60354445976823,
+  "totalPixels": 60991636,
+  "exactDifferentPixels": 14269881,
+  "gaps": [],
+  "failures": []
+}

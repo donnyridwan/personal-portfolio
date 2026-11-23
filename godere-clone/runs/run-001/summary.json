@@ -1,0 +1,19 @@
+{
+  "status": "INCOMPLETE",
+  "runId": "2df640be-8a1f-4ea6-b08f-87aefbdbe8ea",
+  "configHash": "3952052e7b61da24b31c4724371539afea44010cd37be9f690c9e0940a00ad63",
+  "expectedCases": 18,
+  "measuredCases": 15,
+  "requiredChecks": 0,
+  "evidencedChecks": 0,
+  "minimumExactMatchPercent": 55.582244125419614,
+  "aggregateExactMatchPercent": 64.85134883992664,
+  "totalPixels": 39710420,
+  "exactDifferentPixels": 13957677,
+  "gaps": [
+    "Unmeasured case [\"/\",390,900,1,\"default\"]: INCOMPARABLE",
+    "Unmeasured case [\"/\",1024,900,1,\"default\"]: INCOMPARABLE",
+    "Unmeasured case [\"/\",1440,900,1,\"default\"]: INCOMPARABLE"
+  ],
+  "failures": []
+}

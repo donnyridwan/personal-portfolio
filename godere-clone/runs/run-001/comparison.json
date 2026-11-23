@@ -1,0 +1,1362 @@
+{
+  "version": 1,
+  "runId": "2df640be-8a1f-4ea6-b08f-87aefbdbe8ea",
+  "configHash": "3952052e7b61da24b31c4724371539afea44010cd37be9f690c9e0940a00ad63",
+  "createdAt": "2026-11-21T03:06:12.549Z",
+  "problems": [],
+  "results": [
+    {
+      "route": "/",
+      "width": 390,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "status": "INCOMPARABLE",
+      "reasons": [
+        "local: ready must be true"
+      ]
+    },
+    {
+      "route": "/",
+      "width": 1024,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "status": "INCOMPARABLE",
+      "reasons": [
+        "local: ready must be true"
+      ]
+    },
+    {
+      "route": "/",
+      "width": 1440,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "status": "INCOMPARABLE",
+      "reasons": [
+        "local: ready must be true"
+      ]
+    },
+    {
+      "route": "/projects/arcveil-brand-identity",
+      "width": 390,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "referenceSize": [
+        390,
+        2930
+      ],
+      "localSize": [
+        390,
+        2930
+      ],
+      "totalPixels": 1142700,
+      "exactDifferentPixels": 448564,
+      "exactMatchPercent": 60.74525247221493,
+      "perceptualDifferentPixels": 388340,
+      "perceptualMatchPercent": 66.01557714185701,
+      "normalizedMeanAbsoluteError": 0.10040957862098196,
+      "maxChannelDifference": 255,
+      "channels": "RGBA",
+      "pixelmatch": {
+        "threshold": 0.1,
+        "includeAA": true
+      },
+      "differenceBounds": {
+        "x": 30,
+        "y": 90,
+        "width": 342,
+        "height": 2233
+      },
+      "worstTile": {
+        "x": 64,
+        "y": 896,
+        "width": 64,
+        "height": 64,
+        "exactDifferentPixels": 4096,
+        "exactMatchPercent": 0
+      },
+      "hotspots": [
+        {
+          "x": 64,
+          "y": 896,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 128,
+          "y": 896,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 192,
+          "y": 896,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 256,
+          "y": 896,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 64,
+          "y": 960,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        }
+      ],
+      "diff": "diff/df6f6782b5762ab0.png",
+      "status": "MEASURED",
+      "horizontalOverflow": false,
+      "reference": "screenshots/3b7fb0bcb3ecf177-reference.png",
+      "local": "screenshots/3b7fb0bcb3ecf177-local.png"
+    },
+    {
+      "route": "/projects/arcveil-brand-identity",
+      "width": 1024,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "referenceSize": [
+        1024,
+        2081
+      ],
+      "localSize": [
+        1024,
+        2081
+      ],
+      "totalPixels": 2130944,
+      "exactDifferentPixels": 641811,
+      "exactMatchPercent": 69.88137651669871,
+      "perceptualDifferentPixels": 548987,
+      "perceptualMatchPercent": 74.23738024086977,
+      "normalizedMeanAbsoluteError": 0.07462991178796723,
+      "maxChannelDifference": 254,
+      "channels": "RGBA",
+      "pixelmatch": {
+        "threshold": 0.1,
+        "includeAA": true
+      },
+      "differenceBounds": {
+        "x": 40,
+        "y": 80,
+        "width": 966,
+        "height": 1667
+      },
+      "worstTile": {
+        "x": 576,
+        "y": 128,
+        "width": 64,
+        "height": 64,
+        "exactDifferentPixels": 4096,
+        "exactMatchPercent": 0
+      },
+      "hotspots": [
+        {
+          "x": 576,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 640,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 704,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 768,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 832,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        }
+      ],
+      "diff": "diff/ab7be68d7a54adcf.png",
+      "status": "MEASURED",
+      "horizontalOverflow": false,
+      "reference": "screenshots/989778836fc7d441-reference.png",
+      "local": "screenshots/989778836fc7d441-local.png"
+    },
+    {
+      "route": "/projects/arcveil-brand-identity",
+      "width": 1440,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "referenceSize": [
+        1440,
+        2830
+      ],
+      "localSize": [
+        1440,
+        2830
+      ],
+      "totalPixels": 4075200,
+      "exactDifferentPixels": 1394341,
+      "exactMatchPercent": 65.78472222222223,
+      "perceptualDifferentPixels": 1214334,
+      "perceptualMatchPercent": 70.20185512367492,
+      "normalizedMeanAbsoluteError": 0.08611827616303687,
+      "maxChannelDifference": 255,
+      "channels": "RGBA",
+      "pixelmatch": {
+        "threshold": 0.1,
+        "includeAA": true
+      },
+      "differenceBounds": {
+        "x": 40,
+        "y": 80,
+        "width": 1382,
+        "height": 2416
+      },
+      "worstTile": {
+        "x": 768,
+        "y": 128,
+        "width": 64,
+        "height": 64,
+        "exactDifferentPixels": 4096,
+        "exactMatchPercent": 0
+      },
+      "hotspots": [
+        {
+          "x": 768,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 832,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 896,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 960,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 1024,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        }
+      ],
+      "diff": "diff/39c1ed64f496c9e4.png",
+      "status": "MEASURED",
+      "horizontalOverflow": false,
+      "reference": "screenshots/578830154910857e-reference.png",
+      "local": "screenshots/578830154910857e-local.png"
+    },
+    {
+      "route": "/projects/lumio-product-design",
+      "width": 390,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "referenceSize": [
+        390,
+        3258
+      ],
+      "localSize": [
+        390,
+        3258
+      ],
+      "totalPixels": 1270620,
+      "exactDifferentPixels": 537681,
+      "exactMatchPercent": 57.68357179959389,
+      "perceptualDifferentPixels": 502482,
+      "perceptualMatchPercent": 60.453794210700295,
+      "normalizedMeanAbsoluteError": 0.11724582502721383,
+      "maxChannelDifference": 245,
+      "channels": "RGBA",
+      "pixelmatch": {
+        "threshold": 0.1,
+        "includeAA": true
+      },
+      "differenceBounds": {
+        "x": 30,
+        "y": 90,
+        "width": 342,
+        "height": 2538
+      },
+      "worstTile": {
+        "x": 64,
+        "y": 960,
+        "width": 64,
+        "height": 64,
+        "exactDifferentPixels": 4096,
+        "exactMatchPercent": 0
+      },
+      "hotspots": [
+        {
+          "x": 64,
+          "y": 960,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 128,
+          "y": 960,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 256,
+          "y": 960,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 64,
+          "y": 1024,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 128,
+          "y": 1024,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        }
+      ],
+      "diff": "diff/e498387bdf80e0a2.png",
+      "status": "MEASURED",
+      "horizontalOverflow": false,
+      "reference": "screenshots/c1618b360b676be8-reference.png",
+      "local": "screenshots/c1618b360b676be8-local.png"
+    },
+    {
+      "route": "/projects/lumio-product-design",
+      "width": 1024,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "referenceSize": [
+        1024,
+        2446
+      ],
+      "localSize": [
+        1024,
+        2446
+      ],
+      "totalPixels": 2504704,
+      "exactDifferentPixels": 791339,
+      "exactMatchPercent": 68.40588748211364,
+      "perceptualDifferentPixels": 744058,
+      "perceptualMatchPercent": 70.29357560813574,
+      "normalizedMeanAbsoluteError": 0.08072540942257167,
+      "maxChannelDifference": 245,
+      "channels": "RGBA",
+      "pixelmatch": {
+        "threshold": 0.1,
+        "includeAA": true
+      },
+      "differenceBounds": {
+        "x": 40,
+        "y": 80,
+        "width": 966,
+        "height": 2033
+      },
+      "worstTile": {
+        "x": 576,
+        "y": 128,
+        "width": 64,
+        "height": 64,
+        "exactDifferentPixels": 4096,
+        "exactMatchPercent": 0
+      },
+      "hotspots": [
+        {
+          "x": 576,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 640,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 704,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 768,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 832,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        }
+      ],
+      "diff": "diff/16d4ebe0f29a5af5.png",
+      "status": "MEASURED",
+      "horizontalOverflow": false,
+      "reference": "screenshots/015322b0197e9463-reference.png",
+      "local": "screenshots/015322b0197e9463-local.png"
+    },
+    {
+      "route": "/projects/lumio-product-design",
+      "width": 1440,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "referenceSize": [
+        1440,
+        3362
+      ],
+      "localSize": [
+        1440,
+        3362
+      ],
+      "totalPixels": 4841280,
+      "exactDifferentPixels": 1722064,
+      "exactMatchPercent": 64.42957234450392,
+      "perceptualDifferentPixels": 1644088,
+      "perceptualMatchPercent": 66.04022076806135,
+      "normalizedMeanAbsoluteError": 0.09270357037322166,
+      "maxChannelDifference": 245,
+      "channels": "RGBA",
+      "pixelmatch": {
+        "threshold": 0.1,
+        "includeAA": true
+      },
+      "differenceBounds": {
+        "x": 40,
+        "y": 80,
+        "width": 1382,
+        "height": 2948
+      },
+      "worstTile": {
+        "x": 768,
+        "y": 128,
+        "width": 64,
+        "height": 64,
+        "exactDifferentPixels": 4096,
+        "exactMatchPercent": 0
+      },
+      "hotspots": [
+        {
+          "x": 768,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 832,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 896,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 960,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 1024,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        }
+      ],
+      "diff": "diff/1cb2bbdae525582f.png",
+      "status": "MEASURED",
+      "horizontalOverflow": false,
+      "reference": "screenshots/3a2c4ba4b6785601-reference.png",
+      "local": "screenshots/3a2c4ba4b6785601-local.png"
+    },
+    {
+      "route": "/projects/vela-brand-identity",
+      "width": 390,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "referenceSize": [
+        390,
+        3590
+      ],
+      "localSize": [
+        390,
+        3590
+      ],
+      "totalPixels": 1400100,
+      "exactDifferentPixels": 621893,
+      "exactMatchPercent": 55.582244125419614,
+      "perceptualDifferentPixels": 584857,
+      "perceptualMatchPercent": 58.22748375116063,
+      "normalizedMeanAbsoluteError": 0.2290113395261683,
+      "maxChannelDifference": 255,
+      "channels": "RGBA",
+      "pixelmatch": {
+        "threshold": 0.1,
+        "includeAA": true
+      },
+      "differenceBounds": {
+        "x": 30,
+        "y": 90,
+        "width": 342,
+        "height": 2870
+      },
+      "worstTile": {
+        "x": 64,
+        "y": 960,
+        "width": 64,
+        "height": 64,
+        "exactDifferentPixels": 4096,
+        "exactMatchPercent": 0
+      },
+      "hotspots": [
+        {
+          "x": 64,
+          "y": 960,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 128,
+          "y": 960,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 192,
+          "y": 960,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 256,
+          "y": 960,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 64,
+          "y": 1024,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        }
+      ],
+      "diff": "diff/1dc3ac6c0121a53b.png",
+      "status": "MEASURED",
+      "horizontalOverflow": false,
+      "reference": "screenshots/d0c3fe91f678441a-reference.png",
+      "local": "screenshots/d0c3fe91f678441a-local.png"
+    },
+    {
+      "route": "/projects/vela-brand-identity",
+      "width": 1024,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "referenceSize": [
+        1024,
+        2812
+      ],
+      "localSize": [
+        1024,
+        2812
+      ],
+      "totalPixels": 2879488,
+      "exactDifferentPixels": 940171,
+      "exactMatchPercent": 67.34936905449858,
+      "perceptualDifferentPixels": 898607,
+      "perceptualMatchPercent": 68.79282011246444,
+      "normalizedMeanAbsoluteError": 0.17919850205123614,
+      "maxChannelDifference": 251,
+      "channels": "RGBA",
+      "pixelmatch": {
+        "threshold": 0.1,
+        "includeAA": true
+      },
+      "differenceBounds": {
+        "x": 40,
+        "y": 80,
+        "width": 966,
+        "height": 2398
+      },
+      "worstTile": {
+        "x": 576,
+        "y": 128,
+        "width": 64,
+        "height": 64,
+        "exactDifferentPixels": 4096,
+        "exactMatchPercent": 0
+      },
+      "hotspots": [
+        {
+          "x": 576,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 640,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 704,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 768,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 832,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        }
+      ],
+      "diff": "diff/cace96729100d215.png",
+      "status": "MEASURED",
+      "horizontalOverflow": false,
+      "reference": "screenshots/e0aad26e1be6242c-reference.png",
+      "local": "screenshots/e0aad26e1be6242c-local.png"
+    },
+    {
+      "route": "/projects/vela-brand-identity",
+      "width": 1440,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "referenceSize": [
+        1440,
+        3894
+      ],
+      "localSize": [
+        1440,
+        3894
+      ],
+      "totalPixels": 5607360,
+      "exactDifferentPixels": 2050529,
+      "exactMatchPercent": 63.43147220795527,
+      "perceptualDifferentPixels": 1986522,
+      "perceptualMatchPercent": 64.57295411744563,
+      "normalizedMeanAbsoluteError": 0.20222269306698312,
+      "maxChannelDifference": 253,
+      "channels": "RGBA",
+      "pixelmatch": {
+        "threshold": 0.1,
+        "includeAA": true
+      },
+      "differenceBounds": {
+        "x": 40,
+        "y": 80,
+        "width": 1382,
+        "height": 3480
+      },
+      "worstTile": {
+        "x": 768,
+        "y": 128,
+        "width": 64,
+        "height": 64,
+        "exactDifferentPixels": 4096,
+        "exactMatchPercent": 0
+      },
+      "hotspots": [
+        {
+          "x": 768,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 832,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 896,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 960,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 1024,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        }
+      ],
+      "diff": "diff/c817dd6e8583ed0b.png",
+      "status": "MEASURED",
+      "horizontalOverflow": false,
+      "reference": "screenshots/ac5f1fc254d5cc31-reference.png",
+      "local": "screenshots/ac5f1fc254d5cc31-local.png"
+    },
+    {
+      "route": "/projects/kova-creative-direction",
+      "width": 390,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "referenceSize": [
+        390,
+        3306
+      ],
+      "localSize": [
+        390,
+        3306
+      ],
+      "totalPixels": 1289340,
+      "exactDifferentPixels": 536653,
+      "exactMatchPercent": 58.3776971163541,
+      "perceptualDifferentPixels": 457270,
+      "perceptualMatchPercent": 64.53456807358803,
+      "normalizedMeanAbsoluteError": 0.13013865355036489,
+      "maxChannelDifference": 255,
+      "channels": "RGBA",
+      "pixelmatch": {
+        "threshold": 0.1,
+        "includeAA": true
+      },
+      "differenceBounds": {
+        "x": 30,
+        "y": 90,
+        "width": 342,
+        "height": 2586
+      },
+      "worstTile": {
+        "x": 64,
+        "y": 960,
+        "width": 64,
+        "height": 64,
+        "exactDifferentPixels": 4096,
+        "exactMatchPercent": 0
+      },
+      "hotspots": [
+        {
+          "x": 64,
+          "y": 960,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 128,
+          "y": 960,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 192,
+          "y": 960,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 256,
+          "y": 960,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 64,
+          "y": 1024,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        }
+      ],
+      "diff": "diff/429765ae1c070ec3.png",
+      "status": "MEASURED",
+      "horizontalOverflow": false,
+      "reference": "screenshots/1d98ee6c41ca1135-reference.png",
+      "local": "screenshots/1d98ee6c41ca1135-local.png"
+    },
+    {
+      "route": "/projects/kova-creative-direction",
+      "width": 1024,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "referenceSize": [
+        1024,
+        2446
+      ],
+      "localSize": [
+        1024,
+        2446
+      ],
+      "totalPixels": 2504704,
+      "exactDifferentPixels": 792154,
+      "exactMatchPercent": 68.37334870707276,
+      "perceptualDifferentPixels": 670284,
+      "perceptualMatchPercent": 73.23899350981193,
+      "normalizedMeanAbsoluteError": 0.09421572643423938,
+      "maxChannelDifference": 255,
+      "channels": "RGBA",
+      "pixelmatch": {
+        "threshold": 0.1,
+        "includeAA": true
+      },
+      "differenceBounds": {
+        "x": 40,
+        "y": 80,
+        "width": 966,
+        "height": 2033
+      },
+      "worstTile": {
+        "x": 576,
+        "y": 128,
+        "width": 64,
+        "height": 64,
+        "exactDifferentPixels": 4096,
+        "exactMatchPercent": 0
+      },
+      "hotspots": [
+        {
+          "x": 576,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 640,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 704,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 768,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 832,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        }
+      ],
+      "diff": "diff/74ae311f734293b8.png",
+      "status": "MEASURED",
+      "horizontalOverflow": false,
+      "reference": "screenshots/0ad9a5d01d2bd560-reference.png",
+      "local": "screenshots/0ad9a5d01d2bd560-local.png"
+    },
+    {
+      "route": "/projects/kova-creative-direction",
+      "width": 1440,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "referenceSize": [
+        1440,
+        3362
+      ],
+      "localSize": [
+        1440,
+        3362
+      ],
+      "totalPixels": 4841280,
+      "exactDifferentPixels": 1723222,
+      "exactMatchPercent": 64.40565305043295,
+      "perceptualDifferentPixels": 1473889,
+      "perceptualMatchPercent": 69.55579929274901,
+      "normalizedMeanAbsoluteError": 0.1075755439494854,
+      "maxChannelDifference": 255,
+      "channels": "RGBA",
+      "pixelmatch": {
+        "threshold": 0.1,
+        "includeAA": true
+      },
+      "differenceBounds": {
+        "x": 40,
+        "y": 80,
+        "width": 1382,
+        "height": 2948
+      },
+      "worstTile": {
+        "x": 768,
+        "y": 128,
+        "width": 64,
+        "height": 64,
+        "exactDifferentPixels": 4096,
+        "exactMatchPercent": 0
+      },
+      "hotspots": [
+        {
+          "x": 768,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 832,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 896,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 960,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 1024,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        }
+      ],
+      "diff": "diff/6272fe49e1b6e0c3.png",
+      "status": "MEASURED",
+      "horizontalOverflow": false,
+      "reference": "screenshots/fafc0f1110957a84-reference.png",
+      "local": "screenshots/fafc0f1110957a84-local.png"
+    },
+    {
+      "route": "/projects/haux-web-redesign",
+      "width": 390,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "referenceSize": [
+        390,
+        2258
+      ],
+      "localSize": [
+        390,
+        2258
+      ],
+      "totalPixels": 880620,
+      "exactDifferentPixels": 284995,
+      "exactMatchPercent": 67.63700574595171,
+      "perceptualDifferentPixels": 263568,
+      "perceptualMatchPercent": 70.07017782925666,
+      "normalizedMeanAbsoluteError": 0.13789260997487957,
+      "maxChannelDifference": 255,
+      "channels": "RGBA",
+      "pixelmatch": {
+        "threshold": 0.1,
+        "includeAA": true
+      },
+      "differenceBounds": {
+        "x": 30,
+        "y": 96,
+        "width": 342,
+        "height": 1674
+      },
+      "worstTile": {
+        "x": 64,
+        "y": 960,
+        "width": 64,
+        "height": 64,
+        "exactDifferentPixels": 4096,
+        "exactMatchPercent": 0
+      },
+      "hotspots": [
+        {
+          "x": 64,
+          "y": 960,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 128,
+          "y": 960,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 192,
+          "y": 960,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 256,
+          "y": 960,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 64,
+          "y": 1024,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        }
+      ],
+      "diff": "diff/81ad875d1086ff85.png",
+      "status": "MEASURED",
+      "horizontalOverflow": false,
+      "reference": "screenshots/006d613c4ac0c25a-reference.png",
+      "local": "screenshots/006d613c4ac0c25a-local.png"
+    },
+    {
+      "route": "/projects/haux-web-redesign",
+      "width": 1024,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "referenceSize": [
+        1024,
+        1470
+      ],
+      "localSize": [
+        1024,
+        1470
+      ],
+      "totalPixels": 1505280,
+      "exactDifferentPixels": 468077,
+      "exactMatchPercent": 68.90432344812925,
+      "perceptualDifferentPixels": 446036,
+      "perceptualMatchPercent": 70.36856930272108,
+      "normalizedMeanAbsoluteError": 0.13695695661076931,
+      "maxChannelDifference": 245,
+      "channels": "RGBA",
+      "pixelmatch": {
+        "threshold": 0.1,
+        "includeAA": true
+      },
+      "differenceBounds": {
+        "x": 40,
+        "y": 80,
+        "width": 966,
+        "height": 1067
+      },
+      "worstTile": {
+        "x": 576,
+        "y": 128,
+        "width": 64,
+        "height": 64,
+        "exactDifferentPixels": 4096,
+        "exactMatchPercent": 0
+      },
+      "hotspots": [
+        {
+          "x": 576,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 640,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 704,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 768,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 832,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        }
+      ],
+      "diff": "diff/658ca85c810b54ce.png",
+      "status": "MEASURED",
+      "horizontalOverflow": false,
+      "reference": "screenshots/bce4ee1b234257d7-reference.png",
+      "local": "screenshots/bce4ee1b234257d7-local.png"
+    },
+    {
+      "route": "/projects/haux-web-redesign",
+      "width": 1440,
+      "height": 900,
+      "dpr": 1,
+      "state": "default",
+      "referenceSize": [
+        1440,
+        1970
+      ],
+      "localSize": [
+        1440,
+        1970
+      ],
+      "totalPixels": 2836800,
+      "exactDifferentPixels": 1004183,
+      "exactMatchPercent": 64.60155809362662,
+      "perceptualDifferentPixels": 980758,
+      "perceptualMatchPercent": 65.42731246474902,
+      "normalizedMeanAbsoluteError": 0.15979808614788274,
+      "maxChannelDifference": 245,
+      "channels": "RGBA",
+      "pixelmatch": {
+        "threshold": 0.1,
+        "includeAA": true
+      },
+      "differenceBounds": {
+        "x": 40,
+        "y": 80,
+        "width": 1382,
+        "height": 1566
+      },
+      "worstTile": {
+        "x": 768,
+        "y": 128,
+        "width": 64,
+        "height": 64,
+        "exactDifferentPixels": 4096,
+        "exactMatchPercent": 0
+      },
+      "hotspots": [
+        {
+          "x": 768,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 832,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 896,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 960,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        },
+        {
+          "x": 1024,
+          "y": 128,
+          "width": 64,
+          "height": 64,
+          "exactDifferentPixels": 4096,
+          "exactMatchPercent": 0
+        }
+      ],
+      "diff": "diff/cf675381a447b2ea.png",
+      "status": "MEASURED",
+      "horizontalOverflow": false,
+      "reference": "screenshots/35472321154c1cb3-reference.png",
+      "local": "screenshots/35472321154c1cb3-local.png"
+    }
+  ]
+}
