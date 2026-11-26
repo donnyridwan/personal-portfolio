@@ -54,9 +54,10 @@ export function placeAll(items, layout, width, height, top = 40) {
 /** Pecahan 0–1 dari posisi piksel, dijaga tetap di layar. */
 export const toFraction = (px, size) => Math.min(1, Math.max(0, px / size));
 
-/** Jenis file dari nama/tipe untuk upload: 'photo', 'file', atau null (ditolak). */
+/** Jenis file dari tipe untuk upload: 'photo', 'video', 'file', atau null (ditolak). */
 export function kindForFile(type) {
   if (['image/jpeg', 'image/png', 'image/webp', 'image/gif'].includes(type)) return 'photo';
+  if (['video/mp4', 'video/webm', 'video/quicktime'].includes(type)) return 'video';
   if (type === 'application/pdf') return 'file';
   return null;
 }

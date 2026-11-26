@@ -99,7 +99,7 @@ export default function ProfileForm({ about, contact, resume, ai }: Props) {
 
       <div className="adm-card">
         <h2>Resume</h2>
-        <p className="adm-muted" style={{ marginTop: 0 }}>Upload PDF (maks. 10 MB) atau tempel URL. Kosong = Finder menampilkan &ldquo;Resume belum tersedia&rdquo;.</p>
+        <p className="adm-muted" style={{ marginTop: 0 }}>Upload PDF atau tempel URL. Kosong = Finder menampilkan &ldquo;Resume belum tersedia&rdquo;.</p>
         <ImageField value={resumeUrl} onChange={setResumeUrl} folder="dockfolio/profile" kind="pdf" />
       </div>
 

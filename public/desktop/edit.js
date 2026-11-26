@@ -5,8 +5,10 @@ import { currentView, finderRoot, loadData, openFinder, reloadData, setRenderHoo
 import { esc } from './desktop.js';
 import { setNotesHook } from '../notes/notes.js';
 import { kindForFile, toFraction } from './desktop-model.js';
+import { sendToCloudinary, shrinkImage } from '../upload/upload.js';
 
-const MAX_BYTES = 10 * 1024 * 1024;
+const IMAGE_ACCEPT = 'image/jpeg,image/png,image/webp,image/gif';
+const VIDEO_ACCEPT = 'video/mp4,video/webm,video/quicktime';
 const TAP_SLOP = 4;
 
 let desktop = null;
@@ -49,21 +51,13 @@ async function run(fn, busy) {
 
 /* ---------- Upload ke Cloudinary ---------- */
 
-async function uploadFile(file, folder) {
+async function uploadFile(file, folder, onProgress) {
   const kind = kindForFile(file.type);
-  if (!kind) throw new Error(`"${file.name}" bukan gambar (JPG/PNG/WebP/GIF) atau PDF.`);
-  if (file.size > MAX_BYTES) throw new Error(`"${file.name}" lebih dari 10 MB.`);
+  if (!kind) throw new Error(`"${file.name}" bukan gambar (JPG/PNG/WebP/GIF), video (MP4/WebM/MOV), atau PDF.`);
+  const ready = kind === 'photo' ? await shrinkImage(file) : file; // gambar raksasa dikecilkan dulu
   const sign = await api('POST', 'cloudinary-signature', { folder });
-  const form = new FormData();
-  form.append('file', file);
-  form.append('api_key', sign.apiKey);
-  form.append('timestamp', String(sign.timestamp));
-  form.append('folder', sign.folder);
-  form.append('signature', sign.signature);
-  const res = await fetch(`https://api.cloudinary.com/v1_1/${sign.cloudName}/auto/upload`, { method: 'POST', body: form });
-  const out = await res.json().catch(() => ({}));
-  if (!res.ok || !out.secure_url) throw new Error(out.error?.message ?? `Upload "${file.name}" gagal`);
-  return { url: out.secure_url, kind, name: file.name };
+  const url = await sendToCloudinary(ready, sign, onProgress);
+  return { url, kind, name: file.name };
 }
 
 /** Upload beberapa file dengan progres di toast; file yang gagal dilaporkan, sisanya tetap jalan. */
@@ -71,9 +65,10 @@ async function uploadAll(files, folder) {
   const done = [];
   const errors = [];
   for (const [i, f] of files.entries()) {
-    toast(files.length > 1 ? `Mengunggah ${i + 1}/${files.length}…` : `Mengunggah ${f.name}…`, 0);
+    const label = files.length > 1 ? `Mengunggah ${i + 1}/${files.length}` : `Mengunggah ${f.name}`;
+    toast(`${label}…`, 0);
     try {
-      done.push(await uploadFile(f, folder));
+      done.push(await uploadFile(f, folder, p => { if (p < 1) toast(`${label}… ${Math.round(p * 100)}%`, 0); }));
     } catch (err) {
       errors.push(err.message);
     }
@@ -83,7 +78,7 @@ async function uploadAll(files, folder) {
   return done;
 }
 
-function pickFiles(accept = 'image/jpeg,image/png,image/webp,image/gif,application/pdf') {
+function pickFiles(accept = `${IMAGE_ACCEPT},application/pdf`) {
   return new Promise(resolve => {
     const input = document.createElement('input');
     input.type = 'file';
@@ -301,6 +296,10 @@ async function newProject(pt) {
 
 /** Upload file ke desktop di sekitar titik pt (beberapa file disusun ke bawah). */
 async function uploadToDesktop(files, pt) {
+  if (files.some(f => kindForFile(f.type) === 'video')) {
+    toast('Video tidak bisa jadi ikon desktop. Tambahkan ke proyek (seret ke Finder) atau lewat "/" → Video di kanvas.', 5000, true);
+    files = files.filter(f => kindForFile(f.type) !== 'video');
+  }
   if (!files.length) return;
   const uploaded = await uploadAll(files, 'dockfolio/desktop');
   const r = desktop.layer.getBoundingClientRect();
@@ -488,7 +487,8 @@ function projectMenuItems(id) {
       if (name) { await run(() => api('PATCH', `projects/${encodeURIComponent(id)}`, { name })); await refresh(); }
     } },
     { label: 'Edit Detail…', action: () => editProject(id) },
-    { label: 'Tambah Gambar…', action: async () => addImagesToProject(id, await pickFiles('image/jpeg,image/png,image/webp,image/gif')) },
+    { label: 'Tambah Gambar…', action: async () => addImagesToProject(id, await pickFiles(IMAGE_ACCEPT)) },
+    { label: 'Tambah Video…', action: async () => addVideosToProject(id, await pickFiles(VIDEO_ACCEPT)) },
     '-',
     shown
       ? { label: 'Hapus dari Desktop', action: async () => { await run(() => api('PATCH', `projects/${encodeURIComponent(id)}`, { onDesktop: false })); await refresh(); } }
@@ -543,6 +543,20 @@ async function addImagesToProject(id, files) {
   toast(`${up.length} gambar ditambahkan ke ${projectById(id)?.name ?? 'proyek'}`);
 }
 
+/** Video ditambahkan sebagai blok di akhir isi kanvas proyek. */
+async function addVideosToProject(id, files) {
+  if (!files.length) return;
+  const up = (await uploadAll(files, `dockfolio/projects/${id}`)).filter(f => f.kind === 'video');
+  if (!up.length) return;
+  const cur = (await loadData()).projects.find(p => p.id === id);
+  const body = structuredClone(cur?.body ?? { type: 'doc', content: [] });
+  body.content = [...(body.content ?? []), ...up.map(f => ({ type: 'video', attrs: { src: f.url } }))];
+  const ok = await run(() => api('PATCH', `projects/${encodeURIComponent(id)}`, { body }));
+  if (!ok) return;
+  await refresh();
+  toast(`${up.length} video ditambahkan ke ${projectById(id)?.name ?? 'proyek'}`);
+}
+
 function finderContextMenu(e) {
   const root = finderRoot();
   if (!root?.contains(e.target)) return false;
@@ -558,7 +572,7 @@ function finderContextMenu(e) {
       items = [
         { label: 'Proyek Baru…', action: () => newProjectInFolder(cur.id) },
         { label: 'Upload Gambar jadi Proyek Baru…', action: async () => {
-          const files = await pickFiles('image/jpeg,image/png,image/webp,image/gif');
+          const files = await pickFiles(IMAGE_ACCEPT);
           if (files.length) dropIntoFinder(files);
         } },
       ];
@@ -579,8 +593,13 @@ function finderContextMenu(e) {
 async function dropIntoFinder(files) {
   const cur = currentView();
   const images = files.filter(f => kindForFile(f.type) === 'photo');
-  if (!images.length) return toast('Hanya gambar (JPG, PNG, WebP, GIF) yang bisa ditambahkan ke proyek.', 4000, true);
-  if (cur?.type === 'project') return addImagesToProject(cur.id, images);
+  const videos = files.filter(f => kindForFile(f.type) === 'video');
+  if (cur?.type === 'project' && (images.length || videos.length)) {
+    if (images.length) await addImagesToProject(cur.id, images);
+    if (videos.length) await addVideosToProject(cur.id, videos);
+    return;
+  }
+  if (!images.length) return toast('Hanya gambar (JPG, PNG, WebP, GIF) yang bisa jadi proyek baru. Video bisa ditambahkan di dalam proyek.', 4000, true);
   if (cur?.type === 'category') {
     const up = (await uploadAll(images, 'dockfolio/desktop')).map(f => f.url);
     if (!up.length) return;
@@ -697,23 +716,31 @@ async function attachEditor(c, docEl) {
       clearTimeout(c.timer);
       c.timer = setTimeout(() => saveCanvas(c), SAVE_DELAY);
     },
-    async uploadImage(file) {
-      toast(`Mengunggah ${file.name}…`, 0);
-      try {
-        const out = await uploadFile(file, c.folder);
-        if (out.kind !== 'photo') throw new Error(`"${file.name}" bukan gambar.`);
-        hideToast();
-        return out.url;
-      } catch (err) {
-        toast(err.message, 4000, true);
-        throw err;
-      }
-    },
-    pickImages: () => pickFiles('image/jpeg,image/png,image/webp,image/gif'),
+    async uploadImage(file) { return uploadForCanvas(file, c.folder, 'photo', 'gambar'); },
+    async uploadVideo(file) { return uploadForCanvas(file, c.folder, 'video', 'video'); },
+    pickImages: () => pickFiles(IMAGE_ACCEPT),
+    pickVideos: () => pickFiles(VIDEO_ACCEPT),
     onError: msg => toast(msg, 4000, true),
   });
   window.dockfolioCanvas = c.handle; // untuk debug/tes
   setStatus(c, c.initial && JSON.stringify(c.initial).length > 60 ? 'Tersimpan ✓' : 'Kanvas kosong — ketik "/"', 'ok');
+}
+
+async function uploadForCanvas(file, folder, want, noun) {
+  if (kindForFile(file.type) !== want) {
+    const err = new Error(`"${file.name}" bukan ${noun}.`);
+    toast(err.message, 4000, true);
+    throw err;
+  }
+  toast(`Mengunggah ${file.name}…`, 0);
+  try {
+    const out = await uploadFile(file, folder, p => { if (p < 1) toast(`Mengunggah ${file.name}… ${Math.round(p * 100)}%`, 0); });
+    hideToast();
+    return out.url;
+  } catch (err) {
+    toast(err.message, 5000, true);
+    throw err;
+  }
 }
 
 const patchJson = (url, payload, keepalive) => fetch(url, {

@@ -38,7 +38,7 @@ export function legacyToDoc(p: Legacy): DocNode {
 
 /* ---------- Validasi isi dari editor ---------- */
 
-const BLOCKS = new Set(['paragraph', 'heading', 'bulletList', 'orderedList', 'listItem', 'blockquote', 'horizontalRule', 'image', 'codeBlock', 'hardBreak', 'text']);
+const BLOCKS = new Set(['paragraph', 'heading', 'bulletList', 'orderedList', 'listItem', 'blockquote', 'horizontalRule', 'image', 'video', 'codeBlock', 'hardBreak', 'text']);
 const MARKS = new Set(['bold', 'italic', 'underline', 'strike', 'code', 'link']);
 const SAFE_URL = /^(https?:\/\/|mailto:)/i;
 const SAFE_SRC = /^(https:\/\/|assets\/)/i;
@@ -68,6 +68,11 @@ function cleanNode(n: unknown, depth: number): DocNode | null {
     if (typeof node.text !== 'string' || !node.text) return null;
     const marks = cleanMarks(node.marks);
     return marks ? { type: 'text', text: node.text, marks } : { type: 'text', text: node.text };
+  }
+  if (node.type === 'video') {
+    const src = String(node.attrs?.src ?? '');
+    if (!/^https:\/\//i.test(src)) return null;
+    return { type: 'video', attrs: { src } };
   }
   if (node.type === 'image') {
     const src = String(node.attrs?.src ?? '');

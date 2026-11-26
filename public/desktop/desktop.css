@@ -273,6 +273,8 @@
 .ed-content h2 { font-size: 15px; font-weight: 600; margin: 18px 0 6px; color: #1d1d1f; }
 .ed-content h3 { font-size: 13px; font-weight: 600; margin: 16px 0 6px; color: #1d1d1f; }
 .ed-content img { width: 100%; height: auto; border-radius: 6px; display: block; margin: 0 0 12px; }
+.ed-content video { width: 100%; height: auto; max-height: 60vh; border-radius: 6px; display: block; background: #000; margin: 0 0 12px; }
+.ed-content video.ProseMirror-selectednode { outline: 3px solid #0a64ff; outline-offset: 2px; }
 .ed-content img.ProseMirror-selectednode { outline: 3px solid #0a64ff; outline-offset: 2px; }
 .ed-content hr.ProseMirror-selectednode { border-top-color: #0a64ff; }
 .ed-content a { cursor: text; }

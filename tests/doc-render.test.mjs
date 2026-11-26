@@ -33,3 +33,11 @@ test('node tak dikenal diabaikan, dokumen kosong terdeteksi', () => {
   assert.equal(isEmptyDoc({ type: 'doc', content: [{ type: 'paragraph' }] }), true);
   assert.equal(isEmptyDoc({ type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'x' }] }] }), false);
 });
+
+test('video dirender dengan kontrol; src tidak aman diabaikan', () => {
+  const html = renderDoc({ type: 'doc', content: [
+    { type: 'video', attrs: { src: 'https://v/a.mp4?x="1"' } },
+    { type: 'video', attrs: { src: 'javascript:alert(1)' } },
+  ] }, img);
+  assert.equal(html, '<figure><video src="https://v/a.mp4?x=&quot;1&quot;" controls playsinline preload="metadata"></video></figure>');
+});

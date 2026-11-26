@@ -66,6 +66,18 @@ describe('validateDoc', () => {
     });
   });
 
+  test('video: hanya src https yang diterima, atribut lain dibuang', () => {
+    const d = validateDoc({
+      type: 'doc',
+      content: [
+        { type: 'video', attrs: { src: 'https://res.cloudinary.com/v/upload/a.mp4', onerror: 'x' } },
+        { type: 'video', attrs: { src: 'javascript:alert(1)' } },
+        { type: 'video', attrs: { src: 'http://tidak-aman/a.mp4' } },
+      ],
+    });
+    expect(d).toEqual({ type: 'doc', content: [{ type: 'video', attrs: { src: 'https://res.cloudinary.com/v/upload/a.mp4' } }] });
+  });
+
   test('menolak yang bukan dokumen atau terlalu besar', () => {
     expect(validateDoc(null)).toBeNull();
     expect(validateDoc({ type: 'paragraph' })).toBeNull();

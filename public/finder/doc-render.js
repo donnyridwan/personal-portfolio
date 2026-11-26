@@ -41,6 +41,8 @@ export function renderDoc(doc, image) {
       case 'horizontalRule': return '<hr>';
       case 'codeBlock': return `<pre><code>${esc((n.content ?? []).map(c => c.text ?? '').join(''))}</code></pre>`;
       case 'image': return n.attrs?.src ? `<figure>${image(n.attrs.src, n.attrs.alt ?? '')}</figure>` : '';
+      case 'video': return /^https:\/\//i.test(n.attrs?.src ?? '')
+        ? `<figure><video src="${esc(n.attrs.src)}" controls playsinline preload="metadata"></video></figure>` : '';
       default: return '';
     }
   }

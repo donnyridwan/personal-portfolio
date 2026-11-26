@@ -1,6 +1,5 @@
 // Upload dari browser: minta tanda tangan ke server, lalu kirim file langsung ke Cloudinary.
 
-export const MAX_UPLOAD_BYTES = 10 * 1024 * 1024; // 10 MB
 export const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 export const PDF_TYPES = ['application/pdf'];
 
@@ -14,12 +13,22 @@ export function checkFile(file: File, kind: UploadKind): string | null {
       ? `"${file.name}" bukan PDF.`
       : `"${file.name}" bukan gambar JPG, PNG, WebP, atau GIF.`;
   }
-  if (file.size > MAX_UPLOAD_BYTES) return `"${file.name}" lebih dari 10 MB.`;
-  return null;
+  return null; // tanpa batas ukuran di sisi kita: gambar besar dikecilkan, file besar dikirim bertahap
 }
 
-/** Mengembalikan secure_url dari Cloudinary. */
-export async function uploadToCloudinary(file: File, folder: string): Promise<string> {
+type UploadModule = {
+  shrinkImage: (f: File) => Promise<File>;
+  sendToCloudinary: (f: File, sign: unknown, onProgress?: (p: number) => void) => Promise<string>;
+};
+
+/** Modul upload yang sama dengan mode edit (public/upload/upload.js), dimuat saat dipakai. */
+const uploadModule = () =>
+  import(/* webpackIgnore: true */ /* turbopackIgnore: true */ '/upload/upload.js' as string) as Promise<UploadModule>;
+
+/** Mengembalikan secure_url dari Cloudinary. Gambar besar dikecilkan dulu, file besar dikirim bertahap. */
+export async function uploadToCloudinary(file: File, folder: string, onProgress?: (p: number) => void): Promise<string> {
+  const mod = await uploadModule();
+  const ready = file.type.startsWith('image/') ? await mod.shrinkImage(file) : file;
   const signRes = await fetch('/api/admin/cloudinary-signature', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -27,20 +36,7 @@ export async function uploadToCloudinary(file: File, folder: string): Promise<st
   });
   const sign = await signRes.json().catch(() => ({}));
   if (!signRes.ok) throw new Error(sign.error ?? `Gagal meminta izin upload (${signRes.status})`);
-
-  const form = new FormData();
-  form.append('file', file);
-  form.append('api_key', sign.apiKey);
-  form.append('timestamp', String(sign.timestamp));
-  form.append('folder', sign.folder);
-  form.append('signature', sign.signature);
-  const res = await fetch(`https://api.cloudinary.com/v1_1/${sign.cloudName}/auto/upload`, {
-    method: 'POST',
-    body: form,
-  });
-  const out = await res.json().catch(() => ({}));
-  if (!res.ok || !out.secure_url) throw new Error(out.error?.message ?? `Upload gagal (${res.status})`);
-  return out.secure_url as string;
+  return mod.sendToCloudinary(ready, sign, onProgress);
 }
 
 /** Path lokal lama ("assets/…") ditampilkan relatif ke root situs. */

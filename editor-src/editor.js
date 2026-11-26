@@ -1,14 +1,14 @@
 // Editor kanvas ala Notion untuk isi detail proyek (hanya dimuat di mode edit admin).
 // Dibundel dengan esbuild ke public/editor/editor.js (`npm run build:editor`).
-import { Editor, Extension } from '@tiptap/core';
+import { Editor, Extension, Node, mergeAttributes } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
-import { Placeholder } from '@tiptap/extensions';
+import { Placeholder, TrailingNode } from '@tiptap/extensions';
 import BubbleMenu from '@tiptap/extension-bubble-menu';
 import Suggestion, { exitSuggestion } from '@tiptap/suggestion';
 
 const ICON = {
-  text: 'T', h1: 'H1', h2: 'H2', h3: 'H3', bullet: '•', ordered: '1.', quote: '❝', code: '</>', divider: '—', image: '🖼',
+  text: 'T', h1: 'H1', h2: 'H2', h3: 'H3', bullet: '•', ordered: '1.', quote: '❝', code: '</>', divider: '—', image: '🖼', video: '▶',
 };
 
 /** Pilihan blok di menu "/". run(editor, range) mengganti teks "/…" dengan bloknya. */
@@ -34,7 +34,53 @@ function slashItems(opts) {
         await insertImages(e, files, opts, pos);
       },
     },
+    {
+      id: 'video', title: 'Video', hint: 'Upload MP4 / WebM / MOV', keys: 'video film klip mp4 movie upload',
+      run: async (e, r) => {
+        chain(e, r).run();
+        const pos = e.state.selection.from;
+        const files = await opts.pickVideos();
+        await insertMedia(e, files, opts, pos);
+      },
+    },
   ];
+}
+
+/** Blok video (file dari Cloudinary), diputar dengan kontrol bawaan browser. */
+const Video = Node.create({
+  name: 'video',
+  group: 'block',
+  atom: true,
+  draggable: true,
+  addAttributes() {
+    return { src: { default: null } };
+  },
+  parseHTML() {
+    return [{ tag: 'video[src]' }];
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ['video', mergeAttributes(HTMLAttributes, { controls: 'true', playsinline: 'true', preload: 'metadata' })];
+  },
+});
+
+const isVideo = f => f.type.startsWith('video/');
+const isImage = f => f.type.startsWith('image/');
+
+/** Gambar & video sekaligus (dari seret/tempel), urutan dipertahankan. */
+async function insertMedia(editor, files, opts, pos) {
+  const nodes = [];
+  for (const f of files) {
+    if (isVideo(f)) {
+      const src = await opts.uploadVideo(f).catch(err => { opts.onError?.(err.message); return null; });
+      if (src) nodes.push({ type: 'video', attrs: { src } });
+    } else if (isImage(f)) {
+      const src = await opts.uploadImage(f).catch(err => { opts.onError?.(err.message); return null; });
+      if (src) nodes.push({ type: 'image', attrs: { src, alt: '' } });
+    }
+  }
+  if (!nodes.length) return;
+  const at = typeof pos === 'number' ? Math.min(pos, editor.state.doc.content.size) : editor.state.selection.to;
+  editor.chain().focus().insertContentAt(at, nodes).run();
 }
 
 async function insertImages(editor, files, opts, pos) {
@@ -156,7 +202,8 @@ function bubbleElement() {
  * Pasang editor di elemen.
  * @param {HTMLElement} el
  * @param {{ content: object, onUpdate: (json: object) => void, uploadImage: (f: File) => Promise<string>,
- *           pickImages: () => Promise<File[]>, onError?: (msg: string) => void }} opts
+ *           uploadVideo: (f: File) => Promise<string>, pickImages: () => Promise<File[]>,
+ *           pickVideos: () => Promise<File[]>, onError?: (msg: string) => void }} opts
  */
 export function mountEditor(el, opts) {
   const bubble = bubbleElement();
@@ -169,6 +216,8 @@ export function mountEditor(el, opts) {
         link: { openOnClick: false, autolink: true, defaultProtocol: 'https', HTMLAttributes: { target: '_blank', rel: 'noopener' } },
       }),
       Image.configure({ inline: false, allowBase64: false }),
+      Video,
+      TrailingNode, // selalu ada paragraf kosong di akhir, jadi bisa lanjut mengetik setelah gambar/video
       Placeholder.configure({
         placeholder: ({ node }) => (node.type.name === 'heading' ? 'Judul' : 'Ketik "/" untuk memilih blok…'),
         showOnlyCurrent: true,
@@ -176,7 +225,7 @@ export function mountEditor(el, opts) {
       BubbleMenu.configure({
         element: bubble,
         appendTo: () => document.body,
-        shouldShow: ({ editor: ed, from, to }) => from !== to && !ed.isActive('image') && !ed.isActive('codeBlock'),
+        shouldShow: ({ editor: ed, from, to }) => from !== to && !ed.isActive('image') && !ed.isActive('video') && !ed.isActive('codeBlock'),
       }),
       SlashCommand(opts),
     ],
@@ -184,17 +233,17 @@ export function mountEditor(el, opts) {
       attributes: { class: 'ed-content df-doc', spellcheck: 'true' },
       // Gambar dari komputer: seret atau tempel langsung ke kanvas.
       handleDrop(view, event) {
-        const files = [...(event.dataTransfer?.files ?? [])].filter(f => f.type.startsWith('image/'));
+        const files = [...(event.dataTransfer?.files ?? [])].filter(f => isImage(f) || isVideo(f));
         if (!files.length) return false;
         event.preventDefault();
         const pos = view.posAtCoords({ left: event.clientX, top: event.clientY })?.pos;
-        insertImages(editor, files, opts, pos);
+        insertMedia(editor, files, opts, pos);
         return true;
       },
       handlePaste(_view, event) {
-        const files = [...(event.clipboardData?.files ?? [])].filter(f => f.type.startsWith('image/'));
+        const files = [...(event.clipboardData?.files ?? [])].filter(f => isImage(f) || isVideo(f));
         if (!files.length) return false;
-        insertImages(editor, files, opts);
+        insertMedia(editor, files, opts);
         return true;
       },
     },

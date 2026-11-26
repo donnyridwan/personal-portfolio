@@ -35,8 +35,10 @@ test('toFraction dijaga 0–1', () => {
   assert.equal(toFraction(500, 100), 1);
 });
 
-test('kindForFile: gambar → foto, PDF → file, lainnya ditolak', () => {
+test('kindForFile: gambar → foto, video → video, PDF → file, lainnya ditolak', () => {
   assert.equal(kindForFile('image/png'), 'photo');
   assert.equal(kindForFile('application/pdf'), 'file');
-  assert.equal(kindForFile('video/mp4'), null);
+  assert.equal(kindForFile('video/mp4'), 'video');
+  assert.equal(kindForFile('video/quicktime'), 'video');
+  assert.equal(kindForFile('text/plain'), null);
 });
