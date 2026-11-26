@@ -129,6 +129,8 @@
   padding: 4px 9px; cursor: pointer; text-decoration: none;
 }
 #dk-editbar a:hover, #dk-editbar button:hover { background: rgba(255, 255, 255, .3); }
+#dk-editbar a, #dk-editbar button { transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), background-color 120ms ease; }
+#dk-editbar a:active, #dk-editbar button:active { transform: scale(0.97); }
 /* Di HP baris menu atas sudah penuh (nama, sosial, tanggal): bilah pindah ke atas dock. */
 @media (max-width: 809.98px) { #dk-editbar { top: auto; bottom: 104px; height: 28px; } }
 

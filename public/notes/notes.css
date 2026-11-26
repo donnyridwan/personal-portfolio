@@ -19,7 +19,7 @@
   overflow: hidden;
   opacity: 0;
   transform: scale(.97);
-  transition: opacity 160ms ease, transform 160ms ease;
+  transition: opacity 200ms cubic-bezier(0.23, 1, 0.32, 1), transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
   -webkit-font-smoothing: antialiased;
 }
 .nt-window.nt-open { opacity: 1; transform: scale(1); }
@@ -77,7 +77,7 @@
 .nt-doc li > p { margin: 0 0 4px; }
 .nt-doc em { color: #6e6e73; }
 .nt-doc hr { border: 0; border-top: 1px solid rgba(0, 0, 0, .1); margin: 20px 0; }
-.nt-doc blockquote { margin: 0 0 12px; padding-left: 12px; border-left: 3px solid rgba(0, 0, 0, .12); color: #555; }
+.nt-doc blockquote { margin: 0 0 12px; padding: 6px 0 6px 14px; border-left: 3px solid rgba(0, 0, 0, .12); color: #555; }
 .nt-doc img { width: 100%; height: auto; border-radius: 6px; display: block; }
 .nt-doc figure { margin: 0 0 12px; }
 .nt-empty { color: #86868b; }
@@ -88,4 +88,9 @@
   .nt-side { width: auto; display: flex; gap: 4px; padding: 8px; border-right: 0; border-bottom: 1px solid rgba(0, 0, 0, .08); overflow-x: auto; }
   .nt-side-label { display: none; }
   .nt-side button { width: auto; white-space: nowrap; }
+}
+
+.nt-doc blockquote > :last-child, .nt-doc li > :last-child { margin-bottom: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .nt-window { transition: opacity 160ms ease; transform: none !important; }
 }

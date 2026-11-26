@@ -28,7 +28,7 @@
   overflow: hidden;
   opacity: 0;
   transform: scale(0.96);
-  transition: opacity 180ms ease, transform 180ms ease;
+  transition: opacity 200ms cubic-bezier(0.23, 1, 0.32, 1), transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
   -webkit-font-smoothing: antialiased;
 }
 #df-finder.df-open { opacity: 1; transform: scale(1); }
@@ -221,7 +221,7 @@
     position: absolute; top: 0; bottom: 0; left: 0; z-index: 2;
     width: 220px;
     transform: translateX(-100%);
-    transition: transform 180ms ease;
+    transition: transform 220ms cubic-bezier(0.32, 0.72, 0, 1);
     box-shadow: 4px 0 16px rgba(0, 0, 0, 0.12);
   }
   #df-finder.df-sidebar-open .df-sidebar { transform: none; }
@@ -245,6 +245,8 @@
   cursor: pointer;
 }
 .df-retry:hover { filter: brightness(1.08); }
+.df-retry, .df-pdf-dl { transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), filter 120ms ease; }
+.df-retry:active, .df-pdf-dl:active { transform: scale(0.97); }
 
 /* Isi detail proyek dari kanvas (dokumen blok) */
 .df-kop-tags { margin: 10px 0 0; font-size: 12px; }
@@ -256,7 +258,7 @@
 .df-doc h4 { font-size: 13px; font-weight: 600; margin: 16px 0 6px; color: var(--df-text); }
 .df-doc ul, .df-doc ol { margin: 0 0 10px; padding-left: 22px; }
 .df-doc li > p { margin: 0 0 4px; }
-.df-doc blockquote { margin: 0 0 10px; padding: 2px 0 2px 12px; border-left: 3px solid var(--df-border); color: #555; }
+.df-doc blockquote { margin: 0 0 10px; padding: 6px 0 6px 14px; border-left: 3px solid var(--df-border); color: #555; }
 .df-doc hr { border: 0; border-top: 1px solid var(--df-border); margin: 18px 0; }
 .df-doc pre { margin: 0 0 10px; padding: 10px 12px; background: var(--df-stripe); border-radius: 6px; overflow-x: auto; font: 12px/1.5 ui-monospace, Menlo, monospace; }
 .df-doc code { font: 12px ui-monospace, Menlo, monospace; background: var(--df-stripe); padding: 1px 4px; border-radius: 4px; }
@@ -265,3 +267,6 @@
 .df-doc figure img { width: 100%; height: auto; border-radius: 6px; display: block; background: var(--df-placeholder); }
 .df-doc a { color: var(--df-accent); }
 .df-page.df-about { max-width: 720px; margin: 0 auto; padding: 16px 24px 28px; }
+
+/* Kutipan & daftar: elemen terakhir tanpa margin bawah supaya jarak atas-bawah simetris */
+.df-doc blockquote > :last-child, .df-doc li > :last-child { margin-bottom: 0; }

@@ -96,7 +96,9 @@ input:focus, textarea:focus, select:focus { outline: 3px solid color-mix(in srgb
   color: var(--a-text);
   cursor: pointer;
   white-space: nowrap;
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), border-color 120ms ease, filter 120ms ease;
 }
+.adm-btn:active:not(:disabled) { transform: scale(0.97); }
 .adm-btn:hover:not(:disabled) { border-color: var(--a-muted); }
 .adm-btn:disabled { opacity: .45; cursor: default; }
 .adm-primary { background: var(--a-accent); border-color: var(--a-accent); color: #fff; }

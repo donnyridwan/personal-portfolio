@@ -20,7 +20,10 @@
 .ct-form button {
   margin-top: 4px; padding: 10px 28px; border: 0; border-radius: 999px; background: #0a64ff; color: #fff;
   font: inherit; font-weight: 500; cursor: pointer; min-width: 220px;
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), filter 120ms ease;
 }
+.ct-form button:hover:not(:disabled) { filter: brightness(1.08); }
+.ct-form button:active:not(:disabled) { transform: scale(0.97); }
 .ct-form button:disabled { opacity: .6; cursor: default; }
 .ct-msg { margin: 0 0 10px; min-height: 1em; color: #6e6e73; }
 .ct-msg[data-kind="ok"] { color: #1f8f3a; }

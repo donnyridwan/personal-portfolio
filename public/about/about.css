@@ -30,9 +30,10 @@
   display: inline-flex; align-items: center; justify-content: center;
   padding: 8px 20px; border: 0; border-radius: 999px; background: var(--ab-accent); color: #fff !important;
   font: 500 13px/1.2 inherit; font-family: inherit; text-decoration: none !important; cursor: pointer;
-  transition: filter 120ms ease;
+  transition: filter 120ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 .ab-btn:hover { filter: brightness(1.08); }
+.ab-btn:active { transform: scale(0.97); }
 
 .ab-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; text-align: left !important; margin-bottom: 8px; }
 .ab-card { margin: 0; padding: 14px 16px; background: var(--ab-box); border-radius: 10px; }

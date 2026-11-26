@@ -24,7 +24,7 @@
   overflow: hidden;
   opacity: 0;
   transform: scale(.97);
-  transition: opacity 160ms ease, transform 160ms ease;
+  transition: opacity 200ms cubic-bezier(0.23, 1, 0.32, 1), transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
   -webkit-font-smoothing: antialiased;
 }
 #tm-win.tm-open { opacity: 1; transform: scale(1); }
@@ -113,4 +113,8 @@
   .tm-foot { padding: 6px 14px 8px; }
   .tm-foot span:last-child { display: none; }
   .tm-mascot { width: 52px; height: 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #tm-win { transition: opacity 160ms ease; transform: none !important; }
 }

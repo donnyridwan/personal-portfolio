@@ -45,3 +45,7 @@
 @media (max-width: 700px) {
   .bf-window { --bf-w: min(calc(100vw - 18px), calc((100dvh - 280px) / 2)); }
 }
+
+/* Umpan balik tekan */
+.bf-round, .bf-overlay button, .bf-pad button { transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), background-color 120ms ease; }
+.bf-round:active:not(:disabled), .bf-overlay button:active, .bf-pad button:active { transform: scale(0.95); }
